@@ -5,7 +5,7 @@
 /* ==================================================================== */
 
 .ctaSection {
-  padding-bottom: var(--space-5);
+  padding-block: var(--space-5);
   margin-top: calc(-1 * var(--space-10));
   background-color: var(--color-bg);
 }

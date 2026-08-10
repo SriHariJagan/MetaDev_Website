@@ -33,9 +33,9 @@ interface Principle {
 const PRINCIPLES: Principle[] = [
   {
     icon: Globe2,
-    title: 'Remote-First',
+    title: 'Global Team',
     description:
-      'No offices, no commutes, no 9-to-5 theatre. We hire the best person for the work, wherever they are.',
+      'Six countries, one standard. We hire the best person for the work, wherever they are.',
     accent: 'accent-blue',
     stat: '6',
     statLabel: 'Countries',

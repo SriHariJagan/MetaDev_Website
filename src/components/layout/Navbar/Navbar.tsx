@@ -25,6 +25,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'OurProducts', to: '/products', dropdown: true },
   { label: 'Team', to: '/team' },
   { label: 'About Us', to: '/about' },
+  { label: 'Careers', to: '/careers' },
 ];
 
 function LogoMark() {

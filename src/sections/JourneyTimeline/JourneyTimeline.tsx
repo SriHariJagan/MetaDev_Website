@@ -120,9 +120,9 @@ const MILESTONES: Milestone[] = [
   {
     year: '2020',
     icon: Globe,
-    title: 'Remote-First, Global Reach',
+    title: 'Going Global',
     description:
-      'Embraced a remote-first culture and began shipping products for clients across borders.',
+      'Expanded across borders and began shipping products for clients around the world.',
     accent: 'accent-green',
   },
   {

@@ -114,7 +114,11 @@
     linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
   background-size: 44px 44px;
   opacity: 0.4;
-  mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 30%, transparent 75%);
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 0%,
+    #000 30%,
+    transparent 75%
+  );
   pointer-events: none;
 }
 

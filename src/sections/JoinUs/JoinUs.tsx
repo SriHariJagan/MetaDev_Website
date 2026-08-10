@@ -1,7 +1,7 @@
-// JoinUs.tsx — hiring CTA and open roles
+// JoinUs.tsx — hiring CTA redirecting to the careers page
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight, MapPin, Rocket } from 'lucide-react';
+import { ArrowRight, Rocket } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
@@ -9,26 +9,11 @@ import { GradientText } from '@/components/common/GradientText';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
 import { CornerDots } from '@/components/common/CornerDots';
 import { blurUp, staggerContainer } from '@/constants/motion';
-import { cn } from '@/utils/cn';
 import styles from './JoinUs.module.css';
 
 const containerVariants = staggerContainer(0.08);
 
 const itemVariants = blurUp(20, 0.5, 8);
-
-interface Role {
-  title: string;
-  team: string;
-  location: string;
-  accent: string;
-}
-
-const ROLES: Role[] = [
-  { title: 'Senior Frontend Engineer', team: 'Product', location: 'Remote', accent: 'accent-blue' },
-  { title: 'AI / ML Engineer', team: 'Platform', location: 'Remote', accent: 'accent-violet' },
-  { title: 'Product Designer', team: 'Design', location: 'Remote', accent: 'accent-rose' },
-  { title: 'DevOps Engineer', team: 'Platform', location: 'Remote', accent: 'accent-cyan' },
-];
 
 export interface JoinUsProps {
   eyebrow?: string;
@@ -71,35 +56,26 @@ export function JoinUs({
           </motion.p>
         </motion.div>
 
-        {/* ---------- Open roles ---------- */}
+        {/* ---------- Redirect card ---------- */}
         <motion.div
-          className={styles.roles}
-          variants={containerVariants}
+          className={styles.redirect}
+          variants={itemVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {ROLES.map((role) => (
-            <motion.a
-              key={role.title}
-              href="mailto:careers@metadev.com?subject=Application:"
-              className={cn(styles.role, styles[role.accent])}
-              variants={itemVariants}
-            >
-              <div className={styles.roleInfo}>
-                <span className={styles.roleTitle}>{role.title}</span>
-                <span className={styles.roleMeta}>
-                  <span className={styles.roleTag}>{role.team}</span>
-                  <span className={styles.roleLocation}>
-                    <MapPin size={12} aria-hidden="true" />
-                    {role.location}
-                  </span>
-                </span>
-              </div>
-              <span className={styles.roleArrow}>
-                <ArrowRight size={16} aria-hidden="true" />
-              </span>
-            </motion.a>
-          ))}
+          <span className={styles.redirectBadge}>
+            <span className={styles.redirectDot} />
+            8 open roles
+          </span>
+          <h3 className={styles.redirectTitle}>Ready to find your lane?</h3>
+          <p className={styles.redirectDesc}>
+            All open roles live on our dedicated careers page — with search and filters by
+            department and location.
+          </p>
+          <Button to="/careers#open-roles" variant="gradient" size="md">
+            View Open Roles
+            <ArrowRight size={16} aria-hidden="true" />
+          </Button>
         </motion.div>
 
         {/* ---------- CTA ---------- */}
@@ -109,7 +85,7 @@ export function JoinUs({
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          <Button to="/contact" variant="gradient" size="lg">
+          <Button to="/contact" variant="outline" size="md">
             <Rocket size={16} aria-hidden="true" />
             Join the Team
           </Button>

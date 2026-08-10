@@ -32,7 +32,7 @@ interface FloatingChip {
 }
 
 const FLOATING_CHIPS: FloatingChip[] = [
-  { icon: Globe, label: 'Remote-First', accent: 'cyan', position: styles.chipTopLeft, delay: 0 },
+  { icon: Globe, label: 'Global Team', accent: 'cyan', position: styles.chipTopLeft, delay: 0 },
   { icon: Sparkles, label: 'Async by Default', accent: 'violet', position: styles.chipTopRight, delay: 0.4 },
   { icon: Cloud, label: '6 Countries', accent: 'blue', position: styles.chipBottomLeft, delay: 0.8 },
   { icon: Briefcase, label: 'Small Squads', accent: 'amber', position: styles.chipBottomRight, delay: 1.2 },

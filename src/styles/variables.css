@@ -12,7 +12,7 @@
   --color-bg: #ffffff;
   --color-surface: #f8fafc;
   --color-surface-elevated: #ffffff;
-  --color-text: #0f172a;
+  --color-text: #153e6c;
   --color-text-muted: #64748b;
   --color-border: #e2e8f0;
   --color-overlay: rgba(15, 23, 42, 0.5);
@@ -82,7 +82,7 @@
 
   /* Navbar */
   --navbar-height: 75px;
-  --navbar-text: #0f172a;
+  --navbar-text: #0a1624;
   --navbar-text-muted: rgba(15, 23, 42, 0.75);
   --navbar-accent: #3b82f6;
   --navbar-accent-muted: rgba(59, 130, 246, 0.1);

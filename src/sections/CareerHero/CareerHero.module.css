@@ -1,0 +1,495 @@
+/* CareerHero.module.css */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Background detailing ---------- */
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(94, 184, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 184, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, black 30%, transparent 75%);
+}
+
+.glowTop {
+  position: absolute;
+  top: -220px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 720px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    var(--navbar-accent-start) 0%,
+    transparent 70%
+  );
+  opacity: 0.1;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.glowBottom {
+  position: absolute;
+  bottom: -200px;
+  left: -140px;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--navbar-accent-end) 0%,
+    transparent 70%
+  );
+  opacity: 0.1;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: var(--space-8);
+  position: relative;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before,
+.eyebrowLabel::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.eyebrowLabel::after {
+  transform: scaleX(-1);
+}
+
+.title {
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  max-width: 32rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* ---------- Stats ---------- */
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-6);
+  margin: var(--space-2) 0 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statValue {
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  background: linear-gradient(
+    135deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.statLabel {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  margin: 0;
+  padding-bottom: 0;
+}
+
+/* ---------- Visual: growth staircase ---------- */
+
+.visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 460px;
+}
+
+.stageGlow {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(94, 184, 255, 0.16) 0%,
+    transparent 68%
+  );
+  filter: blur(40px);
+  animation: pulse 5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* Diagonal ascent line the steps climb */
+.ascentLine {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 50%;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--navbar-accent-start) 30%,
+    var(--navbar-accent-end) 70%,
+    transparent 100%
+  );
+  transform: rotate(-36deg);
+  opacity: 0.4;
+  filter: drop-shadow(0 0 6px rgba(94, 184, 255, 0.5));
+  pointer-events: none;
+}
+
+.step {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 10px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-navy);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 32px rgba(2, 10, 30, 0.35);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  white-space: nowrap;
+}
+
+:global([data-theme='light']) .step {
+  background: var(--glass-navy-light-soft);
+  box-shadow: 0 12px 32px rgba(15, 40, 80, 0.12);
+}
+
+.stepIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1)) 0%,
+    rgb(var(--grad-2)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 6px 16px -4px rgba(var(--accent), 0.45);
+}
+
+.step-blue {
+  --accent: 59 130 246;
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+
+.step-violet {
+  --accent: 139 92 246;
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+
+.step-amber {
+  --accent: 245 158 11;
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+
+.step-green {
+  --accent: 34 197 94;
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stepNum {
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.stepTitle {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+/* Ascending diagonal placement */
+.stepOne {
+  top: 74%;
+  left: 0;
+}
+
+.stepTwo {
+  top: 57%;
+  left: 22%;
+}
+
+.stepThree {
+  top: 40%;
+  left: 46%;
+}
+
+.stepFour {
+  top: 22%;
+  right: 0;
+}
+
+/* ---------- Floating chips ---------- */
+
+.chip {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  background: var(--glass-navy);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(2, 10, 30, 0.3);
+  white-space: nowrap;
+}
+
+:global([data-theme='light']) .chip {
+  background: var(--glass-navy-light-soft);
+  box-shadow: 0 10px 30px rgba(15, 40, 80, 0.1);
+}
+
+.chipIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+}
+
+.chipTopLeft {
+  top: 4%;
+  left: 0;
+}
+
+.chipTopRight {
+  top: 3%;
+  right: 2%;
+}
+
+.chipBottomRight {
+  bottom: 14%;
+  right: 4%;
+}
+
+.chip .chip-blue {
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+
+.chip .chip-violet {
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+
+.chip .chip-rose {
+  --grad-1: var(--product-grad-rose-1, 244 63 94);
+  --grad-2: var(--product-grad-rose-2, 190 18 60);
+}
+
+/* ---------- Hiring badge ---------- */
+
+.ctaCard {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  background: var(--glass-navy);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(2, 10, 30, 0.35);
+  white-space: nowrap;
+}
+
+:global([data-theme='light']) .ctaCard {
+  background: var(--glass-navy-light-soft);
+  box-shadow: 0 10px 30px rgba(15, 40, 80, 0.12);
+}
+
+.ctaCardDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(var(--product-accent-green, 34 197 94));
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 64rem) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .subtitle {
+    max-width: 28rem;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+
+  .visual {
+    min-height: 420px;
+    order: -1;
+  }
+}
+
+@media (max-width: 36rem) {
+  .visual {
+    min-height: 380px;
+  }
+
+  .step {
+    padding: 8px 12px 8px 8px;
+  }
+
+  .stepIcon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .stepTitle {
+    font-size: 0.72rem;
+  }
+
+  .stepTwo {
+    left: 16%;
+  }
+
+  .stepThree {
+    left: 42%;
+  }
+}

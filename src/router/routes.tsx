@@ -8,6 +8,7 @@ const SolutionsPage = lazy(() => import('@/pages/Solutions').then((module) => ({
 const SolutionDetailPage = lazy(() => import('@/pages/SolutionDetail').then((module) => ({ default: module.SolutionDetailPage })));
 const ContactPage = lazy(() => import('@/pages/Contact').then((module) => ({ default: module.ContactPage })));
 const TeamPage = lazy(() => import('@/pages/Team').then((module) => ({ default: module.TeamPage })));
+const CareersPage = lazy(() => import('@/pages/Careers').then((module) => ({ default: module.CareersPage })));
 const OurProductsPage = lazy(() => import('@/pages/OurProducts').then((module) => ({ default: module.OurProductsPage })));
 const ProductDetailPage = lazy(() => import('@/pages/ProductDetail').then((module) => ({ default: module.ProductDetailPage })));
 const MetaCheckPage = lazy(() => import('@/pages/MetaCheck').then((module) => ({ default: module.MetaCheckPage })));
@@ -55,6 +56,7 @@ export const routes: RouteObject[] = [
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
       { path: 'contact', element: <ContactPage /> },
       { path: 'team', element: <TeamPage /> },
+      { path: 'careers', element: <CareersPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

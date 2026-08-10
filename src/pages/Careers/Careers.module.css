@@ -1,6 +1,6 @@
-/* Team.module.css */
+/* Careers.module.css */
 
-.team {
+.careers {
   overflow: hidden;
 }
 
@@ -9,18 +9,18 @@
  * Each section hints its intrinsic size so scrolling stays smooth
  * and the float/glow animations don't run while out of view.
  */
-.team > section {
+.careers > section {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
   padding-block: var(--space-10);
 }
 
 /* First section: clear the fixed header */
-.team > section:first-child {
+.careers > section:first-child {
   padding-top: calc(var(--header-height) + var(--space-10));
 }
 
 /* Anchor targets keep clear of the fixed header when scrolled to */
-.team > section {
+.careers > section {
   scroll-margin-top: calc(var(--header-height) + var(--space-6));
 }

@@ -19,3 +19,19 @@
     var(--accent-violet) 100%
   );
 }
+
+:global([data-theme='light']) .primary {
+  background-image: linear-gradient(
+    90deg,
+    var(--navbar-accent-end) 0%,
+    var(--navbar-accent-start) 100%
+  );
+}
+
+:global([data-theme='light']) .violet {
+  background-image: linear-gradient(
+    90deg,
+    var(--accent-violet) 0%,
+    var(--navbar-accent-end) 100%
+  );
+}
