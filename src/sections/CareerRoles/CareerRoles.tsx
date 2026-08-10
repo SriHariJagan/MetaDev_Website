@@ -189,10 +189,6 @@ export function CareerRoles() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setPage(1);
-  }, [search, selectedTeams, selectedLocations]);
-
-  useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (
         filterBarRef.current &&
@@ -205,22 +201,32 @@ export function CareerRoles() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const toggleTeam = (team: Team) =>
+  const toggleTeam = (team: Team) => {
     setSelectedTeams((prev) =>
       prev.includes(team) ? prev.filter((t) => t !== team) : [...prev, team],
     );
+    setPage(1);
+  };
 
-  const toggleLocation = (location: string) =>
+  const toggleLocation = (location: string) => {
     setSelectedLocations((prev) =>
       prev.includes(location)
         ? prev.filter((l) => l !== location)
         : [...prev, location],
     );
+    setPage(1);
+  };
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   const clearAll = () => {
     setSearch("");
     setSelectedTeams([]);
     setSelectedLocations([]);
+    setPage(1);
   };
 
   const visibleRoles = useMemo(() => {
@@ -292,7 +298,7 @@ export function CareerRoles() {
               type="search"
               placeholder="Search by role…"
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => handleSearch(event.target.value)}
             />
           </label>
 
