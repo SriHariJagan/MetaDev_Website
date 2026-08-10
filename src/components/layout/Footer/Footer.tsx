@@ -282,7 +282,13 @@ export function Footer() {
               <img
                 src="/logo-noBg.png"
                 alt="metadev"
-                className={styles.brandLogo}
+                className={`${styles.brandLogo} ${styles.brandLogoDark}`}
+                draggable={false}
+              />
+              <img
+                src="/logo-lightmode.png"
+                alt="metadev"
+                className={`${styles.brandLogo} ${styles.brandLogoLight}`}
                 draggable={false}
               />
             </Link>

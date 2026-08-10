@@ -406,11 +406,23 @@
 .brandLogo {
   height: 44px;
   width: auto;
-  transition: filter 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-:global([data-theme='light']) .brandLogo {
-  filter: brightness(0);
+.brandLogoDark {
+  display: block;
+}
+
+.brandLogoLight {
+  display: none;
+}
+
+:global([data-theme='light']) .brandLogoDark {
+  display: none;
+}
+
+:global([data-theme='light']) .brandLogoLight {
+  display: block;
 }
 
 .tagline {

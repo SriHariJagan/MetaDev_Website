@@ -180,15 +180,23 @@ function OrbitGraphic({ inView }: { inView: boolean }) {
       animate={inView ? "visible" : "hidden"}
     >
       <div className={styles.orbitRing} />
+      <div className={styles.orbitRingGlow} />
       <div className={styles.pedestalRingOuter} />
       <div className={styles.pedestalRingInner} />
       <div className={styles.pedestalGlow} />
+      <div className={styles.orbitCenterGlow} />
 
       <div className={styles.cube}>
         <img
           src="/logo-noBg.png"
           alt="metadev logo"
-          className={styles.cubeLogo}
+          className={`${styles.cubeLogo} ${styles.cubeLogoDark}`}
+          draggable={false}
+        />
+        <img
+          src="/logo-lightmode.png"
+          alt="metadev logo"
+          className={`${styles.cubeLogo} ${styles.cubeLogoLight}`}
           draggable={false}
         />
       </div>
@@ -212,7 +220,7 @@ function OrbitGraphic({ inView }: { inView: boolean }) {
               scale: { duration: 0.2 },
             }}
           >
-            <Icon size={18} aria-hidden="true" />
+            <Icon size={22} aria-hidden="true" />
           </motion.span>
         </div>
       ))}

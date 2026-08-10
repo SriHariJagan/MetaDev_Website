@@ -178,7 +178,14 @@ function HeroVisual() {
       <img
         src="/logo-noBg.png"
         alt="metadev logo"
-        className={styles.heroLogo}
+        className={`${styles.heroLogo} ${styles.heroLogoDark}`}
+        draggable={false}
+      />
+
+      <img
+        src="/logo-lightmode.png"
+        alt="metadev logo"
+        className={`${styles.heroLogo} ${styles.heroLogoLight}`}
         draggable={false}
       />
 
@@ -191,7 +198,7 @@ function HeroVisual() {
           whileHover={reduceMotion ? undefined : { scale: 1.06, y: 0 }}
         >
           <span className={`${styles.floatingIcon} ${styles[`accent-${card.accent}`]}`}>
-            <card.icon size={16} aria-hidden="true" />
+            <card.icon size={18} aria-hidden="true" />
           </span>
           {card.label}
         </motion.div>

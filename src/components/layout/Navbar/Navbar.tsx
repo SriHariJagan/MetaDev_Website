@@ -29,13 +29,22 @@ const NAV_ITEMS: NavItem[] = [
 
 function LogoMark() {
   return (
-    <img
-      src="/logo-noBg.png"
-      alt="metadev"
-      className={styles.logoImage}
-      aria-hidden="true"
-      draggable={false}
-    />
+    <span className={styles.logoWrap}>
+      <img
+        src="/logo-noBg.png"
+        alt="metadev"
+        className={`${styles.logoImage} ${styles.logoDark}`}
+        aria-hidden="true"
+        draggable={false}
+      />
+      <img
+        src="/logo-lightmode.png"
+        alt="metadev"
+        className={`${styles.logoImage} ${styles.logoLight}`}
+        aria-hidden="true"
+        draggable={false}
+      />
+    </span>
   );
 }
 

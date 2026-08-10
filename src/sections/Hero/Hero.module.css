@@ -167,6 +167,15 @@
   z-index: 0;
 }
 
+:global([data-theme='light']) .stageGlow {
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.3) 0%,
+    rgba(129, 140, 248, 0.16) 45%,
+    transparent 70%
+  );
+}
+
 .globeWrap {
   position: absolute;
   top: 1%;
@@ -324,8 +333,27 @@
     drop-shadow(0 0 22px rgba(56, 189, 248, 0.3));
 }
 
+.heroLogoDark {
+  display: block;
+}
+
+.heroLogoLight {
+  display: none;
+}
+
+:global([data-theme='light']) .heroLogoDark {
+  display: none;
+}
+
+:global([data-theme='light']) .heroLogoLight {
+  display: block;
+}
+
 :global([data-theme='light']) .heroLogo {
-  filter: brightness(0) drop-shadow(0 6px 18px rgba(30, 64, 175, 0.18));
+  filter:
+    drop-shadow(0 10px 26px rgba(37, 99, 235, 0.35))
+    drop-shadow(0 0 26px rgba(56, 189, 248, 0.45))
+    drop-shadow(0 0 64px rgba(129, 140, 248, 0.3));
 }
 
 @keyframes heroLogoFloat {
@@ -358,14 +386,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background-color: rgba(13, 27, 51, 0.55);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 6px 20px rgba(2, 8, 23, 0.35);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
   white-space: nowrap;
@@ -376,8 +404,16 @@
 }
 
 :global([data-theme='light']) .floatingCard {
-  background-color: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(235, 243, 255, 0.9) 100%
+  );
+  border-color: rgba(59, 130, 246, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 10px 26px rgba(37, 99, 235, 0.2),
+    0 0 20px rgba(56, 189, 248, 0.14);
 }
 
 .floatingCard:hover {
@@ -388,23 +424,26 @@
 }
 
 :global([data-theme='light']) .floatingCard:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.18);
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 14px 32px rgba(37, 99, 235, 0.28),
+    0 0 26px rgba(56, 189, 248, 0.22);
 }
 
 .floatingIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: var(--radius-sm);
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
   flex-shrink: 0;
 }
 
 .floatingIcon svg {
-  width: 13px;
-  height: 13px;
+  width: 17px;
+  height: 17px;
 }
 
 .accent-cyan {
@@ -430,6 +469,32 @@
 .accent-blue {
   color: #60a5fa;
   background-color: rgba(96, 165, 250, 0.14);
+}
+
+/* Deeper, more saturated chips in light mode so they pop like dark mode */
+:global([data-theme='light']) .accent-cyan {
+  color: #0891b2;
+  background-color: rgba(8, 145, 178, 0.15);
+}
+
+:global([data-theme='light']) .accent-sky {
+  color: #0284c7;
+  background-color: rgba(2, 132, 199, 0.15);
+}
+
+:global([data-theme='light']) .accent-violet {
+  color: #7c3aed;
+  background-color: rgba(124, 58, 237, 0.15);
+}
+
+:global([data-theme='light']) .accent-indigo {
+  color: #4f46e5;
+  background-color: rgba(79, 70, 229, 0.15);
+}
+
+:global([data-theme='light']) .accent-blue {
+  color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.15);
 }
 
 .cardCloud {
@@ -485,6 +550,14 @@
     transparent 72%
   );
   filter: blur(4px);
+}
+
+:global([data-theme='light']) .platformGlow {
+  background: radial-gradient(
+    ellipse,
+    rgba(59, 130, 246, 0.42) 0%,
+    transparent 72%
+  );
 }
 
 .laptop {

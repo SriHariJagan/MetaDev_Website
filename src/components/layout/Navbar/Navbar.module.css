@@ -71,15 +71,32 @@
   color: var(--navbar-text);
 }
 
+.logoWrap {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .logoImage {
   height: 40px;
   width: auto;
   flex-shrink: 0;
-  transition: filter 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-:global([data-theme='light']) .logoImage {
-  filter: brightness(0);
+.logoDark {
+  display: block;
+}
+
+.logoLight {
+  display: none;
+}
+
+:global([data-theme='light']) .logoDark {
+  display: none;
+}
+
+:global([data-theme='light']) .logoLight {
+  display: block;
 }
 
 .brandText {
