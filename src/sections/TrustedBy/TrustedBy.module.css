@@ -1,0 +1,282 @@
+/* TrustedBy.module.css */
+
+.trustedBy {
+  background:
+    radial-gradient(
+      1000px 300px at 15% 105%,
+      rgba(167, 139, 250, 0.1) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(94, 184, 255, 0.05) 50%,
+      transparent 100%
+    );
+}
+
+.trustedBy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.5;
+  mask-image: radial-gradient(
+    ellipse 70% 80% at 50% 50%,
+    black 0%,
+    transparent 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 80% at 50% 50%,
+    black 0%,
+    transparent 75%
+  );
+  pointer-events: none;
+}
+
+.trustedBy::after {
+  content: "";
+  position: absolute;
+  top: -160px;
+  right: -90px;
+  width: 440px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(94, 184, 255, 0.22) 0%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+:global([data-theme="light"]) .trustedBy::after {
+  background: radial-gradient(
+    circle,
+    rgba(47, 138, 255, 0.12) 0%,
+    transparent 70%
+  );
+}
+
+:global([data-theme="light"]) .trustedBy {
+  background:
+    radial-gradient(
+      1000px 300px at 15% 105%,
+      rgba(124, 58, 237, 0.06) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(47, 138, 255, 0.035) 50%,
+      transparent 100%
+    );
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* Heading */
+.heading {
+  text-align: center;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: var(--line-height-heading);
+  max-width: 44rem;
+}
+
+.subtitle {
+  text-align: center;
+  max-width: 34rem;
+  font-size: var(--font-size-md);
+}
+
+/* Marquee */
+.marqueeSection {
+  width: 100%;
+  margin-top: var(--space-6);
+}
+
+.marqueeWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* ------------------------------------------------------------
+   Logo banner — full-bleed unique deep-navy band, identical in
+   both dark and light themes. Logos default to white
+   monochrome marks; hovering reveals the original brand colors.
+   ------------------------------------------------------------ */
+
+.logoBanner {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--blue-soft-border);
+  border-bottom: 1px solid var(--blue-soft-border);
+  background: var(--blue-soft-bg);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 40px rgba(2, 10, 30, 0.35);
+}
+
+/* Bottom accent line */
+.logoBanner::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-blue),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Light theme mirror — light navy glass */
+:global([data-theme="light"]) .logoBanner {
+  border-color: rgba(47, 138, 255, 0.3);
+  background: rgba(47, 138, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 40px rgba(37, 99, 235, 0.12);
+}
+
+:global([data-theme="light"]) .logoBanner::after {
+  opacity: 0.4;
+}
+
+.marqueeViewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 10%,
+    #000 90%,
+    transparent
+  );
+}
+
+.marqueeTrack {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 1px;
+  width: max-content;
+  height: 100%;
+}
+
+/* Glass panel per logo — like the capability strip tiles */
+
+.logoBannerItem {
+  flex-shrink: 0;
+  width: 200px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  background: var(--glass-navy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    box-shadow var(--transition-medium),
+    background var(--transition-medium);
+}
+
+:global([data-theme="light"]) .logoBannerItem {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.logoBannerItem:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(94, 184, 255, 0.35),
+    0 0 24px rgba(61, 140, 255, 0.18);
+}
+
+:global([data-theme="light"]) .logoBannerItem:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(59, 130, 246, 0.4),
+    0 0 24px rgba(59, 130, 246, 0.16);
+}
+
+/* Logo image — monochrome mark; hover reveals original colors */
+.logoImage {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.82;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+:global([data-theme="light"]) .logoImage {
+  filter: brightness(0);
+  opacity: 0.72;
+}
+
+.logoBannerItem:hover .logoImage,
+:global([data-theme="light"]) .logoBannerItem:hover .logoImage {
+  opacity: 1;
+  transform: scale(1.06);
+  filter: drop-shadow(0 6px 14px rgba(59, 130, 246, 0.35));
+}
+
+/* Nav buttons overlaid on banner edges */
+
+.navButtonLeft {
+  position: absolute;
+  left: 10px;
+  z-index: 2;
+}
+
+.navButtonRight {
+  position: absolute;
+  right: 10px;
+  z-index: 2;
+}
+
+@media (max-width: 48rem) {
+  .heading {
+    font-size: var(--font-size-2xl);
+  }
+
+  .logoBanner {
+    height: 78px;
+  }
+}

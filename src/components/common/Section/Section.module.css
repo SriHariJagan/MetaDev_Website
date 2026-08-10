@@ -1,0 +1,18 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  scroll-margin-top: calc(var(--navbar-height) + 1rem);
+}
+
+.sectionLg {
+  padding-block: var(--space-16);
+}
+
+.sectionMd {
+  padding-block: var(--space-12);
+}
+
+.bordered {
+  border-top: 1px solid var(--color-border);
+}

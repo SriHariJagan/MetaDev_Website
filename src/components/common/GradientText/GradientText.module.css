@@ -1,0 +1,21 @@
+.text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.primary {
+  background-image: linear-gradient(
+    90deg,
+    var(--navbar-accent-start) 0%,
+    var(--navbar-accent-end) 100%
+  );
+}
+
+.violet {
+  background-image: linear-gradient(
+    90deg,
+    var(--navbar-accent-end) 0%,
+    var(--accent-violet) 100%
+  );
+}

@@ -1,0 +1,242 @@
+/* JoinUs.module.css */
+
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 680px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    var(--navbar-accent-end) 0%,
+    transparent 70%
+  );
+  opacity: 0.12;
+  filter: blur(50px);
+}
+
+:global([data-theme='light']) .glow {
+  opacity: 0.07;
+}
+
+/* ---------- Header ---------- */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before,
+.eyebrowLabel::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.eyebrowLabel::after {
+  transform: scaleX(-1);
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  max-width: 34rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---------- Per-role accent colors ---------- */
+
+.accent-blue {
+  --accent: var(--product-accent-blue, 37 99 235);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 139 92 246);
+}
+.accent-rose {
+  --accent: var(--product-accent-rose, 190 18 60);
+}
+.accent-cyan {
+  --accent: var(--product-accent-cyan, 6 182 212);
+}
+
+/* ---------- Roles list ---------- */
+
+.roles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 44rem;
+}
+
+.role {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-navy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+  transition:
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+:global([data-theme='light']) .role {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.role:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
+    0 14px 32px rgba(2, 10, 30, 0.3),
+    0 0 40px -12px rgba(var(--accent, 94 184 255), 0.3);
+}
+
+.roleInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.roleTitle {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.roleMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.roleTag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgb(var(--accent, 94 184 255));
+  background: rgba(var(--accent, 94 184 255), 0.12);
+}
+
+.roleLocation {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+}
+
+.roleArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  border: 1px solid var(--glass-border);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.role:hover .roleArrow {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--accent, 94 184 255), 0.9),
+    rgba(var(--accent, 94 184 255), 0.6)
+  );
+  transform: translateX(3px);
+}
+
+/* ---------- CTA ---------- */
+
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.ctaNote {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.ctaLink {
+  color: var(--navbar-accent);
+  text-decoration: none;
+}
+
+.ctaLink:hover {
+  text-decoration: underline;
+}

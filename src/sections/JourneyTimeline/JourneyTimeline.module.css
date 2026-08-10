@@ -1,0 +1,421 @@
+/* JourneyTimeline.module.css */
+
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: 40%;
+  right: -220px;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+  opacity: 0.12;
+  filter: blur(40px);
+}
+
+:global([data-theme='light']) .glow {
+  opacity: 0.07;
+}
+
+/* ---------- Header ---------- */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before,
+.eyebrowLabel::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.eyebrowLabel::after {
+  transform: scaleX(-1);
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  max-width: 36rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---------- Per-milestone accent colors ---------- */
+
+.accent-blue {
+  --accent: var(--product-accent-blue, 37 99 235);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+.accent-cyan {
+  --accent: var(--product-accent-cyan, 6 182 212);
+  --grad-1: var(--product-grad-cyan-1, 6 182 212);
+  --grad-2: var(--product-grad-cyan-2, 8 145 178);
+}
+.accent-green {
+  --accent: var(--product-accent-green, 34 197 94);
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 139 92 246);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+.accent-amber {
+  --accent: var(--product-accent-amber, 217 119 6);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+.accent-rose {
+  --accent: var(--product-accent-rose, 190 18 60);
+  --grad-1: var(--product-grad-rose-1, 244 63 94);
+  --grad-2: var(--product-grad-rose-2, 190 18 60);
+}
+.accent-indigo {
+  --accent: var(--product-accent-indigo, 99 102 241);
+  --grad-1: var(--product-grad-indigo-1, 99 102 241);
+  --grad-2: var(--product-grad-indigo-2, 67 56 202);
+}
+
+/* ---------- Timeline ---------- */
+
+.timeline {
+  position: relative;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    var(--navbar-accent-start),
+    var(--color-primary),
+    var(--navbar-accent-end)
+  );
+  opacity: 0.12;
+}
+
+/* Bright gradient overlay that draws itself as you scroll */
+.lineProgress {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: top;
+  background: linear-gradient(
+    180deg,
+    var(--navbar-accent-start),
+    var(--color-primary),
+    var(--navbar-accent-end)
+  );
+  box-shadow: 0 0 12px rgba(var(--product-accent-violet, 139 92 246), 0.5);
+}
+
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+}
+
+/* Marker dot on the line */
+.marker {
+  grid-column: 2;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.markerDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgb(var(--accent, 94 184 255));
+  box-shadow:
+    0 0 0 4px rgba(var(--accent, 94 184 255), 0.22),
+    0 0 18px rgba(var(--accent, 94 184 255), 0.65);
+  transition: box-shadow var(--transition-medium);
+}
+
+/* Expanding ring right after the dot pops in */
+.markerPing {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: rgba(var(--accent, 94 184 255), 0.45);
+  pointer-events: none;
+}
+
+.item:hover .markerDot {
+  box-shadow:
+    0 0 0 6px rgba(var(--accent, 94 184 255), 0.28),
+    0 0 26px rgba(var(--accent, 94 184 255), 0.85);
+}
+
+.item:last-child .markerDot {
+  animation: dotPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(var(--accent, 94 184 255), 0.22),
+      0 0 18px rgba(var(--accent, 94 184 255), 0.65);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(var(--accent, 94 184 255), 0.12),
+      0 0 30px rgba(var(--accent, 94 184 255), 0.9);
+  }
+}
+
+/* Connector extending from the dot toward the card */
+.connector {
+  position: absolute;
+  top: 6px;
+  width: 24px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: rgba(var(--accent, 94 184 255), 0.55);
+}
+
+.item:nth-child(odd) .connector {
+  right: calc(50% + 8px);
+  transform-origin: right;
+}
+
+.item:nth-child(even) .connector {
+  left: calc(50% + 8px);
+  transform-origin: left;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  grid-column: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-navy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition:
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+.item:nth-child(even) .card {
+  grid-column: 3;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
+    0 18px 40px rgba(2, 10, 30, 0.35),
+    0 0 40px -12px rgba(var(--accent, 94 184 255), 0.35);
+}
+
+:global([data-theme='light']) .card {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Left gradient edge strip */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    180deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  opacity: 0.85;
+}
+
+/* Ghost year behind the card */
+.cardYearWrap {
+  position: absolute;
+  top: -4px;
+  right: 10px;
+  pointer-events: none;
+}
+
+.cardYear {
+  display: block;
+  font-size: 3.2rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.14;
+  font-variant-numeric: tabular-nums;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 14px rgba(var(--grad-2, 94 184 255), 0.35);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.card:hover .cardIcon {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 6px 20px rgba(var(--grad-2, 94 184 255), 0.5);
+}
+
+.yearPill {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--accent, 94 184 255));
+  background: rgba(var(--accent, 94 184 255), 0.12);
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.3);
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.65rem;
+}
+
+.cardTitle {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.cardDesc {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 64rem) {
+  .line {
+    left: 17px;
+    transform: none;
+  }
+
+  .item {
+    grid-template-columns: 34px 1fr;
+    gap: var(--space-3);
+  }
+
+  .marker {
+    grid-column: 1;
+  }
+
+  .item:nth-child(odd) .card,
+  .item:nth-child(even) .card {
+    grid-column: 2;
+  }
+
+  /* No room for connectors on mobile */
+  .connector {
+    display: none;
+  }
+}

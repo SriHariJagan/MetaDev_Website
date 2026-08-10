@@ -1,0 +1,1 @@
+export { MetaCheckPage } from './MetaCheck';

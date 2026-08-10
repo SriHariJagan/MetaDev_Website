@@ -1,0 +1,225 @@
+/* InfiniteMarquee.module.css */
+
+.marquee {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  min-width: 0;
+}
+
+.viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.track {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: max-content;
+}
+
+/* Per-industry unique accent colors (light → dark gradient pairs) */
+
+.accent-teal {
+  --accent: var(--product-accent-teal, 20 184 166);
+  --grad-1: var(--product-grad-teal-1, 20 184 166);
+  --grad-2: var(--product-grad-teal-2, 4 120 87);
+}
+.accent-blue {
+  --accent: var(--product-accent-blue, 37 99 235);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 139 92 246);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+.accent-amber {
+  --accent: var(--product-accent-amber, 217 119 6);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+.accent-orange {
+  --accent: var(--product-accent-orange, 234 130 46);
+  --grad-1: var(--product-grad-orange-1, 249 115 22);
+  --grad-2: var(--product-grad-orange-2, 194 65 12);
+}
+.accent-pink {
+  --accent: var(--product-accent-pink, 236 72 153);
+  --grad-1: var(--product-grad-pink-1, 236 72 153);
+  --grad-2: var(--product-grad-pink-2, 190 24 93);
+}
+.accent-green {
+  --accent: var(--product-accent-green, 34 197 94);
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
+}
+.accent-cyan {
+  --accent: var(--product-accent-cyan, 6 182 212);
+  --grad-1: var(--product-grad-cyan-1, 6 182 212);
+  --grad-2: var(--product-grad-cyan-2, 8 145 178);
+}
+.accent-indigo {
+  --accent: var(--product-accent-indigo, 99 102 241);
+  --grad-1: var(--product-grad-indigo-1, 99 102 241);
+  --grad-2: var(--product-grad-indigo-2, 67 56 202);
+}
+.accent-red {
+  --accent: var(--product-accent-red, 239 68 68);
+  --grad-1: var(--product-grad-red-1, 239 68 68);
+  --grad-2: var(--product-grad-red-2, 185 28 28);
+}
+.accent-lime {
+  --accent: var(--product-accent-lime, 101 163 13);
+  --grad-1: var(--product-grad-lime-1, 132 204 22);
+  --grad-2: var(--product-grad-lime-2, 77 124 15);
+}
+.accent-rose {
+  --accent: var(--product-accent-rose, 190 18 60);
+  --grad-1: var(--product-grad-rose-1, 244 63 94);
+  --grad-2: var(--product-grad-rose-2, 190 18 60);
+}
+
+.item {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: 3.75rem;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+/* Gradient underline sweep */
+.item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  opacity: 0;
+  transform: translateX(-50%);
+  transition:
+    width var(--transition-medium),
+    opacity var(--transition-medium);
+}
+
+.item:hover {
+  color: var(--color-text);
+  transform: translateY(-2px);
+}
+
+.item:hover::after {
+  width: 70%;
+  opacity: 1;
+}
+
+/* Colorful icon tile — unique per industry, gradient icon stroke */
+.itemIcon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: rgba(var(--accent, 94 184 255), 0.12);
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.3);
+  color: rgb(var(--accent, 94 184 255));
+  filter: saturate(0.65);
+  transition:
+    filter var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-medium),
+    transform var(--transition-fast);
+}
+
+.item:hover .itemIcon {
+  filter: none;
+  background: rgba(var(--accent, 94 184 255), 0.16);
+  border-color: rgba(var(--accent, 94 184 255), 0.5);
+  box-shadow: 0 0 16px rgba(var(--accent, 94 184 255), 0.3);
+  transform: scale(1.06);
+}
+
+.itemIndex {
+  flex-shrink: 0;
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--accent, 94 184 255));
+  opacity: 0.55;
+  transition: opacity var(--transition-fast);
+}
+
+.item:hover .itemIndex {
+  opacity: 1;
+}
+
+/* Names in the industry's linear gradient — dark → light */
+.itemLabel {
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--grad-2, var(--accent, 94 184 255))) 0%,
+    rgb(var(--grad-1, var(--accent, 94 184 255))) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.8;
+  transition: opacity var(--transition-fast);
+}
+
+.item:hover .itemLabel {
+  opacity: 1;
+}
+
+:global([data-theme="light"]) .itemIcon {
+  background: rgba(var(--accent, 37 99 235), 0.07);
+  border-color: rgba(var(--accent, 37 99 235), 0.22);
+}
+
+:global([data-theme="light"]) .item:hover .itemIcon {
+  background: rgba(var(--accent, 37 99 235), 0.12);
+  border-color: rgba(var(--accent, 37 99 235), 0.45);
+  box-shadow: 0 0 16px rgba(var(--accent, 37 99 235), 0.22);
+}

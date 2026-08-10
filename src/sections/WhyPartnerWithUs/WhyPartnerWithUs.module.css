@@ -1,0 +1,362 @@
+/* WhyPartnerWithUs.module.css */
+
+.root {
+  overflow: hidden;
+}
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: -140px;
+  left: -80px;
+  width: 560px;
+  height: 420px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-blue) 0%,
+    var(--accent-violet) 100%
+  );
+  opacity: 0.07;
+  filter: blur(40px);
+}
+
+:global([data-theme='light']) .glow {
+  opacity: 0.04;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-10);
+  align-items: start;
+}
+
+/* ---------- Left intro ---------- */
+
+.intro {
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-8));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+.introStats {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.introStat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.introStatValue {
+  font-size: 1.2rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+.introStatLabel {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Benefits grid ---------- */
+
+/* Per-benefit unique accent colors (light → dark pairs) */
+.accent-blue {
+  --accent: var(--product-accent-blue, 37 99 235);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+.accent-cyan {
+  --accent: var(--product-accent-cyan, 6 182 212);
+  --grad-1: var(--product-grad-cyan-1, 6 182 212);
+  --grad-2: var(--product-grad-cyan-2, 8 145 178);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 139 92 246);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+.accent-green {
+  --accent: var(--product-accent-green, 34 197 94);
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
+}
+.accent-amber {
+  --accent: var(--product-accent-amber, 217 119 6);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+.accent-teal {
+  --accent: var(--product-accent-teal, 20 184 166);
+  --grad-1: var(--product-grad-teal-1, 20 184 166);
+  --grad-2: var(--product-grad-teal-2, 4 120 87);
+}
+.accent-indigo {
+  --accent: var(--product-accent-indigo, 99 102 241);
+  --grad-1: var(--product-grad-indigo-1, 99 102 241);
+  --grad-2: var(--product-grad-indigo-2, 67 56 202);
+}
+.accent-rose {
+  --accent: var(--product-accent-rose, 190 18 60);
+  --grad-1: var(--product-grad-rose-1, 244 63 94);
+  --grad-2: var(--product-grad-rose-2, 190 18 60);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+  row-gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.benefitCard {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-navy);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition:
+    border-color var(--transition-medium),
+    background-image var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+/* Corner accent glow on hover */
+.benefitCard::before {
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -60px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent, 94 184 255), 0.16) 0%,
+    transparent 70%
+  );
+  filter: blur(26px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-medium);
+}
+
+.benefitCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  background-image: linear-gradient(
+    180deg,
+    rgba(var(--accent, 94 184 255), 0.1) 0%,
+    rgba(var(--accent, 94 184 255), 0.04) 45%,
+    rgba(var(--accent, 94 184 255), 0) 80%
+  ), var(--glass-navy);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
+    0 18px 40px rgba(2, 10, 30, 0.35),
+    0 0 50px -12px rgba(var(--accent, 94 184 255), 0.35);
+}
+
+.benefitCard:hover::before {
+  opacity: 1;
+}
+
+/* Bottom accent line — benefit's own gradient */
+.benefitCard::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--grad-1, var(--accent, 94 184 255))),
+    transparent
+  );
+  opacity: 0.45;
+  transition: opacity var(--transition-medium);
+}
+
+.benefitCard:hover::after {
+  opacity: 1;
+}
+
+:global([data-theme='light']) .benefitCard {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:global([data-theme='light']) .benefitCard:hover {
+  background-image: linear-gradient(
+    180deg,
+    rgba(var(--accent, 37 99 235), 0.07) 0%,
+    rgba(var(--accent, 37 99 235), 0) 70%
+  ), var(--glass-navy-light-soft);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 1px rgba(var(--accent, 37 99 235), 0.12),
+    0 18px 40px rgba(37, 99, 235, 0.12),
+    0 0 50px -12px rgba(var(--accent, 37 99 235), 0.2);
+}
+
+.benefitTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Gradient icon tile in the benefit's own colors */
+.benefitIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 4px 14px rgba(var(--grad-2, 94 184 255), 0.35);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Playful alternating tilt on the icon tiles */
+.grid > li:nth-child(even) .benefitIcon {
+  transform: rotate(5deg);
+}
+
+.grid > li:nth-child(odd) .benefitIcon {
+  transform: rotate(-5deg);
+}
+
+.benefitCard:hover .benefitIcon {
+  transform: scale(1.12) rotate(0deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 6px 20px rgba(var(--grad-2, 94 184 255), 0.5);
+}
+
+.benefitNumber {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  color: rgb(var(--accent, 94 184 255));
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+  transition: opacity var(--transition-fast);
+}
+
+.benefitCard:hover .benefitNumber {
+  opacity: 1;
+}
+
+/* Title — gradient in the benefit's own colors */
+.benefitTitle {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  padding-bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgb(var(--grad-2, var(--accent, 94 184 255))) 0%,
+    rgb(var(--grad-1, var(--accent, 94 184 255))) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.benefitDesc {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 64rem) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+@media (max-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

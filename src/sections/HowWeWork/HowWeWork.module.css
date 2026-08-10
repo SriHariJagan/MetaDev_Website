@@ -1,0 +1,272 @@
+/* HowWeWork.module.css */
+
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  bottom: -200px;
+  left: -200px;
+  width: 540px;
+  height: 540px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--navbar-accent-start) 0%,
+    transparent 70%
+  );
+  opacity: 0.12;
+  filter: blur(40px);
+}
+
+:global([data-theme='light']) .glow {
+  opacity: 0.07;
+}
+
+/* ---------- Header ---------- */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before,
+.eyebrowLabel::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.eyebrowLabel::after {
+  transform: scaleX(-1);
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  max-width: 36rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---------- Per-card accent colors ---------- */
+
+.accent-blue {
+  --accent: var(--product-accent-blue, 37 99 235);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 139 92 246);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+.accent-teal {
+  --accent: var(--product-accent-teal, 20 184 166);
+  --grad-1: var(--product-grad-teal-1, 20 184 166);
+  --grad-2: var(--product-grad-teal-2, 4 120 87);
+}
+.accent-amber {
+  --accent: var(--product-accent-amber, 217 119 6);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+
+/* ---------- Cards ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-navy);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition:
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+/* Corner accent glow on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -60px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent, 94 184 255), 0.16) 0%,
+    transparent 70%
+  );
+  filter: blur(26px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-medium);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
+    0 18px 40px rgba(2, 10, 30, 0.35),
+    0 0 50px -12px rgba(var(--accent, 94 184 255), 0.35);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+:global([data-theme='light']) .card {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cardIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 14px rgba(var(--grad-2, 94 184 255), 0.4);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.card:hover .cardIcon {
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 6px 20px rgba(var(--grad-2, 94 184 255), 0.55);
+}
+
+.cardStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.cardStatValue {
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+  padding-bottom: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.cardStatLabel {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.cardTitle {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.cardDesc {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

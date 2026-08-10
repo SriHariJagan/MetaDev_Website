@@ -1,0 +1,1134 @@
+/* MetaHire.module.css — custom landing page for MetaHire (Hiring & Talent Platform) */
+
+.page {
+  position: relative;
+  --accent: var(--product-accent-blue, 59 130 246);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                                */
+/* ------------------------------------------------------------------ */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.heroAurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heroGridBg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--grad-1), 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grad-1), 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(85% 70% at 50% 25%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(85% 70% at 50% 25%, #000 25%, transparent 78%);
+}
+
+.heroBlob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+}
+
+.heroBlob1 {
+  width: 560px;
+  height: 480px;
+  top: -200px;
+  left: 4%;
+  background: radial-gradient(circle, rgb(var(--grad-1)), transparent 70%);
+  opacity: 0.2;
+}
+
+.heroBlob2 {
+  width: 460px;
+  height: 420px;
+  top: 4%;
+  right: -140px;
+  background: radial-gradient(circle, #a855f7, transparent 70%);
+  opacity: 0.14;
+}
+
+.heroBlob3 {
+  width: 420px;
+  height: 380px;
+  bottom: -160px;
+  left: 32%;
+  background: radial-gradient(circle, #ec4899, transparent 70%);
+  opacity: 0.12;
+}
+
+.heroGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-10);
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--navbar-accent);
+  text-decoration: none;
+  transition: gap var(--transition-fast);
+}
+
+.breadcrumb:hover {
+  gap: var(--space-3);
+}
+
+.breadcrumbIcon {
+  flex-shrink: 0;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.heroText {
+  margin: 0;
+  max-width: 34rem;
+  font-size: var(--font-size-md);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.heroTrust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+
+.trustCheck {
+  flex-shrink: 0;
+  color: rgb(var(--accent));
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero visual — recruiting kanban board                               */
+/* ------------------------------------------------------------------ */
+
+.kanbanVisual {
+  position: relative;
+  width: min(520px, 100%);
+  margin-inline: auto;
+  padding: var(--space-4);
+}
+
+.kanbanGlow {
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(circle, rgb(var(--grad-1)), transparent 65%);
+  opacity: 0.16;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.kanbanBoard {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: 20px;
+  border: 1px solid rgba(var(--grad-1), 0.28);
+  background: linear-gradient(160deg, rgba(var(--grad-1), 0.12), rgba(var(--grad-2), 0.04));
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 60px -20px rgba(var(--grad-2), 0.5);
+}
+
+.kanbanColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.kanbanColumnHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  background: rgba(var(--grad-1), 0.12);
+  border: 1px solid rgba(var(--grad-1), 0.2);
+}
+
+.kanbanColumnTitle {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.kanbanColumnCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: rgb(var(--grad-1));
+  background: rgba(var(--grad-1), 0.16);
+}
+
+.kanbanColumnBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.candidateCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(var(--color-text), 0.1);
+  background: rgba(var(--color-text), 0.04);
+}
+
+.candidateCardHot {
+  border-color: rgba(var(--grad-1), 0.5);
+  background: rgba(var(--grad-1), 0.1);
+  box-shadow: 0 8px 20px -8px rgba(var(--grad-2), 0.4);
+}
+
+.candidateCardAccepted {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.candidateAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+}
+
+.candidateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.candidateName {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.candidateRole {
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.candidateMatch {
+  margin-left: auto;
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: rgb(var(--grad-1));
+  white-space: nowrap;
+}
+
+.candidateCardAccepted .candidateMatch {
+  color: #10b981;
+}
+
+/* Floating chips */
+
+.chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
+  color: #ffffff;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 12px 26px -10px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+.chip1 {
+  top: -4%;
+  left: 4%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  animation: floatY 5.5s ease-in-out infinite;
+}
+
+.chip2 {
+  top: 6%;
+  right: -2%;
+  background: linear-gradient(135deg, #a855f7, #6d28d9);
+  animation: floatY 6.5s 0.8s ease-in-out infinite;
+}
+
+.chip3 {
+  bottom: -4%;
+  left: 20%;
+  background: linear-gradient(135deg, #10b981, #047857);
+  animation: floatY 6s 1.6s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Funnel stats                                                        */
+/* ------------------------------------------------------------------ */
+
+.funnelSection {
+  position: relative;
+}
+
+.funnelGlow {
+  position: absolute;
+  top: -120px;
+  right: 10%;
+  width: 480px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--grad-1)), transparent 70%);
+  opacity: 0.1;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.funnelGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.funnelCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-5) 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 18px 18px 6px 6px;
+}
+
+.funnelCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(var(--hue-1), 0.12), transparent 55%);
+  pointer-events: none;
+}
+
+.funnelValue {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, rgb(var(--hue-1)), rgb(var(--hue-2)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.funnelLabel {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.funnelSource {
+  font-size: var(--font-size-2xs);
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  opacity: 0.65;
+}
+
+.funnelBars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px dashed rgba(var(--color-text), 0.1);
+}
+
+.funnelBars span {
+  display: block;
+  height: 12px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgb(var(--hue-1)), rgb(var(--hue-2)));
+  transform-origin: left;
+  animation: funnelGrow 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.funnelBars span:nth-child(1) {
+  width: 100%;
+  animation-delay: 0.1s;
+}
+
+.funnelBars span:nth-child(2) {
+  width: 68%;
+  animation-delay: 0.25s;
+}
+
+.funnelBars span:nth-child(3) {
+  width: 38%;
+  animation-delay: 0.4s;
+}
+
+@keyframes funnelGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Features — ledger rows                                              */
+/* ------------------------------------------------------------------ */
+
+.featuresGlow {
+  position: absolute;
+  bottom: -160px;
+  left: 4%;
+  width: 520px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--grad-1)), transparent 70%);
+  opacity: 0.1;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.ledger {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ledgerRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+}
+
+.ledgerIndex {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  font-variant-numeric: tabular-nums;
+}
+
+.ledgerBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.ledgerTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.ledgerDesc {
+  margin: var(--space-1) 0 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.ledgerArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  color: rgb(var(--grad-1));
+  background: rgba(var(--grad-1), 0.1);
+  border: 1px solid rgba(var(--grad-1), 0.3);
+  transition: transform var(--transition-fast);
+}
+
+.ledgerRow:hover .ledgerArrow {
+  transform: translateX(4px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Pipeline swimlane                                                   */
+/* ------------------------------------------------------------------ */
+
+.pipelineSection {
+  position: relative;
+}
+
+.pipelineGlow {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 560px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--grad-1)), transparent 70%);
+  opacity: 0.09;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.pipeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-4);
+}
+
+.pipeline::before {
+  content: "";
+  position: absolute;
+  top: 24px;
+  left: 6%;
+  right: 6%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #3b82f6 15%,
+    #a855f7 38%,
+    #ec4899 58%,
+    #f59e0b 78%,
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.pipelineCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  height: 100%;
+  overflow: hidden;
+}
+
+.pipelineCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(var(--hue-1), 0.1), transparent 60%);
+  pointer-events: none;
+}
+
+.pipelineTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pipelineBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgb(var(--hue-1)), rgb(var(--hue-2)));
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 8px 20px -6px rgba(var(--hue-2), 0.55);
+}
+
+.pipelineNum {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgb(var(--hue-2));
+}
+
+.pipelineTitle {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.pipelineDesc {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.pipelineMiniCards {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.pipelineMiniCard {
+  width: 18px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid rgba(var(--hue-1), 0.35);
+  background: rgba(var(--hue-1), 0.08);
+}
+
+.pipelineStat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  color: rgb(var(--hue-2));
+  background: rgba(var(--hue-1), 0.12);
+  border: 1px solid rgba(var(--hue-1), 0.35);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* CTA banner                                                          */
+/* ------------------------------------------------------------------ */
+
+.ctaSection {
+  position: relative;
+}
+
+.ctaCard {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(118, 132, 170, 0.24);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(var(--grad-1), 0.16) 0%, transparent 42%),
+    radial-gradient(circle at 88% 96%, rgba(139, 92, 246, 0.16) 0%, transparent 40%),
+    radial-gradient(circle at 72% -6%, rgba(236, 72, 153, 0.1) 0%, transparent 38%),
+    linear-gradient(180deg, #0a1428 0%, #060c1a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 24px 70px -18px rgba(2, 6, 23, 0.65);
+}
+
+.ctaCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.55) 30%,
+    rgba(var(--grad-1), 0.9) 50%,
+    rgba(255, 255, 255, 0.55) 70%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.ctaCard::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  height: 22px;
+  background-image:
+    radial-gradient(circle 8px at 11px 7px, rgba(var(--grad-1), 0.55) 0 72%, transparent 73%),
+    radial-gradient(circle 8px at 11px 7px, rgba(148, 163, 184, 0.22) 0 72%, transparent 73%);
+  background-size: 24px 16px, 24px 16px;
+  background-position: 0 10px, 12px 0;
+  background-repeat: repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+[data-theme="light"] .ctaCard {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(var(--grad-1), 0.1) 0%, transparent 42%),
+    radial-gradient(circle at 88% 96%, rgba(139, 92, 246, 0.09) 0%, transparent 40%),
+    radial-gradient(circle at 72% -6%, rgba(236, 72, 153, 0.07) 0%, transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+  border-color: #e8edf7;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 44px -16px rgba(20, 40, 90, 0.14);
+}
+
+[data-theme="light"] .ctaCard::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(30, 58, 102, 0.18) 30%,
+    rgba(var(--grad-1), 0.55) 50%,
+    rgba(30, 58, 102, 0.18) 70%,
+    transparent
+  );
+}
+
+[data-theme="light"] .ctaCard::after {
+  background-image:
+    radial-gradient(circle 8px at 11px 7px, rgba(var(--grad-1), 0.5) 0 72%, transparent 73%),
+    radial-gradient(circle 8px at 11px 7px, rgba(30, 58, 102, 0.12) 0 72%, transparent 73%);
+}
+
+.ctaGlow {
+  position: absolute;
+  right: -140px;
+  bottom: -120px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--grad-1), 0.28), transparent 68%);
+  filter: blur(50px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ctaDots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(var(--grad-1), 0.55) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(55% 55% at 90% 8%, #000, transparent 72%);
+  mask-image: radial-gradient(55% 55% at 90% 8%, #000, transparent 72%);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.ctaGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: var(--space-10);
+  padding: var(--space-10) var(--space-8);
+}
+
+.ctaCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.ctaEyebrow {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.ctaTitle {
+  margin: 0;
+  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.ctaText {
+  margin: 0;
+  max-width: 34rem;
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ctaCandidate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: 20px;
+  border: 1px solid rgba(var(--grad-1), 0.3);
+  background: linear-gradient(160deg, rgba(var(--grad-1), 0.14), rgba(var(--grad-2), 0.05));
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.ctaCandidateTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ctaCandidateAvatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+  box-shadow: 0 8px 20px -8px rgba(var(--grad-2), 0.8);
+}
+
+.ctaCandidateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ctaCandidateName {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.ctaCandidateRole {
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+}
+
+.ctaCandidateTick {
+  margin-left: auto;
+  color: rgb(16, 185, 129);
+}
+
+.ctaCandidateTrack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ctaCandidateTrack::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(var(--grad-1), 0.55), rgba(16, 185, 129, 0.6));
+  transform: translateY(-50%);
+}
+
+.ctaStageDone,
+.ctaStageActive {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(var(--grad-1), 0.35);
+  background: rgba(10, 20, 40, 0.85);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.ctaStageActive {
+  border-color: rgba(16, 185, 129, 0.65);
+  color: rgb(16, 185, 129);
+}
+
+.ctaStageDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(16, 185, 129);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  animation: ctaDotPulse 2.2s ease-in-out infinite;
+}
+
+.ctaCandidateMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed rgba(var(--grad-1), 0.3);
+}
+
+.ctaCandidateTime {
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+}
+
+.ctaCandidateOffer {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgb(16, 185, 129);
+}
+
+[data-theme="light"] .ctaStageDone,
+[data-theme="light"] .ctaStageActive {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* ------------------------------------------------------------------ */
+/* Section eyebrow (dash-line style, matches site convention)          */
+/* ------------------------------------------------------------------ */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--navbar-accent-start), var(--navbar-accent-end));
+  width: 18px;
+  height: 2px;
+}
+
+.eyebrow::after {
+  transform: scaleX(-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Per-card hues                                                       */
+/* ------------------------------------------------------------------ */
+
+.hue-blue {
+  --hue-1: 59 130 246;
+  --hue-2: 29 78 216;
+}
+
+.hue-violet {
+  --hue-1: 155 107 255;
+  --hue-2: 109 40 217;
+}
+
+.hue-pink {
+  --hue-1: 236 72 153;
+  --hue-2: 157 23 77;
+}
+
+.hue-amber {
+  --hue-1: 245 158 11;
+  --hue-2: 180 83 9;
+}
+
+.hue-teal {
+  --hue-1: 20 184 166;
+  --hue-2: 4 120 87;
+}
+
+.hue-green {
+  --hue-1: 34 197 94;
+  --hue-2: 21 128 61;
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes ctaDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip,
+  .funnelBars span,
+  .ctaStageDot {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 68rem) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .heroCopy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .heroText {
+    margin-inline: auto;
+  }
+
+  .heroActions,
+  .heroTrust {
+    justify-content: center;
+  }
+
+  .kanbanVisual {
+    max-width: 520px;
+  }
+
+  .funnelGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pipeline::before {
+    display: none;
+  }
+
+  .ctaGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .ctaCopy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .ctaActions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 34rem) {
+  .funnelGrid,
+  .pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .ledgerRow {
+    flex-wrap: wrap;
+  }
+
+  .ledgerArrow {
+    display: none;
+  }
+}

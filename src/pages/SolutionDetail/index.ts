@@ -1,0 +1,1 @@
+export { SolutionDetailPage } from './SolutionDetail';

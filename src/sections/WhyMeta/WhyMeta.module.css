@@ -1,0 +1,597 @@
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: -220px;
+  left: 62%;
+  transform: translateX(-50%);
+  width: 780px;
+  height: 480px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--navbar-accent-start) 0%, var(--accent-violet) 100%);
+  opacity: 0.1;
+  filter: blur(40px);
+}
+
+:global([data-theme='light']) .glow {
+  opacity: 0.08;
+}
+
+/* Orbit graphic + heading sit side by side, cards always flow in normal
+   document order directly beneath this row — see .grid below. */
+.headerGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  align-items: center;
+  gap: var(--space-10);
+  margin-bottom: var(--space-12);
+}
+
+.title {
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+}
+
+.subtitle {
+  max-width: 34rem;
+  font-size: var(--font-size-sm);
+}
+
+/* ---------- Orbit graphic ---------- */
+/* Every child is centered with left/top + translate(-50%, -50%) so nothing
+   can bleed outside the .orbit box and overlap content below it. */
+
+.orbit {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.pedestalGlow {
+  position: absolute;
+  top: 91%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68%;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(94, 184, 255, 0.5) 0%, transparent 72%);
+  filter: blur(3px);
+}
+
+.pedestalRingOuter,
+.pedestalRingInner {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid var(--navbar-accent-muted);
+  transform: translate(-50%, -50%);
+}
+
+.pedestalRingOuter {
+  top: 88%;
+  width: 58%;
+  height: 12px;
+}
+
+.pedestalRingInner {
+  top: 84%;
+  width: 42%;
+  height: 9px;
+}
+
+.cube {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  aspect-ratio: 571 / 437;
+}
+
+.cubeLogo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter:
+    drop-shadow(0 8px 24px rgba(2, 8, 23, 0.45))
+    drop-shadow(0 0 22px rgba(56, 189, 248, 0.3));
+}
+
+:global([data-theme='light']) .cubeLogo {
+  filter: brightness(0) drop-shadow(0 6px 18px rgba(30, 64, 175, 0.18));
+}
+
+.orbitRing {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  width: 92%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 1px dashed var(--color-border);
+  border-radius: 50%;
+  animation: spin 30s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Position wrapper — only handles placement. The motion spans inside
+   animate y/opacity/scale, so the centering translate here is never
+   overwritten by framer's inline transform. */
+
+.node {
+  position: absolute;
+  z-index: 2;
+  width: 15%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* Hexagon node — gradient glass chip with its own accent color and a
+   colored drop-shadow that follows the shape. Motion runs on this element
+   (framer composes the transform), the wrapper owns the centering. */
+
+.nodeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  border: 1px solid rgba(var(--node-rgb), 0.45);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--node-rgb), 0.26) 0%,
+    rgba(9, 20, 40, 0.55) 45%,
+    rgba(var(--node-rgb), 0.2) 100%
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: var(--node-color);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18);
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 10px rgba(var(--node-rgb), 0.35));
+  transition:
+    border-color 0.35s ease,
+    filter 0.35s ease;
+}
+
+.node:hover .nodeIcon {
+  border-color: rgba(var(--node-rgb), 0.9);
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 16px rgba(var(--node-rgb), 0.6));
+}
+
+.node-cyan {
+  --node-rgb: 34 211 238;
+  --node-color: #22d3ee;
+}
+
+.node-green {
+  --node-rgb: 52 211 153;
+  --node-color: #34d399;
+}
+
+.node-violet {
+  --node-rgb: 167 139 250;
+  --node-color: #a78bfa;
+}
+
+.node-amber {
+  --node-rgb: 251 191 36;
+  --node-color: #fbbf24;
+}
+
+.node-blue {
+  --node-rgb: 96 165 250;
+  --node-color: #60a5fa;
+}
+
+.node-rose {
+  --node-rgb: 251 113 133;
+  --node-color: #fb7185;
+}
+
+.node-indigo {
+  --node-rgb: 129 140 248;
+  --node-color: #818cf8;
+}
+
+:global([data-theme='light']) .nodeIcon {
+  border-color: rgba(var(--node-rgb), 0.5);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(var(--node-rgb), 0.14) 100%
+  );
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.12))
+    drop-shadow(0 0 8px rgba(var(--node-rgb), 0.28));
+}
+
+:global([data-theme='light']) .node:hover .nodeIcon {
+  border-color: rgba(var(--node-rgb), 0.9);
+  filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.14))
+    drop-shadow(0 0 12px rgba(var(--node-rgb), 0.5));
+}
+
+/* Positions form a symmetric heptagon around the cube (center: 50%, 52%),
+   all bounded within the 0–100% orbit box — nothing hangs off the edge. */
+
+.nodeTop {
+  top: 6%;
+  left: 50%;
+}
+
+.nodeUpperLeft {
+  top: 24%;
+  left: 16%;
+}
+
+.nodeUpperRight {
+  top: 24%;
+  left: 84%;
+}
+
+.nodeLeft {
+  top: 55%;
+  left: 4%;
+}
+
+.nodeRight {
+  top: 55%;
+  left: 96%;
+}
+
+.nodeLowerLeft {
+  top: 84%;
+  left: 20%;
+}
+
+.nodeLowerRight {
+  top: 84%;
+  left: 80%;
+}
+
+/* ---------- Feature cards ---------- */
+/* Flows directly after .headerGrid in the DOM — always renders beneath the
+   orbit graphic and heading, never beside or overlapping it. All four cards
+   sit in a single row with Apple-style translucent glass backgrounds and a
+   soft glow in each card's accent color. */
+
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  padding-block: var(--space-2);
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding: var(--space-3);
+  text-align: center;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -56px;
+  left: -44px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent), 0.28) 0%, transparent 70%);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -48px;
+  right: -40px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent), 0.14) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.card:hover .icon {
+  transform: scale(1.06);
+}
+
+.accent-blue {
+  --accent: 47 138 255;
+}
+
+.accent-violet {
+  --accent: 155 107 255;
+}
+
+.accent-green {
+  --accent: 31 214 143;
+}
+
+.text-blue {
+  color: var(--accent-blue);
+}
+
+.text-violet {
+  color: #9b6bff;
+}
+
+.text-green {
+  color: #1fd68f;
+}
+
+.cardTitle {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.cardText {
+  font-size: var(--font-size-3xs);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.underline {
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  margin-top: var(--space-1);
+}
+
+.underline-blue {
+  background-color: var(--accent-blue);
+  box-shadow: 0 0 8px rgba(47, 138, 255, 0.6);
+}
+
+.underline-violet {
+  background-color: #9b6bff;
+  box-shadow: 0 0 8px rgba(155, 107, 255, 0.6);
+}
+
+.underline-green {
+  background-color: #1fd68f;
+  box-shadow: 0 0 8px rgba(31, 214, 143, 0.6);
+}
+
+/* ---------- Stats ---------- */
+
+.statsBar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.statItem {
+  --accent: 94 184 255;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1 1 0;
+  min-width: 8rem;
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  overflow: hidden;
+  transition:
+    transform var(--transition-medium),
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium);
+}
+
+.statItem::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  pointer-events: none;
+}
+
+.statItem::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -70%;
+  width: 55%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.16) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0.9s ease;
+}
+
+.statItem:hover::after {
+  left: 130%;
+}
+
+.statItem:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--accent), 0.4);
+  box-shadow:
+    0 14px 34px rgba(var(--accent), 0.18),
+    0 0 40px rgba(var(--accent), 0.08);
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+}
+
+.statLabel {
+  font-size: var(--font-size-2xs);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Differentiator strip ---------- */
+
+.differentiators {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  padding: var(--space-6);
+}
+
+.diffItem {
+  --accent: 94 184 255;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-inline: var(--space-6);
+}
+
+/* Vertical hairline between columns — spacing is carried by the items'
+   padding (gap is 0) so every divider sits perfectly centered. */
+
+.diffItem + .diffItem {
+  border-left: 1px solid var(--glass-border);
+}
+
+.diffItem:first-child {
+  padding-left: 0;
+}
+
+.diffItem:last-child {
+  padding-right: 0;
+}
+
+.diffIcon {
+  margin-bottom: var(--space-1);
+  transition: filter var(--transition-medium);
+}
+
+.diffItem:hover .diffIcon {
+  filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
+}
+
+.diffTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.diffText {
+  font-size: var(--font-size-3xs);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Responsive ---------- */
+
+/* All four feature cards stay in a single row down to 56rem, then flow
+   into 2 columns and finally 1 column on phones. */
+
+@media (max-width: 72rem) {
+  .differentiators {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: var(--space-5);
+  }
+
+  /* First column of each row has no left divider. */
+  .diffItem:nth-child(3n + 1) {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .diffItem:last-child {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 56rem) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 64rem) {
+  .headerGrid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .orbit {
+    max-width: 280px;
+  }
+
+  .statsBar {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 48rem) {
+  .differentiators {
+    grid-template-columns: 1fr;
+    row-gap: 0;
+  }
+
+  /* Stacked layout: drop vertical dividers, use top hairlines instead. */
+  .diffItem,
+  .diffItem:first-child,
+  .diffItem:last-child {
+    padding: var(--space-4) 0;
+    border-left: none;
+  }
+
+  .diffItem + .diffItem {
+    border-left: none;
+    border-top: 1px solid var(--glass-border);
+  }
+}
+
+@media (max-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

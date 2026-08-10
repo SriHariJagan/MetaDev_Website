@@ -1,0 +1,1 @@
+export { MetaEduPage } from './MetaEdu';

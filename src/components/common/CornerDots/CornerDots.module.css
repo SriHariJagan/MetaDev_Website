@@ -1,0 +1,22 @@
+.dots {
+  position: absolute;
+  bottom: -20px;
+  width: 220px;
+  height: 220px;
+  background-image: radial-gradient(
+    var(--color-border) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 20px 20px;
+  opacity: 0.6;
+}
+
+.cornerLeft {
+  left: -20px;
+  mask-image: radial-gradient(circle at 0% 100%, black 0%, transparent 70%);
+}
+
+.cornerRight {
+  right: -20px;
+  mask-image: radial-gradient(circle at 100% 100%, black 0%, transparent 70%);
+}

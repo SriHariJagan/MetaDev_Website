@@ -1,0 +1,435 @@
+/* OurProducts.module.css */
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: -220px;
+  right: 6%;
+  width: 720px;
+  height: 460px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--accent-violet) 0%, var(--navbar-accent-end) 100%);
+  opacity: 0.09;
+  filter: blur(40px);
+}
+
+:global([data-theme="light"]) .glow {
+  opacity: 0.06;
+}
+
+/* ---------- Layout ---------- */
+
+.container {
+  display: grid;
+  grid-template-columns: 21rem 1fr;
+  align-items: stretch;
+  gap: var(--space-10);
+}
+
+/* ---------- Left intro column ---------- */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.eyebrowBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    135deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+}
+
+.eyebrowLabel {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.title {
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.subtitle {
+  max-width: 20rem;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+/* Hero stat row */
+
+.heroStats {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.heroStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.heroStatIcon {
+  color: var(--navbar-accent);
+  margin-bottom: 0.125rem;
+}
+
+.heroStatValue {
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.heroStatLabel {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  line-height: 1.2;
+  max-width: 4.5rem;
+}
+
+/* Gradient-border CTA — transparent fill with a blue gradient ring */
+
+.btnWrap .exploreAllBtn {
+  margin-top: var(--space-2);
+  border: 1.5px solid transparent;
+  background:
+    linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+    linear-gradient(90deg, var(--navbar-accent-start), var(--navbar-accent-end))
+      border-box;
+  color: var(--navbar-accent);
+}
+
+.btnWrap .exploreAllBtn:hover {
+  border-color: transparent;
+  color: var(--navbar-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(94, 184, 255, 0.3);
+}
+
+/* ---------- Right: showcase ---------- */
+
+.showcase {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-1) 0 var(--space-2);
+  list-style: none;
+  width: max-content;
+}
+
+.navButton {
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/* ---------- Product card ---------- */
+
+.card {
+  flex: 0 0 330px;
+  scroll-snap-align: start;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+/* Accent palette — resolves per theme (deep shades on light, bright on dark) */
+
+.accent-teal {
+  --accent: var(--product-accent-teal, 20 184 166);
+  --grad-1: var(--product-grad-teal-1, 20 184 166);
+  --grad-2: var(--product-grad-teal-2, 4 120 87);
+}
+.accent-blue {
+  --accent: var(--product-accent-blue, 59 130 246);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
+}
+.accent-violet {
+  --accent: var(--product-accent-violet, 155 107 255);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
+}
+.accent-amber {
+  --accent: var(--product-accent-amber, 234 158 46);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
+}
+
+/* Card header */
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.cardHeading {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.cardName {
+  font-size: 1.05rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
+  color: rgb(var(--accent));
+}
+
+.cardSubtitle {
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+}
+
+.cardBadge {
+  flex-shrink: 0;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-semibold);
+  color: rgb(var(--accent));
+  background: rgba(var(--accent), 0.12);
+  border: 1px solid rgba(var(--accent), 0.3);
+  white-space: nowrap;
+}
+
+/* Device mockup — product dashboard preview */
+
+.mockupWrap {
+  position: relative;
+  height: 190px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(var(--grad-1, 94 184 255), 0.07);
+}
+
+.mockupImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Soft shine sweep on hover */
+.mockupWrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(var(--accent), 0.09) 46%,
+    rgba(var(--accent), 0.16) 50%,
+    rgba(var(--accent), 0.09) 54%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+
+.card:hover .mockupWrap::after {
+  transform: translateX(130%);
+}
+
+/* Feature checklist — compact */
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text);
+}
+
+.featureCheck {
+  flex-shrink: 0;
+  color: rgb(var(--accent));
+}
+
+/* Mini stat strip — each stat gets its own gradient tint */
+
+.miniStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+.miniStat {
+  --stat-1: 56 189 248;
+  --stat-2: 37 99 235;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.5rem 0.25rem;
+  text-align: center;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(var(--stat-1), 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--stat-1), 0.12) 0%,
+    rgba(var(--stat-2), 0.05) 100%
+  );
+}
+
+.miniStat:nth-child(1) {
+  --stat-1: 56 189 248;
+  --stat-2: 37 99 235;
+}
+
+.miniStat:nth-child(2) {
+  --stat-1: 167 139 250;
+  --stat-2: 232 121 249;
+}
+
+.miniStat:nth-child(3) {
+  --stat-1: 251 191 36;
+  --stat-2: 244 63 94;
+}
+
+.miniStatIcon {
+  color: rgb(var(--stat-1));
+}
+
+.miniStatValue {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  background: linear-gradient(135deg, rgb(var(--stat-1)), rgb(var(--stat-2)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.miniStatLabel {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+  line-height: 1.2;
+}
+
+/* Card CTA link */
+
+.cardLinkWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardLinkWrap:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-semibold);
+  color: rgb(var(--accent));
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.cardLinkArrow {
+  transition: transform var(--transition-fast);
+}
+
+.cardLinkWrap:hover .cardLinkArrow,
+.cardLink:hover .cardLinkArrow {
+  transform: translateX(3px);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 68rem) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .intro {
+    align-items: center;
+    text-align: center;
+  }
+
+  .heroStats {
+    justify-content: center;
+  }
+
+  .heroStat {
+    align-items: center;
+  }
+}
+
+@media (max-width: 26rem) {
+  .card {
+    flex-basis: 88vw;
+  }
+}

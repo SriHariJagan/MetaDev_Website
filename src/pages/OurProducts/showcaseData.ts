@@ -1,0 +1,164 @@
+import {
+  BadgeCheck,
+  GraduationCap,
+  HeartPulse,
+  Leaf,
+  Megaphone,
+  UserPlus,
+  Workflow,
+  Users,
+  Layers,
+  Share2,
+  Building2,
+} from 'lucide-react';
+import type { ShowcaseProduct } from '@/components/common/ProductShowcase';
+
+export const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
+  {
+    id: 'metahire',
+    name: 'MetaHire',
+    icon: UserPlus,
+    accent: 'blue',
+    tagline: 'Hiring & Talent Platform',
+    description:
+      'An end-to-end hiring platform that helps recruiters source, screen, and hire top talent with AI-powered precision — from job posting to seamless onboarding.',
+    features: [
+      'AI Resume Screening & Matching',
+      'Job Posting & Distribution',
+      'Interview Scheduling & Video Interviews',
+      'Candidate Tracking System',
+    ],
+    stats: [
+      { icon: Layers, value: '18+', label: 'Modules' },
+      { icon: Share2, value: '45+', label: 'Integrations' },
+      { icon: Users, value: '500K+', label: 'Candidates Hired' },
+    ],
+    href: '/products/metahire',
+  },
+  {
+    id: 'metacheck',
+    name: 'MetaCheck',
+    icon: BadgeCheck,
+    accent: 'amber',
+    tagline: 'Verification & Compliance',
+    description:
+      'A verification and compliance platform that automates identity checks, background screening, and KYC workflows with enterprise-grade accuracy.',
+    features: [
+      'Identity & Document Verification',
+      'Background Screening',
+      'AI Fraud Detection',
+      'KYC / KYB Compliance',
+    ],
+    stats: [
+      { icon: Layers, value: '12+', label: 'Modules' },
+      { icon: Share2, value: '35+', label: 'Integrations' },
+      { icon: Building2, value: '10K+', label: 'Enterprises' },
+    ],
+    href: '/products/metacheck',
+  },
+  {
+    id: 'metaadds',
+    name: 'MetaAdds',
+    icon: Megaphone,
+    accent: 'violet',
+    tagline: 'AdTech & Marketing Platform',
+    description:
+      'An AdTech and marketing platform that unifies campaign creation, targeting, and optimization — turning every rupee of spend into measurable impact.',
+    features: [
+      'Multi-Channel Ad Campaigns',
+      'AI Audience Targeting',
+      'Creative Studio & Ad Builder',
+      'Real-Time Bidding & Optimization',
+    ],
+    stats: [
+      { icon: Layers, value: '15+', label: 'Modules' },
+      { icon: Share2, value: '40+', label: 'Integrations' },
+      { icon: Users, value: '2M+', label: 'Audiences Reached' },
+    ],
+    href: '/products/metaadds',
+  },
+  {
+    id: 'metagreen',
+    name: 'MetaGreen',
+    icon: Leaf,
+    accent: 'teal',
+    tagline: 'Sustainability Platform',
+    description:
+      'A sustainability platform that helps organizations track emissions, manage ESG compliance, and drive measurable green impact across operations.',
+    features: [
+      'Carbon Footprint Tracking',
+      'ESG Reporting & Compliance',
+      'Renewable Energy Management',
+      'Waste & Resource Optimization',
+    ],
+    stats: [
+      { icon: Layers, value: '10+', label: 'Modules' },
+      { icon: Share2, value: '28+', label: 'Integrations' },
+      { icon: Building2, value: '5K+', label: 'Organizations' },
+    ],
+    href: '/products/metagreen',
+  },
+  {
+    id: 'metaflow',
+    name: 'MetaFlow',
+    icon: Workflow,
+    accent: 'violet',
+    tagline: 'Enterprise Platform',
+    description:
+      'An enterprise platform that unifies workflows, people, finance, and projects into a single intelligent operating system for modern organizations.',
+    features: [
+      'Workflow Automation',
+      'CRM & HRMS',
+      'Finance & Accounting',
+      'Project Management',
+    ],
+    stats: [
+      { icon: Layers, value: '20+', label: 'Modules' },
+      { icon: Share2, value: '60+', label: 'Integrations' },
+      { icon: Building2, value: '100K+', label: 'Businesses' },
+    ],
+    href: '/products/metaflow',
+  },
+  {
+    id: 'metahealth',
+    name: 'MetaHealth',
+    icon: HeartPulse,
+    accent: 'teal',
+    tagline: 'Healthcare Platform',
+    description:
+      'A healthcare platform that connects hospitals, clinics, and patients — from electronic records and telemedicine to AI-powered diagnostics.',
+    features: [
+      'Hospital Management System',
+      'Electronic Health Records',
+      'Telemedicine & ePharmacy',
+      'AI Diagnostics & Insights',
+    ],
+    stats: [
+      { icon: Layers, value: '15+', label: 'Modules' },
+      { icon: Share2, value: '50+', label: 'Integrations' },
+      { icon: Users, value: '1M+', label: 'Patients Served' },
+    ],
+    href: '/products/metahealth',
+  },
+  {
+    id: 'metaedu',
+    name: 'MetaEdu',
+    icon: GraduationCap,
+    accent: 'blue',
+    tagline: 'EdTech Platform',
+    description:
+      'An EdTech platform that makes modern classrooms effortless — with live learning, assessments, and AI-powered adaptive learning for every student.',
+    features: [
+      'Learning Management System',
+      'Virtual Classrooms & Live Sessions',
+      'Student & Parent Portals',
+      'AI-Powered Adaptive Learning',
+    ],
+    stats: [
+      { icon: Layers, value: '14+', label: 'Modules' },
+      { icon: Share2, value: '32+', label: 'Integrations' },
+      { icon: Users, value: '1M+', label: 'Students Impacted' },
+    ],
+    href: '/products/metaedu',
+  },
+];

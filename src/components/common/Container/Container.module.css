@@ -1,0 +1,18 @@
+.container {
+  position: relative;
+  z-index: 1;
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.widthDefault {
+  max-width: var(--container-max-width);
+}
+
+.widthWide {
+  max-width: 84rem;
+}
+
+.widthXwide {
+  max-width: 90rem;
+}

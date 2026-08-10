@@ -1,0 +1,167 @@
+/* IndustriesMarquee.module.css */
+
+.root {
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.title {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-wrap: balance;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.subtitle {
+  max-width: 36rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+}
+
+/* Full-width premium band — hairline dividers, soft center glow */
+
+.banner {
+  position: relative;
+  width: 100%;
+  margin-top: var(--space-6);
+  padding: var(--space-7) var(--space-4);
+  border-top: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* Soft center glow */
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 130% at 50% 0%,
+    rgba(var(--accent-blue-rgb), 0.1),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Bottom accent line */
+.banner::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-blue),
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* ---------- Banner header pill ---------- */
+
+.bannerHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.bannerLine {
+  flex: 1;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--navbar-accent) 0,
+    var(--navbar-accent) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  opacity: 0.45;
+}
+
+.bannerPill {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.45rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  color: var(--navbar-accent);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bannerPillDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  box-shadow: 0 0 10px var(--navbar-accent);
+}
+
+:global([data-theme='light']) .banner {
+  border-color: rgba(47, 138, 255, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:global([data-theme='light']) .banner::before {
+  background: radial-gradient(
+    ellipse 55% 130% at 50% 0%,
+    rgba(47, 138, 255, 0.08),
+    transparent 70%
+  );
+}
+
+:global([data-theme='light']) .banner::after {
+  opacity: 0.4;
+}
+
+:global([data-theme='light']) .bannerPill {
+  background: var(--glass-navy-light-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}

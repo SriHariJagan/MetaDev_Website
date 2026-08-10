@@ -1,0 +1,1 @@
+export { MetaHirePage } from './MetaHire';
