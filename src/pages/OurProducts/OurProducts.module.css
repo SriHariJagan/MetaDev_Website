@@ -22,7 +22,7 @@
   filter: blur(40px);
 }
 
-:global([data-theme='light']) .glow {
+:global([data-theme="light"]) .glow {
   opacity: 0.05;
 }
 
@@ -475,28 +475,28 @@
 }
 
 /* Light theme mirror — light navy glass */
-:global([data-theme='light']) .capabilityStrip {
+:global([data-theme="light"]) .capabilityStrip {
   border-color: rgba(47, 138, 255, 0.3);
   background: rgba(47, 138, 255, 0.22);
 }
 
-:global([data-theme='light']) .capabilityStrip::after {
+:global([data-theme="light"]) .capabilityStrip::after {
   opacity: 0.4;
 }
 
-:global([data-theme='light']) .capabilityStrip:hover {
+:global([data-theme="light"]) .capabilityStrip:hover {
   border-color: rgba(59, 130, 246, 0.75);
   box-shadow:
     0 0 0 1px rgba(59, 130, 246, 0.06),
     0 18px 40px rgba(37, 99, 235, 0.12);
 }
 
-:global([data-theme='light']) .capabilityItem {
+:global([data-theme="light"]) .capabilityItem {
   background: var(--glass-navy-light-soft);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-:global([data-theme='light']) .capabilityItem::before {
+:global([data-theme="light"]) .capabilityItem::before {
   background: radial-gradient(
     circle at top,
     rgba(56, 132, 255, 0.09),
@@ -504,7 +504,7 @@
   );
 }
 
-:global([data-theme='light']) .capabilityIcon {
+:global([data-theme="light"]) .capabilityIcon {
   border-color: rgba(47, 138, 255, 0.4);
 }
 

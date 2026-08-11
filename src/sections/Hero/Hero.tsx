@@ -3,20 +3,21 @@ import {
   ArrowRight,
   BrainCircuit,
   Briefcase,
+  Building2,
   CalendarDays,
   Cloud,
+  Globe,
+  Headset,
   LayoutGrid,
   Monitor,
   Rocket,
   ShieldCheck,
-  TrendingUp,
   Users,
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
 import { GradientText } from '@/components/common/GradientText';
-import { IconCircle } from '@/components/common/IconCircle';
 import { Badge } from '@/components/common/Badge';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
 import { fadeUp, staggerContainer } from '@/constants/motion';
@@ -40,13 +41,16 @@ interface Stat {
   icon: typeof Briefcase;
   value: string;
   label: string;
+  color: 'cyan' | 'sky' | 'violet' | 'indigo' | 'blue' | 'emerald';
 }
 
 const STATS: Stat[] = [
-  { icon: Briefcase, value: '50+', label: 'Projects Delivered' },
-  { icon: Users, value: '100+', label: 'Happy Clients' },
-  { icon: TrendingUp, value: '500K+', label: 'Users Impacted' },
-  { icon: ShieldCheck, value: '99%', label: 'Client Satisfaction' },
+  { icon: Briefcase, value: '250+', label: 'Projects Delivered', color: 'sky' },
+  { icon: Building2, value: '100+', label: 'Enterprise Clients', color: 'violet' },
+  { icon: Users, value: '5M+', label: 'Users Impacted', color: 'cyan' },
+  { icon: ShieldCheck, value: '99.9%', label: 'System Uptime', color: 'emerald' },
+  { icon: Headset, value: '24/7', label: 'Expert Support', color: 'indigo' },
+  { icon: Globe, value: '20+', label: 'Countries Served', color: 'blue' },
 ];
 
 interface FloatingCard {
@@ -69,8 +73,11 @@ function HeroBackground() {
   return (
     <BackgroundDecor>
       <div className={styles.grid} />
+      <div className={styles.glowLinear} />
+      <div className={styles.sectionGradient} />
       <div className={styles.glowTop} />
       <div className={styles.glowBottom} />
+      <div className={styles.sectionFade} />
     </BackgroundDecor>
   );
 }
@@ -178,14 +185,7 @@ function HeroVisual() {
       <img
         src="/logo-noBg.png"
         alt="metadev logo"
-        className={`${styles.heroLogo} ${styles.heroLogoDark}`}
-        draggable={false}
-      />
-
-      <img
-        src="/logo-lightmode.png"
-        alt="metadev logo"
-        className={`${styles.heroLogo} ${styles.heroLogoLight}`}
+        className={styles.heroLogo}
         draggable={false}
       />
 
@@ -251,10 +251,13 @@ export function Hero() {
 
           <motion.dl className={styles.stats} variants={itemVariants}>
             {STATS.map((stat) => (
-              <div key={stat.label} className={styles.stat}>
-                <IconCircle size="sm" variant="accent">
-                  <stat.icon size={15} aria-hidden="true" />
-                </IconCircle>
+              <div
+                key={stat.label}
+                className={`${styles.stat} ${styles[`stat-${stat.color}`]}`}
+              >
+                <span className={styles.statIcon} aria-hidden="true">
+                  <stat.icon size={17} />
+                </span>
                 <div className={styles.statText}>
                   <dt className={styles.statValue}>{stat.value}</dt>
                   <dd className={styles.statLabel}>{stat.label}</dd>

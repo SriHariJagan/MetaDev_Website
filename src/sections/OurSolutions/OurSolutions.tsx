@@ -1,5 +1,6 @@
 // OurSolutions.tsx
 import { memo, useCallback, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, LayoutGroup, useReducedMotion, type Variants } from "framer-motion";
 import {
@@ -42,21 +43,21 @@ import { fadeUp, staggerContainer } from "@/constants/motion";
 import { cn } from "@/utils/cn";
 import styles from "./OurSolutions.module.css";
 
-type Accent = "orange" | "violet" | "blue" | "pink" | "teal" | "green" | "cyan" | "indigo" | "red" | "amber";
+export type Accent = "orange" | "violet" | "blue" | "pink" | "teal" | "green" | "cyan" | "indigo" | "red" | "amber";
 
 /* ------------------------------------------------------------------ */
 /* Data (dummy — matches structure/colors of the reference screenshot) */
 /* ------------------------------------------------------------------ */
 
-interface Solution {
+export interface Solution {
   id: string;
   number: string;
   icon: LucideIcon;
   accent: Accent;
   name: string;
   description: string;
-  features: string[];
-  href: string;
+  features?: string[];
+  href?: string;
 }
 
 const SOLUTIONS: Solution[] = [
@@ -222,10 +223,11 @@ const SOLUTIONS: Solution[] = [
   },
 ];
 
-interface HeroStat {
+export interface HeroStat {
   icon: LucideIcon;
   value: string;
   label: string;
+  accent?: Accent;
 }
 
 const HERO_STATS: HeroStat[] = [
@@ -239,10 +241,11 @@ const HERO_STATS: HeroStat[] = [
   { icon: Award, value: "ISO 27001", label: "Certified Security" },
 ];
 
-interface Capability {
+export interface Capability {
   icon: LucideIcon;
   title: string;
   description: string;
+  accent?: Accent;
 }
 
 const CAPABILITIES: Capability[] = [
@@ -386,17 +389,29 @@ const SolutionCard = memo(function SolutionCard({
             </motion.h3>
             <p className={styles.cardDesc}>{solution.description}</p>
 
-            <Link
-              to={solution.href}
-              className={cn(styles.cardLink, active && styles.cardLinkActive)}
-            >
-              Learn More
-              <ArrowRight
-                size={11}
-                className={styles.cardLinkArrow}
-                aria-hidden="true"
-              />
-            </Link>
+            {solution.features && solution.features.length > 0 && (
+              <ul className={styles.featureList}>
+                {solution.features.map((feature) => (
+                  <li key={feature} className={styles.featureItem}>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {solution.href && (
+              <Link
+                to={solution.href}
+                className={cn(styles.cardLink, active && styles.cardLinkActive)}
+              >
+                Learn More
+                <ArrowRight
+                  size={11}
+                  className={styles.cardLinkArrow}
+                  aria-hidden="true"
+                />
+              </Link>
+            )}
           </div>
         </GlassCard>
       </motion.div>
@@ -408,7 +423,39 @@ const SolutionCard = memo(function SolutionCard({
 /* Main section                                                        */
 /* ------------------------------------------------------------------ */
 
-export function OurSolutions() {
+interface OurSolutionsProps {
+  eyebrow?: string;
+  title?: ReactNode;
+  subtitle?: string;
+  pillLabel?: string;
+  columns?: 5 | 6;
+  solutions?: Solution[];
+  stats?: HeroStat[];
+  capabilities?: Capability[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const DEFAULT_TITLE: ReactNode = (
+  <>
+    Complete Digital Solutions
+    <br />
+    <GradientText>Built for Impact.</GradientText>
+  </>
+);
+
+export function OurSolutions({
+  eyebrow = "Our Solutions",
+  title = DEFAULT_TITLE,
+  subtitle = "MetaDev offers a comprehensive suite of enterprise-grade solutions that empower organizations to streamline operations, enhance productivity, and deliver exceptional experiences.",
+  pillLabel = "Our Solutions (05 – 10)",
+  columns = 5,
+  solutions = SOLUTIONS,
+  stats = HERO_STATS,
+  capabilities = CAPABILITIES,
+  ctaLabel = "View All Solutions",
+  ctaHref = "/solutions",
+}: OurSolutionsProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
@@ -457,19 +504,15 @@ export function OurSolutions() {
               className={styles.eyebrowLabel}
               variants={itemVariants}
             >
-              Our Solutions
+              {eyebrow}
             </motion.span>
 
             <motion.h2 className={styles.title} variants={itemVariants}>
-              Complete Digital Solutions
-              <br />
-              <GradientText>Built for Impact.</GradientText>
+              {title}
             </motion.h2>
 
             <motion.p className={styles.subtitle} variants={itemVariants}>
-              MetaDev offers a comprehensive suite of enterprise-grade solutions
-              that empower organizations to streamline operations, enhance
-              productivity, and deliver exceptional experiences.
+              {subtitle}
             </motion.p>
           </motion.div>
 
@@ -481,13 +524,16 @@ export function OurSolutions() {
             animate={isInView ? "visible" : "hidden"}
           >
             <div className={styles.statsGrid}>
-              {HERO_STATS.map((stat) => (
+              {stats.map((stat) => (
                 <motion.div
                   key={stat.label}
-                  className={styles.statItem}
+                  className={cn(
+                    styles.statItem,
+                    stat.accent && styles[`accent-${stat.accent}`]
+                  )}
                   variants={itemVariants}
                 >
-                  <IconCircle size="lg" variant="accent">
+                  <IconCircle size="lg" variant="gradient">
                     <stat.icon size={16} aria-hidden="true" />
                   </IconCircle>
                   <div className={styles.statText}>
@@ -511,13 +557,13 @@ export function OurSolutions() {
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <span className={styles.headerLine} />
-            <span className={styles.headerPill}>Our Solutions (05 – 10)</span>
+            <span className={styles.headerPill}>{pillLabel}</span>
             <span className={styles.headerLine} />
           </motion.div>
 
           <LayoutGroup>
             <motion.ul
-              className={styles.grid}
+              className={`${styles.grid} ${columns === 6 ? styles.gridSix : ""}`}
               variants={containerVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -526,7 +572,7 @@ export function OurSolutions() {
               onMouseLeave={handleHoverEnd}
               onBlur={handleFocusEnd}
             >
-              {SOLUTIONS.map((solution) => (
+              {solutions.map((solution) => (
                 <SolutionCard
                   key={solution.id}
                   solution={solution}
@@ -564,27 +610,40 @@ export function OurSolutions() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {CAPABILITIES.map((cap) => (
+          {capabilities.map((cap, index) => (
             <motion.li
               key={cap.title}
-              className={styles.capabilityItem}
+              className={cn(
+                styles.capabilityItem,
+                cap.accent && styles[`accent-${cap.accent}`]
+              )}
               variants={itemVariants}
             >
+              <span className={styles.capabilityNum}>
+                {String(index + 1).padStart(2, "0")}
+              </span>
               <span className={styles.capabilityIcon}>
-                <cap.icon size={16} aria-hidden="true" />
+                <cap.icon size={18} aria-hidden="true" />
               </span>
               <div className={styles.capabilityText}>
                 <span className={styles.capabilityTitle}>{cap.title}</span>
-                <span className={styles.capabilityDesc}>{cap.description}</span>
+                <span className={styles.capabilityDesc}>
+                  {cap.description}
+                </span>
               </div>
+              <cap.icon
+                className={styles.capabilityWatermark}
+                size={60}
+                aria-hidden="true"
+              />
             </motion.li>
           ))}
         </motion.ul>
       </Container>
 
       <div className={styles.ctaRow}>
-        <Button to="/solutions" variant="gradient" size="md">
-          View All Solutions
+        <Button to={ctaHref} variant="gradient" size="md">
+          {ctaLabel}
         </Button>
       </div>
     </Section>

@@ -18,6 +18,67 @@
   );
 }
 
+/* Brand linear gradient band — left to right, shown in light mode */
+.glowLinear {
+  position: absolute;
+  top: -160px;
+  left: -10%;
+  width: 95%;
+  height: 520px;
+  background: linear-gradient(
+    90deg,
+    rgba(53, 201, 255, 0.22) 0%,
+    rgba(47, 91, 255, 0.16) 45%,
+    rgba(167, 139, 250, 0.1) 75%,
+    transparent 100%
+  );
+  filter: blur(48px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-medium);
+}
+
+:global([data-theme='light']) .glowLinear {
+  opacity: 1;
+}
+
+/* Split-theme band — light left, dark right (light mode only) */
+.sectionGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(10, 14, 34, 0.45) 52%,
+    rgba(7, 10, 26, 0.85) 76%,
+    #050816 96%,
+    #050816 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+
+/* Soften the dark zone into the white section below */
+.sectionFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 64%,
+    rgba(255, 255, 255, 0.55) 84%,
+    rgba(255, 255, 255, 0.95) 96%,
+    #ffffff 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-slow);
+}
+
+:global([data-theme='light']) .sectionGradient,
+:global([data-theme='light']) .sectionFade {
+  opacity: 1;
+}
+
 .glowTop {
   position: absolute;
   top: -220px;
@@ -98,41 +159,144 @@
   flex-wrap: wrap;
 }
 
-/* ---------- Stats row ---------- */
+/* ---------- Stats grid (2 rows x 3 cols, per-stat colour) ---------- */
 
 .stats {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  width: 100%;
   margin: var(--space-2) 0 0;
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-border);
-  width: 120%;
 }
 
 .stat {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.stat::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgb(var(--stat-rgb)), transparent 85%);
+}
+
+.statIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  color: rgb(var(--stat-rgb));
+  background-color: rgba(var(--stat-rgb), 0.14);
+  border: 1px solid rgba(var(--stat-rgb), 0.32);
+  box-shadow: 0 0 16px rgba(var(--stat-rgb), 0.18);
 }
 
 .statText {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .statValue {
   margin: 0;
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: var(--color-text);
+  line-height: 1.2;
+  background: linear-gradient(135deg, rgb(var(--stat-rgb)) 0%, var(--stat-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:global([data-theme='dark']) .statValue {
+  background: linear-gradient(135deg, rgb(var(--stat-rgb)) 0%, rgb(226 232 240) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .statLabel {
   margin: 0;
   font-size: var(--font-size-2xs);
   color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--stat-rgb), 0.55);
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.1),
+    0 0 18px rgba(var(--stat-rgb), 0.22);
+}
+
+/* Glass shade in dark mode (matching OurSolutions / GlassCard) */
+:global([data-theme='dark']) .stat {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+}
+
+:global([data-theme='dark']) .stat:hover {
+  border-color: rgba(var(--stat-rgb), 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 24px rgba(2, 8, 23, 0.35),
+    0 0 18px rgba(var(--stat-rgb), 0.28);
+}
+
+/* Per-stat accent colours */
+.stat-sky {
+  --stat-rgb: 56 189 248;
+  --stat-deep: #0284c7;
+}
+
+.stat-violet {
+  --stat-rgb: 167 139 250;
+  --stat-deep: #7c3aed;
+}
+
+.stat-cyan {
+  --stat-rgb: 34 211 238;
+  --stat-deep: #0e7490;
+}
+
+.stat-emerald {
+  --stat-rgb: 52 211 153;
+  --stat-deep: #047857;
+}
+
+.stat-indigo {
+  --stat-rgb: 129 140 248;
+  --stat-deep: #4f46e5;
+}
+
+.stat-blue {
+  --stat-rgb: 96 165 250;
+  --stat-deep: #2563eb;
 }
 
 /* ---------- Visual stage ---------- */
@@ -191,16 +355,6 @@
   --globe-arc-a: #38bdf8;
   --globe-arc-b: #a78bfa;
   --globe-dot: #7dd3fc;
-}
-
-:global([data-theme='light']) .globeWrap {
-  --globe-lit: rgba(147, 197, 253, 0.42);
-  --globe-mid: rgba(219, 234, 254, 0.82);
-  --globe-deep: rgba(228, 237, 251, 0.96);
-  --globe-line: rgba(59, 130, 246, 0.24);
-  --globe-arc-a: #0284c7;
-  --globe-arc-b: #7c3aed;
-  --globe-dot: #0ea5e9;
 }
 
 .digitalGlobe {
@@ -333,27 +487,10 @@
     drop-shadow(0 0 22px rgba(56, 189, 248, 0.3));
 }
 
-.heroLogoDark {
-  display: block;
-}
-
-.heroLogoLight {
-  display: none;
-}
-
-:global([data-theme='light']) .heroLogoDark {
-  display: none;
-}
-
-:global([data-theme='light']) .heroLogoLight {
-  display: block;
-}
-
 :global([data-theme='light']) .heroLogo {
   filter:
-    drop-shadow(0 10px 26px rgba(37, 99, 235, 0.35))
-    drop-shadow(0 0 26px rgba(56, 189, 248, 0.45))
-    drop-shadow(0 0 64px rgba(129, 140, 248, 0.3));
+    drop-shadow(0 8px 24px rgba(2, 8, 23, 0.5))
+    drop-shadow(0 0 22px rgba(56, 189, 248, 0.35));
 }
 
 @keyframes heroLogoFloat {
@@ -395,7 +532,7 @@
   box-shadow: 0 6px 20px rgba(2, 8, 23, 0.35);
   font-size: 0.72rem;
   font-weight: var(--font-weight-medium);
-  color: var(--color-text);
+  color: #eaf2ff;
   white-space: nowrap;
   transition:
     border-color 0.25s ease,
@@ -403,32 +540,11 @@
     background-color 0.25s ease;
 }
 
-:global([data-theme='light']) .floatingCard {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(235, 243, 255, 0.9) 100%
-  );
-  border-color: rgba(59, 130, 246, 0.28);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 10px 26px rgba(37, 99, 235, 0.2),
-    0 0 20px rgba(56, 189, 248, 0.14);
-}
-
 .floatingCard:hover {
   border-color: rgba(148, 197, 255, 0.55);
   box-shadow:
     0 10px 28px rgba(59, 130, 246, 0.3),
     0 0 18px rgba(56, 189, 248, 0.18);
-}
-
-:global([data-theme='light']) .floatingCard:hover {
-  border-color: rgba(37, 99, 235, 0.5);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 1),
-    0 14px 32px rgba(37, 99, 235, 0.28),
-    0 0 26px rgba(56, 189, 248, 0.22);
 }
 
 .floatingIcon {
@@ -469,32 +585,6 @@
 .accent-blue {
   color: #60a5fa;
   background-color: rgba(96, 165, 250, 0.14);
-}
-
-/* Deeper, more saturated chips in light mode so they pop like dark mode */
-:global([data-theme='light']) .accent-cyan {
-  color: #0891b2;
-  background-color: rgba(8, 145, 178, 0.15);
-}
-
-:global([data-theme='light']) .accent-sky {
-  color: #0284c7;
-  background-color: rgba(2, 132, 199, 0.15);
-}
-
-:global([data-theme='light']) .accent-violet {
-  color: #7c3aed;
-  background-color: rgba(124, 58, 237, 0.15);
-}
-
-:global([data-theme='light']) .accent-indigo {
-  color: #4f46e5;
-  background-color: rgba(79, 70, 229, 0.15);
-}
-
-:global([data-theme='light']) .accent-blue {
-  color: #2563eb;
-  background-color: rgba(37, 99, 235, 0.15);
 }
 
 .cardCloud {
@@ -697,6 +787,18 @@
   .container {
     grid-template-columns: 1fr;
     gap: var(--space-8);
+  }
+
+  /* Stacked layout: keep the copy light up top, darken toward the visual below */
+  :global([data-theme='light']) .sectionGradient {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 38%,
+      rgba(10, 14, 34, 0.45) 58%,
+      rgba(7, 10, 26, 0.85) 80%,
+      #050816 100%
+    );
   }
 
   .content {
