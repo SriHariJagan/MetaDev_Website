@@ -1,6 +1,6 @@
 import { AboutHero } from '@/sections/AboutHero';
 import { JourneyTimeline } from '@/sections/JourneyTimeline';
-import { SkillsShowcase } from '@/sections/SkillsShowcase';
+import { MissionVision } from '@/sections/MissionVision';
 import { ValuesBento } from '@/sections/ValuesBento';
 import { BeyondTheCode } from '@/sections/BeyondTheCode';
 import { SectionDivider } from '@/components/common/SectionDivider';
@@ -13,7 +13,7 @@ export function AboutPage() {
       <SectionDivider />
       <JourneyTimeline />
       <SectionDivider />
-      <SkillsShowcase />
+      <MissionVision />
       <SectionDivider />
       <ValuesBento />
       <SectionDivider />

@@ -23,4 +23,5 @@ export interface SolutionMeta {
   points: string[];
   stats: SolutionStat[];
   techStack: string[];
+  industries: string[];
 }

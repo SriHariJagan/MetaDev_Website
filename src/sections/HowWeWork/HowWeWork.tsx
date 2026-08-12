@@ -1,18 +1,16 @@
-// HowWeWork.tsx — how the team works, four culture cards
+// HowWeWork.tsx — team image + culture values
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
-  MoonStar,
-  Rocket,
+  GraduationCap,
+  Lightbulb,
+  Target,
   Users,
-  Globe2,
   type LucideIcon,
 } from 'lucide-react';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
-import { GradientText } from '@/components/common/GradientText';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
-import { CornerDots } from '@/components/common/CornerDots';
 import { blurUp, staggerContainer } from '@/constants/motion';
 import { cn } from '@/utils/cn';
 import styles from './HowWeWork.module.css';
@@ -21,51 +19,41 @@ const containerVariants = staggerContainer(0.08);
 
 const itemVariants = blurUp(20, 0.5, 8);
 
-interface Principle {
+interface Value {
   icon: LucideIcon;
   title: string;
   description: string;
   accent: string;
-  stat: string;
-  statLabel: string;
 }
 
-const PRINCIPLES: Principle[] = [
+const VALUES: Value[] = [
   {
-    icon: Globe2,
-    title: 'Global Team',
+    icon: Lightbulb,
+    title: 'Think Bold',
     description:
-      'Six countries, one standard. We hire the best person for the work, wherever they are.',
-    accent: 'accent-blue',
-    stat: '6',
-    statLabel: 'Countries',
-  },
-  {
-    icon: MoonStar,
-    title: 'Async by Default',
-    description:
-      'Deep work beats busy chat. Decisions are written down, documented and easy to catch up on.',
-    accent: 'accent-violet',
-    stat: '24h',
-    statLabel: 'Max response time',
+      'We challenge the status quo and explore bold ideas that drive meaningful impact.',
+    accent: 'accent-amber',
   },
   {
     icon: Users,
-    title: 'Small Squads',
+    title: 'Build Together',
     description:
-      'Every client works with a focused 2-5 person squad — not a rotating cast of strangers.',
-    accent: 'accent-teal',
-    stat: '2-5',
-    statLabel: 'People per project',
+      'Collaboration is at our core. We win as a team and grow stronger together.',
+    accent: 'accent-blue',
   },
   {
-    icon: Rocket,
-    title: 'Ship Weekly',
+    icon: Target,
+    title: 'Own The Outcome',
     description:
-      'Demo every Friday. Ship every week. Momentum is the metric that matters most.',
-    accent: 'accent-amber',
-    stat: '52',
-    statLabel: 'Demos a year',
+      'We take ownership, stay accountable and deliver results we are proud of.',
+    accent: 'accent-green',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Keep Learning',
+    description:
+      'We embrace curiosity, invest in ourselves and continuously level up.',
+    accent: 'accent-violet',
   },
 ];
 
@@ -76,9 +64,9 @@ export interface HowWeWorkProps {
 }
 
 export function HowWeWork({
-  eyebrow = 'How We Work',
-  title = 'Built for deep work',
-  subtitle = 'Four rules we refuse to bend — they are why our team stays sharp and our clients stay happy.',
+  eyebrow = 'Our Culture',
+  title = 'How We Work Together',
+  subtitle = 'Four values that guide how we collaborate, build and grow — with you and with each other.',
 }: HowWeWorkProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
@@ -87,8 +75,6 @@ export function HowWeWork({
     <Section className={styles.root}>
       <BackgroundDecor>
         <div className={styles.glow} />
-        <CornerDots corner="left" />
-        <CornerDots corner="right" />
       </BackgroundDecor>
 
       <Container maxWidth="wide" className={styles.container} ref={sectionRef}>
@@ -103,43 +89,67 @@ export function HowWeWork({
             {eyebrow}
           </motion.span>
           <motion.h2 className={styles.title} variants={itemVariants}>
-            {title} <GradientText>→ No Rules Off</GradientText>
+            {title}
           </motion.h2>
           <motion.p className={styles.subtitle} variants={itemVariants}>
             {subtitle}
           </motion.p>
         </motion.div>
 
-        {/* ---------- Principle cards ---------- */}
-        <motion.div
-          className={styles.grid}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {PRINCIPLES.map((principle) => {
-            const Icon = principle.icon;
-            return (
+        <div className={styles.split}>
+          {/* ---------- Left: team image ---------- */}
+          <motion.div
+            className={styles.imageWrap}
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={isInView ? { opacity: 1, scale: 1, y: 0 } : undefined}
+            transition={{ duration: 0.55, ease: 'easeOut', delay: 0.1 }}
+          >
+            <div className={styles.imageFrame}>
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80"
+                alt="The Metadev team collaborating"
+                className={styles.image}
+                loading="lazy"
+              />
+            </div>
+
+            <div className={styles.imageBadge}>
+              <span className={styles.imageBadgeDot} />
+              One team · Six countries
+            </div>
+
+            <div className={styles.imageChip}>
+              <span className={styles.imageChipIcon}>
+                <Users size={14} aria-hidden="true" />
+              </span>
+              20+ specialists shipping together
+            </div>
+          </motion.div>
+
+          {/* ---------- Right: values cards ---------- */}
+          <motion.div
+            className={styles.cards}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            {VALUES.map((value) => (
               <motion.article
-                key={principle.title}
-                className={cn(styles.card, styles[principle.accent])}
+                key={value.title}
+                className={cn(styles.card, styles[value.accent])}
                 variants={itemVariants}
               >
-                <div className={styles.cardHead}>
-                  <span className={styles.cardIcon}>
-                    <Icon size={20} aria-hidden="true" />
-                  </span>
-                  <span className={styles.cardStat}>
-                    <strong className={styles.cardStatValue}>{principle.stat}</strong>
-                    <span className={styles.cardStatLabel}>{principle.statLabel}</span>
-                  </span>
+                <span className={styles.cardIcon}>
+                  <value.icon size={20} aria-hidden="true" />
+                </span>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>{value.title}</h3>
+                  <p className={styles.cardDesc}>{value.description}</p>
                 </div>
-                <h3 className={styles.cardTitle}>{principle.title}</h3>
-                <p className={styles.cardDesc}>{principle.description}</p>
               </motion.article>
-            );
-          })}
-        </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </Container>
     </Section>
   );

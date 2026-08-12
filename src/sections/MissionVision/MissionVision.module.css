@@ -1,0 +1,475 @@
+/* MissionVision.module.css — Mission (orbit) | Vision (horizon) */
+
+.root {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- Background ---------- */
+
+.glowLeft {
+  position: absolute;
+  top: -200px;
+  left: -180px;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--navbar-accent-start) 0%,
+    transparent 70%
+  );
+  opacity: 0.16;
+  filter: blur(12px);
+}
+
+.glowRight {
+  position: absolute;
+  bottom: -240px;
+  right: -160px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+  opacity: 0.14;
+  filter: blur(12px);
+}
+
+.container {
+  position: relative;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  max-width: 46rem;
+  margin: 0 auto var(--space-8);
+}
+
+.eyebrowLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.eyebrowLabel::before,
+.eyebrowLabel::after {
+  content: "";
+  width: 18px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+}
+
+.eyebrowLabel::after {
+  transform: scaleX(-1);
+}
+
+.title {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.subtitle {
+  max-width: 38rem;
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ---------- Grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.cardTag {
+  font-size: 0.64rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--navbar-accent);
+}
+
+.cardTitle {
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0.3rem 0 0;
+}
+
+.statement {
+  font-size: var(--font-size-3xs);
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin: var(--space-4) 0 0;
+}
+
+/* ---------- Mission card: orbit / target ---------- */
+
+.missionCard {
+  background: var(--glass-navy);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 20px 50px rgba(2, 10, 30, 0.3);
+}
+
+:global([data-theme='light']) .missionCard {
+  background: var(--glass-navy-light-soft);
+  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.1);
+}
+
+.missionOrbit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 108px;
+  height: 108px;
+  margin-bottom: var(--space-5);
+}
+
+.orbitRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(var(--accent-blue-rgb, 37 99 235), 0.55);
+  box-shadow:
+    0 0 24px rgba(var(--accent-blue-rgb, 37 99 235), 0.25),
+    inset 0 0 24px rgba(var(--accent-blue-rgb, 37 99 235), 0.12);
+}
+
+.orbitRing::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--navbar-accent);
+  box-shadow: 0 0 12px var(--navbar-accent);
+}
+
+.orbitRingInner {
+  position: absolute;
+  inset: 17px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--accent-green-rgb, 34 197 94), 0.35);
+}
+
+.missionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  color: #fff;
+  box-shadow: 0 12px 32px -8px rgba(var(--accent-blue-rgb, 37 99 235), 0.6);
+}
+
+.pillarRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  list-style: none;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+}
+
+.pillar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.66rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.pillar:hover {
+  transform: translateY(-2px);
+}
+
+.pillar-accent-blue {
+  color: rgb(var(--accent-blue-rgb, 59 130 246));
+  background: rgba(var(--accent-blue-rgb, 59 130 246), 0.1);
+  border: 1px solid rgba(var(--accent-blue-rgb, 59 130 246), 0.28);
+  box-shadow: 0 0 16px rgba(var(--accent-blue-rgb, 59 130 246), 0.18);
+}
+
+.pillar-accent-violet {
+  color: rgb(var(--accent-violet-rgb, 139 92 246));
+  background: rgba(var(--accent-violet-rgb, 139 92 246), 0.1);
+  border: 1px solid rgba(var(--accent-violet-rgb, 139 92 246), 0.28);
+  box-shadow: 0 0 16px rgba(var(--accent-violet-rgb, 139 92 246), 0.18);
+}
+
+.pillar-accent-cyan {
+  color: rgb(var(--accent-cyan-rgb, 6 182 212));
+  background: rgba(var(--accent-cyan-rgb, 6 182 212), 0.1);
+  border: 1px solid rgba(var(--accent-cyan-rgb, 6 182 212), 0.28);
+  box-shadow: 0 0 16px rgba(var(--accent-cyan-rgb, 6 182 212), 0.18);
+}
+
+.pillar-accent-amber {
+  color: rgb(var(--accent-amber-rgb, 245 158 11));
+  background: rgba(var(--accent-amber-rgb, 245 158 11), 0.1);
+  border: 1px solid rgba(var(--accent-amber-rgb, 245 158 11), 0.28);
+  box-shadow: 0 0 16px rgba(var(--accent-amber-rgb, 245 158 11), 0.18);
+}
+
+.missionFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: var(--space-4);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.missionFooter svg {
+  color: var(--navbar-accent);
+}
+
+/* ---------- Vision card: horizon / ascent ---------- */
+
+.visionCard {
+  background: linear-gradient(
+    150deg,
+    rgba(var(--accent-blue-rgb, 37 99 235), 0.22) 0%,
+    rgba(2, 10, 30, 0.85) 45%,
+    rgba(2, 10, 30, 0.9) 100%
+  );
+  border: 1px solid rgba(var(--accent-blue-rgb, 37 99 235), 0.35);
+  box-shadow:
+    0 24px 60px -12px rgba(2, 10, 30, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+:global([data-theme='light']) .visionCard {
+  background: linear-gradient(
+    150deg,
+    rgba(var(--accent-blue-rgb, 37 99 235), 0.16) 0%,
+    rgba(255, 255, 255, 0.6) 45%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+}
+
+.visionHalo {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--color-primary) 0%,
+    transparent 70%
+  );
+  opacity: 0.5;
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.visionGrid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    rgba(148, 197, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 100% 34px;
+  pointer-events: none;
+}
+
+.visionHead {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  z-index: 1;
+}
+
+.visionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(var(--accent-blue-rgb, 37 99 235), 0.16);
+  border: 1px solid rgba(var(--accent-blue-rgb, 37 99 235), 0.4);
+  color: rgb(var(--accent-blue-rgb, 96 165 250));
+  box-shadow: 0 0 26px rgba(var(--accent-blue-rgb, 37 99 235), 0.3);
+  flex-shrink: 0;
+}
+
+.visionCard .statement {
+  position: relative;
+  z-index: 1;
+}
+
+/* Horizon road */
+
+.horizon {
+  position: relative;
+  margin-top: var(--space-6);
+  padding-top: var(--space-7);
+  z-index: 1;
+}
+
+.horizonLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--color-primary),
+    var(--navbar-accent-end)
+  );
+  box-shadow: 0 0 18px rgba(var(--accent-blue-rgb, 37 99 235), 0.5);
+}
+
+.horizonDot {
+  position: absolute;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 14px var(--color-primary);
+}
+
+.milestoneRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.milestone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: var(--space-3) 0 var(--space-2);
+  transform: translateY(var(--rise, 0px));
+}
+
+.milestoneDot {
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 12px rgba(var(--accent-blue-rgb, 37 99 235), 0.6);
+}
+
+.milestoneYear {
+  font-size: 0.62rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgb(var(--accent-blue-rgb, 96 165 250));
+}
+
+.milestoneTitle {
+  font-size: 0.82rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.milestoneDesc {
+  font-size: var(--font-size-4xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.visionFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: var(--space-4);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.visionFooter svg {
+  color: rgb(var(--accent-blue-rgb, 96 165 250));
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 68rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 40rem) {
+  .milestoneRow {
+    grid-template-columns: 1fr;
+  }
+
+  .milestone {
+    transform: translateY(0);
+  }
+}

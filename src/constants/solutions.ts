@@ -35,6 +35,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '2.4x', label: 'Faster page loads' },
     ],
     techStack: ['React', 'Next.js', 'TypeScript', 'Node.js', 'AWS'],
+    industries: [
+      'Retail & E-commerce',
+      'Finance & Banking',
+      'Healthcare',
+      'Education',
+      'Media & Entertainment',
+    ],
   },
   {
     slug: 'mobile-development',
@@ -58,6 +65,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '1M+', label: 'Users reached' },
     ],
     techStack: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Firebase'],
+    industries: [
+      'Retail & E-commerce',
+      'Healthcare',
+      'Hospitality & Travel',
+      'Logistics & Transport',
+      'Media & Entertainment',
+    ],
   },
   {
     slug: 'ui-ux-design',
@@ -81,6 +95,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '3x', label: 'Conversion lift' },
     ],
     techStack: ['Figma', 'Framer', 'Sketch', 'ProtoPie', 'Zeplin'],
+    industries: [
+      'Retail & E-commerce',
+      'Healthcare',
+      'Finance & Banking',
+      'Education',
+      'Media & Entertainment',
+    ],
   },
   {
     slug: 'ai-machine-learning',
@@ -104,6 +125,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '10x', label: 'Faster decisions' },
     ],
     techStack: ['Python', 'PyTorch', 'TensorFlow', 'OpenAI', 'Hugging Face'],
+    industries: [
+      'Healthcare',
+      'Finance & Banking',
+      'Manufacturing',
+      'Energy & Utilities',
+      'Government & Public Sector',
+    ],
   },
   {
     slug: 'blockchain-development',
@@ -127,6 +155,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '100%', label: 'Audit pass rate' },
     ],
     techStack: ['Solidity', 'Ethereum', 'Hardhat', 'Web3.js', 'Chainlink'],
+    industries: [
+      'Finance & Banking',
+      'Real Estate',
+      'Government & Public Sector',
+      'Logistics & Transport',
+      'Media & Entertainment',
+    ],
   },
   {
     slug: 'cybersecurity',
@@ -150,6 +185,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '24/7', label: 'Monitoring coverage' },
     ],
     techStack: ['OWASP', 'Burp Suite', 'Nessus', 'Splunk', 'SOC 2'],
+    industries: [
+      'Finance & Banking',
+      'Healthcare',
+      'Government & Public Sector',
+      'Energy & Utilities',
+      'Retail & E-commerce',
+    ],
   },
   {
     slug: 'iot-development',
@@ -173,6 +215,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '99.9%', label: 'Platform uptime' },
     ],
     techStack: ['MQTT', 'ESP32', 'AWS IoT', 'InfluxDB', 'Grafana'],
+    industries: [
+      'Manufacturing',
+      'Agriculture',
+      'Energy & Utilities',
+      'Logistics & Transport',
+      'Healthcare',
+    ],
   },
   {
     slug: 'data-engineering',
@@ -196,6 +245,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '3x', label: 'Faster insights' },
     ],
     techStack: ['Python', 'Spark', 'Airflow', 'Snowflake', 'dbt'],
+    industries: [
+      'Finance & Banking',
+      'Retail & E-commerce',
+      'Healthcare',
+      'Manufacturing',
+      'Logistics & Transport',
+    ],
   },
   {
     slug: 'custom-software',
@@ -219,6 +275,13 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '100%', label: 'On-time delivery' },
     ],
     techStack: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'Kubernetes'],
+    industries: [
+      'Manufacturing',
+      'Logistics & Transport',
+      'Government & Public Sector',
+      'Finance & Banking',
+      'Media & Entertainment',
+    ],
   },
   {
     slug: 'pos-applications',
@@ -242,5 +305,12 @@ export const SOLUTIONS: SolutionMeta[] = [
       { value: '99.9%', label: 'Offline reliability' },
     ],
     techStack: ['React Native', 'Node.js', 'Redis', 'PostgreSQL', 'Stripe'],
+    industries: [
+      'Retail & E-commerce',
+      'Hospitality & Travel',
+      'Real Estate',
+      'Finance & Banking',
+      'Media & Entertainment',
+    ],
   },
 ];

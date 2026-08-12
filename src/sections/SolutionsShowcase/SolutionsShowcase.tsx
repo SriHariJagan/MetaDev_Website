@@ -1,7 +1,7 @@
-// SolutionsShowcase.tsx — unique tab-driven service carousel (unlike ProductShowcase)
-import { useEffect, useRef, useState, type ReactNode } from "react";
+// SolutionsShowcase.tsx — solution names on top, detail panel below on selection
+import { useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, MousePointerClick } from "lucide-react";
 import { Section } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
 import { GradientText } from "@/components/common/GradientText";
@@ -10,9 +10,14 @@ import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
 import { IconCircle } from "@/components/common/IconCircle";
 import { fadeUp, staggerContainer } from "@/constants/motion";
+import { INDUSTRIES } from "@/constants/industries";
 import type { SolutionMeta } from "@/types";
 import { cn } from "@/utils/cn";
 import styles from "./SolutionsShowcase.module.css";
+
+const INDUSTRY_BY_LABEL = new Map(
+  INDUSTRIES.map((industry) => [industry.label, industry]),
+);
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -23,7 +28,6 @@ export interface SolutionsShowcaseProps {
   eyebrow?: ReactNode;
   title?: ReactNode;
   subtitle?: ReactNode;
-  autoplayMs?: number;
   className?: string;
 }
 
@@ -36,7 +40,7 @@ const containerVariants = staggerContainer(0.05);
 const itemVariants = fadeUp(16, 0.3);
 
 /* ------------------------------------------------------------------ */
-/* Right panel — per solution                                          */
+/* Detail panel — rendered below the tabs once a solution is selected  */
 /* ------------------------------------------------------------------ */
 
 function SolutionPanel({
@@ -113,7 +117,7 @@ function SolutionPanel({
             >
               <span className={styles.pointIcon}>
                 <CheckCircle2
-                  size={16}
+                  size={13}
                   stroke={`url(#grad-${solution.accent})`}
                   aria-hidden="true"
                 />
@@ -146,6 +150,34 @@ function SolutionPanel({
         </ul>
       </div>
 
+      {/* Industries served */}
+      <div className={styles.blockWrap}>
+        <span className={styles.blockLabel}>Industries Served</span>
+        <ul className={styles.industryList}>
+          {solution.industries.map((industry, i) => {
+            const industryItem = INDUSTRY_BY_LABEL.get(industry);
+            return (
+              <motion.li
+                key={industry}
+                className={styles.industryChip}
+                initial={{ opacity: 0, y: 8, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.3,
+                  delay: 0.5 + i * 0.05,
+                  ease: "easeOut",
+                }}
+              >
+                {industryItem?.icon && (
+                  <industryItem.icon size={12} aria-hidden="true" />
+                )}
+                <span>{industry}</span>
+              </motion.li>
+            );
+          })}
+        </ul>
+      </div>
+
       <div className={styles.panelFooter}>
         <span className={styles.panelMeta}>
           <span className={styles.panelMetaDot} aria-hidden="true" />
@@ -164,6 +196,31 @@ function SolutionPanel({
 }
 
 /* ------------------------------------------------------------------ */
+/* Placeholder — shown until a solution is selected                    */
+/* ------------------------------------------------------------------ */
+
+function SelectionPlaceholder() {
+  return (
+    <motion.div
+      key="placeholder"
+      className={styles.placeholder}
+      initial={{ opacity: 0, y: 26, scale: 0.985 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -18, scale: 0.99 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      <div className={styles.placeholderIcon}>
+        <MousePointerClick size={26} aria-hidden="true" />
+      </div>
+      <h3 className={styles.placeholderTitle}>Select a solution</h3>
+      <p className={styles.placeholderText}>
+        Choose any service above to explore its details, outcomes and tech stack.
+      </p>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Main component                                                      */
 /* ------------------------------------------------------------------ */
 
@@ -172,33 +229,19 @@ export function SolutionsShowcase({
   eyebrow = "Our Solutions",
   title = (
     <>
-      Solutions That 
-      {' '} <GradientText>Transform Business</GradientText>
+      Solutions That{" "}
+      <GradientText>Transform Business</GradientText>
     </>
   ),
   subtitle = "From ideation to scale — a complete suite of digital solutions engineered to solve real-world challenges.",
-  autoplayMs = 6000,
   className,
 }: SolutionsShowcaseProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(rootRef, { once: true, amount: 0.1 });
-  const [index, setIndex] = useState(0);
-  const paused = useRef(false);
+  const [selected, setSelected] = useState<number | null>(null);
 
-  const solution = solutions[index];
+  const solution = selected !== null ? solutions[selected] : null;
   const count = solutions.length;
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (count <= 1) return;
-
-    const id = window.setInterval(() => {
-      if (paused.current) return;
-      setIndex((current) => (current + 1) % count);
-    }, autoplayMs);
-
-    return () => window.clearInterval(id);
-  }, [count, autoplayMs]);
 
   return (
     <Section className={cn(styles.root, className)}>
@@ -227,61 +270,58 @@ export function SolutionsShowcase({
           </motion.p>
         </motion.div>
 
-        {/* ---------- Tabs + panel ---------- */}
+        {/* ---------- Solution names — top row ---------- */}
         <motion.div
-          className={styles.stage}
+          className={styles.tabsWrap}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          onMouseEnter={() => (paused.current = true)}
-          onMouseLeave={() => (paused.current = false)}
         >
-          {/* Left: tab list */}
-          <motion.nav
-            className={styles.tabs}
-            aria-label="Solution navigation"
-            variants={itemVariants}
-          >
+          <div className={styles.tabsRow} role="tablist" aria-label="Solution navigation">
             {solutions.map((s, i) => {
               const TabIcon = s.icon;
-              const active = i === index;
+              const active = i === selected;
               return (
                 <button
                   key={s.slug}
                   type="button"
+                  role="tab"
+                  aria-selected={active}
                   className={cn(
                     styles.tab,
                     active && styles.tabActive,
                     styles[`tabAccent-${s.accent}`],
                   )}
-                  aria-current={active}
-                  onClick={() => setIndex(i)}
+                  onClick={() => setSelected(active ? null : i)}
                 >
-                  <span className={styles.tabIndex}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <IconCircle size="xs" rounded="sm" variant="gradient">
-                    <TabIcon size={14} stroke={`url(#grad-${s.accent})`} aria-hidden="true" />
-                  </IconCircle>
+                  <TabIcon size={12} className={styles.tabIcon} aria-hidden="true" />
                   <span className={styles.tabLabel}>{s.name}</span>
-                  <span className={styles.tabIndicator} aria-hidden="true" />
-                  <span className={styles.tabGlow} aria-hidden="true" />
+                  {active && <span className={styles.tabDot} aria-hidden="true" />}
                 </button>
               );
             })}
-          </motion.nav>
+          </div>
+        </motion.div>
 
-          {/* Right: service panel */}
-          <div className={styles.panelStage}>
-            <AnimatePresence mode="wait" initial={false}>
+        {/* ---------- Detail panel — below, only once selected ---------- */}
+        <motion.div
+          className={styles.panelStage}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            {selected !== null && solution ? (
               <SolutionPanel
                 key={solution.slug}
                 solution={solution}
-                index={index}
+                index={selected}
                 count={count}
               />
-            </AnimatePresence>
-          </div>
+            ) : (
+              <SelectionPlaceholder />
+            )}
+          </AnimatePresence>
         </motion.div>
       </Container>
     </Section>

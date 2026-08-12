@@ -1,6 +1,7 @@
 /* TrustedBy.module.css */
 
 .trustedBy {
+  position: relative;
   background:
     radial-gradient(
       1000px 300px at 15% 105%,
@@ -96,7 +97,10 @@
   font-size: var(--font-size-md);
 }
 
-/* Marquee */
+/* ------------------------------------------------------------
+   Marquee section
+   ------------------------------------------------------------ */
+
 .marqueeSection {
   width: 100%;
   margin-top: var(--space-6);
@@ -109,9 +113,10 @@
 }
 
 /* ------------------------------------------------------------
-   Logo banner — full-bleed unique deep-navy band, identical in
-   both dark and light themes. Logos default to white
-   monochrome marks; hovering reveals the original brand colors.
+   Logo banner — full-bleed glass band. Logos keep their real
+   brand colors (dimmed at rest, full color + lift on hover) so
+   every mark stays legible instead of collapsing into a flat
+   white silhouette.
    ------------------------------------------------------------ */
 
 .logoBanner {
@@ -119,7 +124,7 @@
   overflow: hidden;
   flex: 1;
   min-width: 0;
-  height: 96px;
+  height: 108px;
   display: flex;
   align-items: center;
   border-top: 1px solid var(--blue-soft-border);
@@ -153,10 +158,10 @@
 /* Light theme mirror — light navy glass */
 :global([data-theme="light"]) .logoBanner {
   border-color: rgba(47, 138, 255, 0.3);
-  background: rgba(47, 138, 255, 0.22);
+  background: rgba(47, 138, 255, 0.14);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 18px 40px rgba(37, 99, 235, 0.12);
+    0 18px 40px rgba(37, 99, 235, 0.1);
 }
 
 :global([data-theme="light"]) .logoBanner::after {
@@ -173,22 +178,22 @@
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 10%,
-    #000 90%,
+    #000 8%,
+    #000 92%,
     transparent
   );
   mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 10%,
-    #000 90%,
+    #000 8%,
+    #000 92%,
     transparent
   );
 }
 
 .marqueeTrack {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -197,17 +202,20 @@
   height: 100%;
 }
 
-/* Glass panel per logo — like the capability strip tiles */
+/* Each logo sits in its own glass tile so every mark gets
+   consistent, generous breathing room regardless of its native
+   aspect ratio. */
 
 .logoBannerItem {
   flex-shrink: 0;
-  width: 200px;
+  width: 201px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 12px;
-  background: var(--glass-navy);
+  padding: 22px 28px;
+  /* background: var(--glass-navy); */
+  background: transparent;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   transition:
     box-shadow var(--transition-medium),
@@ -220,41 +228,45 @@
 }
 
 .logoBannerItem:hover {
+  background: rgba(94, 184, 255, 0.07);
   box-shadow:
     inset 0 0 0 1px rgba(94, 184, 255, 0.35),
     0 0 24px rgba(61, 140, 255, 0.18);
 }
 
 :global([data-theme="light"]) .logoBannerItem:hover {
+  background: rgba(59, 130, 246, 0.08);
   box-shadow:
     inset 0 0 0 1px rgba(59, 130, 246, 0.4),
     0 0 24px rgba(59, 130, 246, 0.16);
 }
 
-/* Logo image — monochrome mark; hover reveals original colors */
+/* Logo image — real brand colors at all times so every mark
+   stays recognizable. Dimmed + slightly desaturated at rest,
+   full color and a subtle lift on hover. */
+
 .logoImage {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 148px;
+  max-height: 82px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.82;
+  filter: grayscale(0.55) opacity(0.78);
   transition:
-    opacity 0.35s ease,
-    transform 0.35s ease,
-    filter 0.35s ease;
+    filter 0.35s ease,
+    transform 0.35s ease;
+  will-change: transform, filter;
 }
 
 :global([data-theme="light"]) .logoImage {
-  filter: brightness(0);
-  opacity: 0.72;
+  filter: grayscale(0.5) opacity(0.68);
 }
 
 .logoBannerItem:hover .logoImage,
 :global([data-theme="light"]) .logoBannerItem:hover .logoImage {
-  opacity: 1;
-  transform: scale(1.06);
-  filter: drop-shadow(0 6px 14px rgba(59, 130, 246, 0.35));
+  filter: grayscale(0) opacity(1);
+  transform: scale(1.08);
 }
 
 /* Nav buttons overlaid on banner edges */
@@ -277,6 +289,16 @@
   }
 
   .logoBanner {
-    height: 78px;
+    height: 86px;
+  }
+
+  .logoBannerItem {
+    width: 160px;
+    padding: 16px 18px;
+  }
+
+  .logoImage {
+    max-width: 110px;
+    max-height: 34px;
   }
 }

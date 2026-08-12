@@ -1,42 +1,27 @@
 // TeamHero.tsx — hero for the Team page
-import { motion, type Variants } from 'framer-motion';
-import { ArrowRight, Briefcase, Cloud, Globe, Sparkles } from 'lucide-react';
+import { useRef } from 'react';
+import { motion, useInView, type Variants } from 'framer-motion';
+import {
+  ArrowRight,
+  Briefcase,
+  Cloud,
+  Database,
+  Gauge,
+  Globe,
+  Palette,
+  Users,
+} from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
 import { GradientText } from '@/components/common/GradientText';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
-import { CornerDots } from '@/components/common/CornerDots';
 import { blurUp, staggerContainer } from '@/constants/motion';
+import { cn } from '@/utils/cn';
 import styles from './TeamHero.module.css';
 
 const containerVariants: Variants = staggerContainer(0.08, 0.05);
 const itemVariants: Variants = blurUp(24, 0.5, 8);
-
-const visualVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.92, filter: 'blur(10px)' },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    filter: 'blur(0px)',
-    transition: { duration: 0.5, ease: 'easeOut', delay: 0.15 },
-  },
-};
-
-interface FloatingChip {
-  icon: typeof Globe;
-  label: string;
-  accent: 'cyan' | 'violet' | 'amber' | 'blue';
-  position: string;
-  delay: number;
-}
-
-const FLOATING_CHIPS: FloatingChip[] = [
-  { icon: Globe, label: 'Global Team', accent: 'cyan', position: styles.chipTopLeft, delay: 0 },
-  { icon: Sparkles, label: 'Async by Default', accent: 'violet', position: styles.chipTopRight, delay: 0.4 },
-  { icon: Cloud, label: '6 Countries', accent: 'blue', position: styles.chipBottomLeft, delay: 0.8 },
-  { icon: Briefcase, label: 'Small Squads', accent: 'amber', position: styles.chipBottomRight, delay: 1.2 },
-];
 
 const STATS = [
   { value: '20+', label: 'Team Members' },
@@ -44,13 +29,46 @@ const STATS = [
   { value: '12+', label: 'Avg Years of Experience' },
 ];
 
-const AVATAR_STACK = [
-  { initials: 'AO', accent: 'accent-blue' },
-  { initials: 'DR', accent: 'accent-violet' },
-  { initials: 'SL', accent: 'accent-rose' },
-  { initials: 'KW', accent: 'accent-green' },
-  { initials: 'PS', accent: 'accent-amber' },
+interface Squad {
+  icon: typeof Palette;
+  name: string;
+  members: string[];
+  fill: number;
+  accent: string;
+}
+
+const SQUADS: Squad[] = [
+  {
+    icon: Palette,
+    name: 'Design',
+    members: ['AO', 'DR'],
+    fill: 86,
+    accent: 'squad-blue',
+  },
+  {
+    icon: Briefcase,
+    name: 'Engineering',
+    members: ['SL', 'KW', 'PS'],
+    fill: 100,
+    accent: 'squad-violet',
+  },
+  {
+    icon: Database,
+    name: 'AI & Data',
+    members: ['MK', 'JT'],
+    fill: 74,
+    accent: 'squad-cyan',
+  },
+  {
+    icon: Cloud,
+    name: 'Cloud & DevOps',
+    members: ['RN'],
+    fill: 62,
+    accent: 'squad-amber',
+  },
 ];
+
+const REGIONS = ['India', 'UAE', 'USA', 'United Kingdom', 'Poland', 'Canada'];
 
 export interface TeamHeroProps {
   eyebrow?: string;
@@ -61,23 +79,23 @@ export function TeamHero({
   eyebrow = 'The Metadev Team',
   subtitle = 'A distributed team of engineers, designers and AI specialists who chose craftsmanship over shortcuts — and ship together from six countries.',
 }: TeamHeroProps) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+
   return (
     <Section size="md" className={styles.hero}>
       <BackgroundDecor>
-        <div className={styles.grid} />
         <div className={styles.glowTop} />
         <div className={styles.glowBottom} />
-        <CornerDots corner="left" />
-        <CornerDots corner="right" />
       </BackgroundDecor>
 
-      <Container className={styles.container}>
+      <Container className={styles.container} ref={sectionRef}>
         {/* ---------- Left: intro ---------- */}
         <motion.div
           className={styles.content}
           variants={containerVariants}
           initial="hidden"
-          animate="visible"
+          animate={isInView ? 'visible' : 'hidden'}
         >
           <motion.span className={styles.eyebrowLabel} variants={itemVariants}>
             {eyebrow}
@@ -114,43 +132,97 @@ export function TeamHero({
           </motion.dl>
         </motion.div>
 
-        {/* ---------- Right: avatar stack visual ---------- */}
+        {/* ---------- Right: team pulse dashboard ---------- */}
         <motion.div
-          className={styles.visual}
-          variants={visualVariants}
-          initial="hidden"
-          animate="visible"
+          className={styles.dashboardWrap}
+          initial={{ opacity: 0, y: 28, scale: 0.96 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : undefined}
+          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.15 }}
         >
-          <div className={styles.avatarGlow} />
-          <div className={styles.avatarRing} />
+          <div className={styles.dashboard}>
+            <div className={styles.dashHeader}>
+              <span className={styles.pulseDot} />
+              <span className={styles.dashTitle}>Team Pulse</span>
+              <span className={styles.dashLive}>Live</span>
+            </div>
 
-          <div className={styles.avatarStack}>
-            {AVATAR_STACK.map((member) => (
-              <span key={member.initials} className={`${styles.avatar} ${styles[member.accent]}`}>
-                {member.initials}
-              </span>
-            ))}
-            <span className={styles.avatarPlus}>+15</span>
+            <div className={styles.dashBody}>
+              <div className={styles.dashIntro}>
+                <span className={styles.dashIcon}>
+                  <Users size={15} aria-hidden="true" />
+                </span>
+                <div>
+                  <span className={styles.dashIntroTitle}>20+ specialists</span>
+                  <span className={styles.dashIntroSub}>
+                    4 squads · 1 shared standard
+                  </span>
+                </div>
+              </div>
+
+              <ul className={styles.squadList}>
+                {SQUADS.map((squad, index) => (
+                  <li
+                    key={squad.name}
+                    className={cn(styles.squad, styles[squad.accent])}
+                  >
+                    <span className={styles.squadIcon}>
+                      <squad.icon size={14} aria-hidden="true" />
+                    </span>
+                    <div className={styles.squadInfo}>
+                      <div className={styles.squadTop}>
+                        <span className={styles.squadName}>{squad.name}</span>
+                        <span className={styles.squadStack}>
+                          {squad.members.map((member) => (
+                            <span
+                              key={member}
+                              className={styles.squadAvatar}
+                            >
+                              {member}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                      <div className={styles.squadTrack}>
+                        <motion.span
+                          className={styles.squadFill}
+                          initial={{ width: 0 }}
+                          animate={
+                            isInView ? { width: `${squad.fill}%` } : { width: 0 }
+                          }
+                          transition={{
+                            duration: 0.8,
+                            ease: 'easeOut',
+                            delay: 0.3 + index * 0.1,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <div className={styles.dashDivider} />
+
+              <div className={styles.regionRow}>
+                <span className={styles.regionLabel}>
+                  <Globe size={12} aria-hidden="true" />
+                  Across 6 countries
+                </span>
+                <ul className={styles.regionList}>
+                  {REGIONS.map((region) => (
+                    <li key={region} className={styles.regionChip}>
+                      {region}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className={styles.dashFooter}>
+                <Gauge size={13} aria-hidden="true" />
+                Async-first · 4 hours of overlap daily
+              </div>
+            </div>
           </div>
-
-          <div className={styles.avatarBadge}>
-            <span className={styles.avatarBadgeDot} />
-            Hiring · 4 Open Roles
-          </div>
-
-          {FLOATING_CHIPS.map((chip) => (
-            <motion.div
-              key={chip.label}
-              className={`${styles.chip} ${chip.position}`}
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: chip.delay }}
-            >
-              <span className={`${styles.chipIcon} ${styles[chip.accent]}`}>
-                <chip.icon size={15} aria-hidden="true" />
-              </span>
-              {chip.label}
-            </motion.div>
-          ))}
         </motion.div>
       </Container>
     </Section>

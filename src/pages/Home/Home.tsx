@@ -211,7 +211,6 @@ export function HomePage() {
         solutions={WHY_CARDS}
         stats={WHY_STATS}
         capabilities={WHY_CAPABILITIES}
-        ctaLabel="View All Solutions"
       />
       <ProvenProcess />
       <TechStackNew />

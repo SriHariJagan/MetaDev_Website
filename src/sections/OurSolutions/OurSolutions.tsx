@@ -1,10 +1,8 @@
 // OurSolutions.tsx
 import { memo, useCallback, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
 import { motion, useInView, LayoutGroup, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight,
   Rocket,
   Clock,
   Globe2,
@@ -12,22 +10,19 @@ import {
   Headset,
   Users,
   Award,
-  Users2,
-  Package,
-  Factory,
-  ShoppingCart,
-  Truck,
-  Building2,
-  Sprout,
-  Home,
-  Hotel,
-  Utensils,
   Workflow,
   Share2,
   BrainCircuit,
   Cloud,
   Smartphone,
   Sparkles,
+  Code,
+  PenTool,
+  Blocks,
+  Cpu,
+  Database,
+  Boxes,
+  ReceiptText,
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/common/Section";
@@ -38,7 +33,6 @@ import { IconCircle } from "@/components/common/IconCircle";
 import { GradientDefs } from "@/components/common/GradientDefs";
 import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
-import { Button } from "@/components/common/Button";
 import { fadeUp, staggerContainer } from "@/constants/motion";
 import { cn } from "@/utils/cn";
 import styles from "./OurSolutions.module.css";
@@ -57,170 +51,169 @@ export interface Solution {
   name: string;
   description: string;
   features?: string[];
-  href?: string;
 }
 
 const SOLUTIONS: Solution[] = [
   {
-    id: "crm",
-    number: "05",
-    icon: Users2,
-    accent: "orange",
-    name: "CRM ERP",
-    description: "Build stronger relationships and close more deals.",
-    features: [
-      "Lead & Opportunity Management",
-      "Sales Automation",
-      "Customer Support",
-      "Marketing Automation",
-      "360° Customer View",
-    ],
-    href: "/solutions/crm-erp",
-  },
-  {
-    id: "inventory",
-    number: "06",
-    icon: Package,
-    accent: "violet",
-    name: "Inventory ERP",
-    description: "Real-time inventory visibility and control.",
-    features: [
-      "Stock Management",
-      "Warehouse Management",
-      "Barcode / RFID",
-      "Multi-Location Tracking",
-      "Stock Analytics & Forecasting",
-    ],
-    href: "/solutions/inventory-erp",
-  },
-  {
-    id: "manufacturing",
-    number: "07",
-    icon: Factory,
+    id: "web-development",
+    number: "01",
+    icon: Code,
     accent: "blue",
-    name: "Manufacturing ERP",
-    description: "Optimize production and improve efficiency.",
+    name: "Web Development",
+    description:
+      "Modern, scalable web applications built with React, TypeScript and best-in-class tooling — engineered for speed, security and growth.",
     features: [
-      "Production Planning",
-      "Material Management",
-      "Quality Control",
-      "Maintenance Management",
-      "Production Analytics",
+      "React & Next.js builds",
+      "Scalable architecture",
+      "SEO & performance",
+      "CMS & commerce integration",
+      "API-first development",
     ],
-    href: "/solutions/manufacturing-erp",
-  },
+},
   {
-    id: "retail",
-    number: "08",
-    icon: ShoppingCart,
-    accent: "pink",
-    name: "Retail ERP",
-    description: "Power your retail operations and grow your business.",
-    features: [
-      "POS & Billing",
-      "Multi-Store Management",
-      "Inventory & Stock",
-      "Loyalty & Promotions",
-      "Retail Analytics",
-    ],
-    href: "/solutions/retail-erp",
-  },
-  {
-    id: "logistics",
-    number: "09",
-    icon: Truck,
-    accent: "teal",
-    name: "Logistics ERP",
-    description: "Streamline logistics and deliver on time.",
-    features: [
-      "Fleet Management",
-      "GPS Tracking",
-      "Route Optimization",
-      "Dispatch Management",
-      "Logistics Analytics",
-    ],
-    href: "/solutions/logistics-erp",
-  },
-  {
-    id: "construction",
-    number: "10",
-    icon: Building2,
-    accent: "green",
-    name: "Construction ERP",
-    description: "Manage projects, resources and timelines effectively.",
-    features: [
-      "Project Management",
-      "Budget & Estimation",
-      "Resource Management",
-      "Site Tracking",
-      "Progress Reports",
-    ],
-    href: "/solutions/construction-erp",
-  },
-  {
-    id: "agriculture",
-    number: "11",
-    icon: Sprout,
+    id: "mobile-development",
+    number: "02",
+    icon: Smartphone,
     accent: "cyan",
-    name: "Agriculture ERP",
-    description: "Empowering agriculture with smart solutions.",
+    name: "Mobile Development",
+    description:
+      "Cross-platform mobile apps with smooth, native-feeling interactions and reliable offline support — from MVP to global scale.",
     features: [
-      "Farm Management",
-      "Crop Management",
-      "Inventory & Supply",
-      "Farmer Management",
-      "Agriculture Analytics",
+      "iOS & Android apps",
+      "React Native & Flutter",
+      "Offline-first experiences",
+      "Push notifications & analytics",
+      "Biometric authentication",
     ],
-    href: "/solutions/agriculture-erp",
-  },
+},
   {
-    id: "realestate",
-    number: "12",
-    icon: Home,
-    accent: "indigo",
-    name: "Real Estate ERP",
-    description: "Manage properties and clients seamlessly.",
+    id: "ui-ux-design",
+    number: "03",
+    icon: PenTool,
+    accent: "pink",
+    name: "UI/UX Design",
+    description:
+      "Research-driven product design, design systems and accessible interfaces that convert — clarity in every pixel and interaction.",
     features: [
-      "Property Management",
-      "Booking Management",
-      "Lease & Rent Management",
-      "Payment Management",
-      "Real Estate Analytics",
+      "User research & personas",
+      "Design systems",
+      "Prototyping & testing",
+      "Accessibility & usability",
+      "Motion & interaction design",
     ],
-    href: "/solutions/real-estate-erp",
-  },
+},
   {
-    id: "hotel",
-    number: "13",
-    icon: Hotel,
+    id: "ai-machine-learning",
+    number: "04",
+    icon: BrainCircuit,
+    accent: "violet",
+    name: "AI & Machine Learning",
+    description:
+      "Custom AI models, LLM-powered products and intelligent automation that turn your data into decisions — responsibly and at scale.",
+    features: [
+      "Custom AI model training",
+      "NLP & computer vision",
+      "Predictive analytics",
+      "LLM-powered applications",
+      "MLOps & model monitoring",
+    ],
+},
+  {
+    id: "blockchain-development",
+    number: "05",
+    icon: Blocks,
+    accent: "orange",
+    name: "Blockchain Development",
+    description:
+      "Smart contracts, dApps and Web3 infrastructure engineered for security, transparency and scale — built on battle-tested chains.",
+    features: [
+      "Smart contract development",
+      "dApps & Web3 integration",
+      "Tokenization & DeFi",
+      "NFT platforms & wallets",
+      "Cross-chain bridges",
+    ],
+},
+  {
+    id: "cybersecurity",
+    number: "06",
+    icon: ShieldCheck,
     accent: "red",
-    name: "Hotel ERP",
-    description: "Deliver memorable guest experiences.",
+    name: "Cybersecurity",
+    description:
+      "Security audits, threat monitoring and compliance frameworks that protect your business end to end — proactive, not reactive.",
     features: [
-      "Front Office Management",
-      "Room Management",
-      "Reservation Management",
-      "Housekeeping Management",
-      "Hotel Analytics",
+      "Security audits & pentesting",
+      "Threat monitoring",
+      "Compliance & governance",
+      "Incident response",
+      "Zero-trust architecture",
     ],
-    href: "/solutions/hotel-erp",
-  },
+},
   {
-    id: "restaurant",
-    number: "14",
-    icon: Utensils,
-    accent: "amber",
-    name: "Restaurant ERP",
-    description: "Simplify restaurant operations and increase profit.",
+    id: "iot-solutions",
+    number: "07",
+    icon: Cpu,
+    accent: "green",
+    name: "IoT Solutions",
+    description:
+      "End-to-end IoT platforms — from device firmware and connectivity to real-time dashboards and edge analytics.",
     features: [
-      "POS & Billing",
-      "Menu Management",
-      "Kitchen Management",
-      "Inventory Management",
-      "Sales Analytics",
+      "Device & sensor integration",
+      "Real-time dashboards",
+      "Edge computing",
+      "Remote monitoring",
+      "OTA firmware updates",
     ],
-    href: "/solutions/restaurant-erp",
-  },
+},
+  {
+    id: "data-engineering",
+    number: "08",
+    icon: Database,
+    accent: "indigo",
+    name: "Data Engineering",
+    description:
+      "Robust pipelines, warehouses and analytics platforms that transform raw data into actionable intelligence — trusted by the numbers.",
+    features: [
+      "Data pipelines & ETL",
+      "Data warehousing",
+      "Real-time streaming",
+      "Analytics dashboards",
+      "ML feature stores",
+    ],
+},
+  {
+    id: "custom-software",
+    number: "09",
+    icon: Boxes,
+    accent: "amber",
+    name: "Custom Software",
+    description:
+      "Bespoke platforms, enterprise integrations and legacy modernization tailored to your workflows — software that fits.",
+    features: [
+      "Bespoke platform builds",
+      "Enterprise integrations",
+      "Legacy modernization",
+      "Cloud migration",
+      "API gateway & microservices",
+    ],
+},
+  {
+    id: "pos-applications",
+    number: "10",
+    icon: ReceiptText,
+    accent: "teal",
+    name: "POS Applications",
+    description:
+      "Modern point-of-sale systems with inventory, billing and analytics — online and offline, anywhere, without missing a sale.",
+    features: [
+      "Billing & invoicing",
+      "Inventory management",
+      "Multi-outlet support",
+      "Offline & cloud sync",
+      "Customer loyalty & CRM",
+    ],
+},
 ];
 
 export interface HeroStat {
@@ -253,31 +246,37 @@ const CAPABILITIES: Capability[] = [
     icon: Workflow,
     title: "Integrated Ecosystem",
     description: "All solutions work seamlessly together",
+    accent: "violet",
   },
   {
     icon: Share2,
     title: "Scalable & Flexible",
     description: "Grows with your business needs",
+    accent: "blue",
   },
   {
     icon: ShieldCheck,
     title: "Secure by Design",
     description: "Enterprise-grade security and compliance",
+    accent: "green",
   },
   {
     icon: BrainCircuit,
     title: "AI Powered Insights",
     description: "Smarter decisions with real-time analytics",
+    accent: "pink",
   },
   {
     icon: Cloud,
     title: "Cloud Ready",
     description: "Available on cloud or on-premise",
+    accent: "cyan",
   },
   {
     icon: Smartphone,
     title: "Mobile First",
     description: "Access anywhere, anytime",
+    accent: "orange",
   },
 ];
 
@@ -398,20 +397,6 @@ const SolutionCard = memo(function SolutionCard({
                 ))}
               </ul>
             )}
-
-            {solution.href && (
-              <Link
-                to={solution.href}
-                className={cn(styles.cardLink, active && styles.cardLinkActive)}
-              >
-                Learn More
-                <ArrowRight
-                  size={11}
-                  className={styles.cardLinkArrow}
-                  aria-hidden="true"
-                />
-              </Link>
-            )}
           </div>
         </GlassCard>
       </motion.div>
@@ -432,8 +417,6 @@ interface OurSolutionsProps {
   solutions?: Solution[];
   stats?: HeroStat[];
   capabilities?: Capability[];
-  ctaLabel?: string;
-  ctaHref?: string;
 }
 
 const DEFAULT_TITLE: ReactNode = (
@@ -448,13 +431,11 @@ export function OurSolutions({
   eyebrow = "Our Solutions",
   title = DEFAULT_TITLE,
   subtitle = "MetaDev offers a comprehensive suite of enterprise-grade solutions that empower organizations to streamline operations, enhance productivity, and deliver exceptional experiences.",
-  pillLabel = "Our Solutions (05 – 10)",
+  pillLabel = "Our Solutions (01 – 10)",
   columns = 5,
   solutions = SOLUTIONS,
   stats = HERO_STATS,
   capabilities = CAPABILITIES,
-  ctaLabel = "View All Solutions",
-  ctaHref = "/solutions",
 }: OurSolutionsProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
@@ -640,12 +621,6 @@ export function OurSolutions({
           ))}
         </motion.ul>
       </Container>
-
-      <div className={styles.ctaRow}>
-        <Button to={ctaHref} variant="gradient" size="md">
-          {ctaLabel}
-        </Button>
-      </div>
     </Section>
   );
 }

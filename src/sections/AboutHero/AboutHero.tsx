@@ -13,8 +13,8 @@ import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
 import { GradientText } from '@/components/common/GradientText';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
-import { CornerDots } from '@/components/common/CornerDots';
 import { blurUp, staggerContainer } from '@/constants/motion';
+import aboutUsImage from '@/assets/images/aboutUs.png';
 import styles from './AboutHero.module.css';
 
 const containerVariants: Variants = staggerContainer(0.08, 0.05);
@@ -69,11 +69,8 @@ export function AboutHero({
   return (
     <Section size="md" className={styles.hero}>
       <BackgroundDecor>
-        <div className={styles.grid} />
         <div className={styles.glowTop} />
         <div className={styles.glowBottom} />
-        <CornerDots corner="left" />
-        <CornerDots corner="right" />
       </BackgroundDecor>
 
       <Container className={styles.container}>
@@ -126,17 +123,19 @@ export function AboutHero({
           </motion.dl>
         </motion.div>
 
-        {/* ---------- Right: avatar visual ---------- */}
+        {/* ---------- Right: image visual ---------- */}
         <motion.div
           className={styles.visual}
           variants={visualVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className={styles.avatarGlow} />
-          <div className={styles.avatarRing} />
-          <div className={styles.avatarCore}>
-            <span className={styles.avatarInitial}>MD</span>
+          <div className={styles.imageFrame}>
+            <img
+              src={aboutUsImage}
+              alt="Metadev team"
+              className={styles.image}
+            />
           </div>
 
           <div className={styles.avatarBadge}>
