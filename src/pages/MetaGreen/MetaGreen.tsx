@@ -29,7 +29,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaGreen.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['teal', 'green', 'blue', 'amber', 'violet', 'cyan'] as const;
 
 /* ------------------------------------------------------------------ */
@@ -307,7 +307,7 @@ export function MetaGreenPage() {
                         strokeDasharray="314"
                         initial={{ strokeDashoffset: 314 }}
                         whileInView={{ strokeDashoffset: 314 * (1 - scope.value / 100) }}
-                        viewport={{ once: true, amount: 0.6 }}
+                        viewport={{ once: false, amount: 0.6 }}
                         transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 + index * 0.15 }}
                         transform="rotate(-90 60 60)"
                       />
@@ -434,7 +434,7 @@ export function MetaGreenPage() {
                         className={styles.ctaCounterFill}
                         initial={{ width: '20%' }}
                         whileInView={{ width: '78%' }}
-                        viewport={{ once: true }}
+                        viewport={{ once: false }}
                         transition={{ duration: 1.2, ease: 'easeOut' }}
                       />
                     </span>

@@ -182,7 +182,7 @@ export function JourneyTimeline({
   subtitle = 'From a small team with big ambitions to a studio trusted by businesses worldwide.',
 }: JourneyTimelineProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   const timelineRef = useRef<HTMLOListElement>(null);
   const markerRefs = useRef<Array<HTMLSpanElement | null>>([]);
@@ -329,7 +329,7 @@ export function JourneyTimeline({
                 custom={i}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.35 }}
+                viewport={{ once: false, amount: 0.35 }}
               >
                 <div className={styles.marker}>
                   <motion.span className={styles.markerPing} variants={markerPingVariants} aria-hidden="true" />

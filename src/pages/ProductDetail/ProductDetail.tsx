@@ -365,7 +365,7 @@ function HiringVisual({ product }: { product: ProductMeta }) {
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 
 export function ProductDetailPage() {
   const { productSlug } = useParams<{ productSlug: string }>();

@@ -180,7 +180,7 @@ function Dropdown<T extends string>({
 export function CareerRoles() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const filterBarRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
 
   const [search, setSearch] = useState("");
   const [selectedTeams, setSelectedTeams] = useState<Team[]>([]);

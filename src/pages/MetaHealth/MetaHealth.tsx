@@ -30,7 +30,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaHealth.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['teal', 'cyan', 'blue', 'green', 'violet', 'pink'] as const;
 
 /* ------------------------------------------------------------------ */

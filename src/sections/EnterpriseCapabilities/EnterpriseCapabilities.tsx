@@ -44,7 +44,7 @@ const headerItemVariants: Variants = {
 /* Item reveals its children in sequence: dot pops, then card slides in */
 const itemVariants: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 
 /* Marker dot pops with a spring */
@@ -83,11 +83,11 @@ const cardVariants: Variants = {
     scale: 1,
     filter: "blur(0px)",
     transition: {
-      x: { type: "spring", stiffness: 90, damping: 16, mass: 0.9 },
-      y: { type: "spring", stiffness: 90, damping: 16, mass: 0.9 },
-      scale: { type: "spring", stiffness: 120, damping: 18 },
-      opacity: { duration: 0.5, ease: "easeOut" },
-      filter: { duration: 0.6, ease: "easeOut" },
+      x: { type: "spring", stiffness: 140, damping: 22, mass: 0.7 },
+      y: { type: "spring", stiffness: 140, damping: 22, mass: 0.7 },
+      scale: { type: "spring", stiffness: 180, damping: 24 },
+      opacity: { duration: 0.4, ease: "easeOut" },
+      filter: { duration: 0.5, ease: "easeOut" },
     },
   },
 };
@@ -172,7 +172,7 @@ export function EnterpriseCapabilities({
   items = DEFAULT_CAPABILITIES,
 }: EnterpriseCapabilitiesProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   const timelineRef = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({
@@ -249,7 +249,7 @@ export function EnterpriseCapabilities({
                 custom={index}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.45, margin: "-10% 0px -10% 0px" }}
+                viewport={{ once: false, amount: 0.45, margin: "-10% 0px -10% 0px" }}
               >
                 <div className={styles.marker} aria-hidden="true">
                   <motion.span className={styles.markerPing} variants={markerPingVariants} />

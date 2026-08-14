@@ -69,7 +69,7 @@ export function HowWeWork({
   subtitle = 'Four values that guide how we collaborate, build and grow — with you and with each other.',
 }: HowWeWorkProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
 
   return (
     <Section className={styles.root}>

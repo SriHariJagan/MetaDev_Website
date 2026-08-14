@@ -61,7 +61,7 @@ export function TeamGrid({
   subtitle = 'A senior team that owns outcomes end to end — no hand-offs, no middlemen, no mystery. Meet the people your product will actually work with.',
 }: TeamGridProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   return (
     <Section className={styles.root}>

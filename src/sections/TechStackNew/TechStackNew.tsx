@@ -163,7 +163,7 @@ const itemVariants = fadeUp(16, 0.35);
 
 export function TechStackNew() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
 
   return (
     <Section bordered>

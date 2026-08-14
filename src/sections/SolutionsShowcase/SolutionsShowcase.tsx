@@ -210,7 +210,7 @@ export function SolutionsShowcase({
   className,
 }: SolutionsShowcaseProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(rootRef, { once: true, amount: 0.1 });
+  const isInView = useInView(rootRef, { once: false, amount: 0.1 });
   const [selected, setSelected] = useState(0);
   const pausedRef = useRef(false);
 

@@ -34,7 +34,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaAdds.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['violet', 'pink', 'amber', 'teal', 'blue', 'green'] as const;
 
 /* ------------------------------------------------------------------ */

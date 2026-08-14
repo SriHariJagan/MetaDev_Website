@@ -20,7 +20,7 @@ function parseValue(value: string | number, fallbackSuffix: string) {
 
 export function CountUp({ value, suffix = '', duration = 0.8, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const inView = useInView(ref, { once: false, amount: 0.5 });
   const [display, setDisplay] = useState<string>(() => {
     const parsed = parseValue(value, suffix);
     return parsed ? `0${parsed.suffix}` : String(value);

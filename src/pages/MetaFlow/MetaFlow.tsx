@@ -30,7 +30,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaFlow.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['violet', 'blue', 'cyan', 'pink', 'amber', 'green'] as const;
 
 /* ------------------------------------------------------------------ */
@@ -63,7 +63,7 @@ function GraphVisual() {
                   )}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.8 }}
+                  viewport={{ once: false, amount: 0.8 }}
                   transition={{ delay: 0.2 + laneIndex * 0.18 + nodeIndex * 0.12, duration: 0.4 }}
                 >
                   {node}

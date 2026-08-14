@@ -130,8 +130,12 @@ export function Navbar() {
               <li
                 key={item.to}
                 className={styles.navItem}
-                onMouseEnter={item.dropdown ? () => setProductsOpen(true) : undefined}
-                onMouseLeave={item.dropdown ? () => setProductsOpen(false) : undefined}
+                onMouseEnter={
+                  item.dropdown && !isMobile() ? () => setProductsOpen(true) : undefined
+                }
+                onMouseLeave={
+                  item.dropdown && !isMobile() ? () => setProductsOpen(false) : undefined
+                }
               >
                 <NavLink
                   to={item.to}

@@ -114,7 +114,7 @@ export function WhyPartnerWithUs({
   className,
 }: WhyPartnerWithUsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
 
   return (
     <Section bordered className={cn(styles.root, className)}>

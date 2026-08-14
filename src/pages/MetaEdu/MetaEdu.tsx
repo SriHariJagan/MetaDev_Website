@@ -29,7 +29,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaEdu.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['blue', 'violet', 'pink', 'amber', 'teal', 'green'] as const;
 
 /* ------------------------------------------------------------------ */

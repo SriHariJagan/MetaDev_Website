@@ -105,7 +105,7 @@ export function ValuesBento({
   subtitle = 'The principles behind every project we touch — the things we will never compromise on.',
 }: ValuesBentoProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   return (
     <Section className={styles.root}>

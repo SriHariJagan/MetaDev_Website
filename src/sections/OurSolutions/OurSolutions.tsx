@@ -393,7 +393,7 @@ export function OurSolutions({
   showDescriptions = true,
 }: OurSolutionsProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [lastActiveId, setLastActiveId] = useState<string | null>(null);

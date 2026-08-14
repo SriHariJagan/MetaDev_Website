@@ -179,7 +179,7 @@ export interface TechStackProps {
 
 export function TechStack({ className }: TechStackProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
 
   const [activeId, setActiveId] = useState(TECH_STACK[0].id);
   const activeIndex = TECH_STACK.findIndex((group) => group.id === activeId);

@@ -661,6 +661,11 @@
     left: 0;
     right: 0;
     height: auto;
+    max-height: calc(100vh - var(--navbar-height));
+    max-height: calc(100dvh - var(--navbar-height));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
@@ -705,10 +710,22 @@
     border-radius: var(--radius-md);
     background: transparent;
     box-shadow: none;
-    padding: 4px 0 4px 8px;
+    max-height: 0;
+    padding: 0 0 0 8px;
+    overflow: hidden;
+    visibility: hidden;
+    transition:
+      max-height 280ms ease,
+      opacity 220ms ease,
+      padding 280ms ease,
+      visibility 220ms ease;
   }
 
   .dropdownOpen {
+    max-height: 640px;
+    padding: 4px 0 4px 8px;
+    opacity: 1;
+    visibility: visible;
     transform: none;
   }
 

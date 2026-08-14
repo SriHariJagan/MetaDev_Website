@@ -161,7 +161,7 @@ export function ProductShowcase({
   className,
 }: ProductShowcaseProps) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(stageRef, { once: true, amount: 0.1 });
+  const isInView = useInView(stageRef, { once: false, amount: 0.1 });
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const paused = useRef(false);

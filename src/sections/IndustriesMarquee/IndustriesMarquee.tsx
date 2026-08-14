@@ -26,7 +26,7 @@ export function IndustriesMarquee({
   className,
 }: IndustriesMarqueeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.2 });
 
   return (
     <Section className={cn(styles.root, className)}>

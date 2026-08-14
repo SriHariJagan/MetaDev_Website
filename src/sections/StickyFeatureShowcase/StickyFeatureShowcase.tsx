@@ -115,7 +115,7 @@ export function StickyFeatureShowcase({
   items = DEFAULT_ITEMS,
 }: StickyFeatureShowcaseProps) {
   const headerRef = useRef<HTMLDivElement>(null);
-  const isHeaderInView = useInView(headerRef, { once: true, amount: 0.3 });
+  const isHeaderInView = useInView(headerRef, { once: false, amount: 0.3 });
 
   const listRef = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({
@@ -184,7 +184,7 @@ export function StickyFeatureShowcase({
                   custom={index}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, amount: 0.5, margin: "-15% 0px -15% 0px" }}
+                  viewport={{ once: false, amount: 0.5, margin: "-15% 0px -15% 0px" }}
                 >
                   <span className={styles.rowNum}>
                     {String(index + 1).padStart(2, "0")}

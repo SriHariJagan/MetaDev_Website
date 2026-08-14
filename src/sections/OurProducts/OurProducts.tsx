@@ -305,7 +305,7 @@ const itemVariants = fadeUp(20, 0.35);
 export function OurProducts() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeProductId, setActiveProductId] = useState(PRODUCTS[0].id);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
   const activeProduct =
     PRODUCTS.find((product) => product.id === activeProductId) ?? PRODUCTS[0];
 

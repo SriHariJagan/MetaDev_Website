@@ -1,4 +1,4 @@
-﻿// SolutionsGrid.tsx — unique card grid for solutions we deliver
+// SolutionsGrid.tsx — unique card grid for solutions we deliver
 import { memo, useRef, useState, useCallback, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, LayoutGroup, useReducedMotion, type Variants } from "framer-motion";
@@ -171,7 +171,7 @@ export function SolutionsGrid({
   className,
 }: SolutionsGridProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.1 });
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [focusedId, setFocusedId] = useState<string | null>(null);
   const [lastActiveId, setLastActiveId] = useState<string | null>(null);

@@ -1,5 +1,5 @@
 // SolutionsHero.tsx — intro hero for the Solutions page: left copy + right floating card collage
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import {
   BrainCircuit,
   Cloud,
@@ -18,7 +18,7 @@ import styles from "./SolutionsHero.module.css";
 const containerVariants = staggerContainer(0.1);
 const itemVariants = fadeUp(20, 0.45);
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24, scale: 0.96 },
   visible: {
     opacity: 1,

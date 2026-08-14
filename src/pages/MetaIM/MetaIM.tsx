@@ -28,7 +28,7 @@ import { defaultContainerVariants, defaultItemVariants } from '@/constants/motio
 import { cn } from '@/utils/cn';
 import styles from './MetaIM.module.css';
 
-const VIEWPORT = { once: true, amount: 0.2 } as const;
+const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['cyan', 'blue', 'teal', 'green', 'indigo', 'violet'] as const;
 
 /* ------------------------------------------------------------------ */

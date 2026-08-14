@@ -102,7 +102,7 @@ export function BeyondTheCode({
   subtitle = 'The culture behind the products — how our team stays curious, connected and energized.',
 }: BeyondTheCodeProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
   return (
     <Section className={styles.root}>

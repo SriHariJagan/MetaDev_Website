@@ -73,7 +73,7 @@ const PERKS: Perk[] = [
 
 export function CareerPerks() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
 
   return (
     <Section className={styles.root} id="life-at-metadev">

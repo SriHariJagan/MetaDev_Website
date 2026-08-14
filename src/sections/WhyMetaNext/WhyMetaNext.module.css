@@ -630,7 +630,11 @@
 
 @media (max-width: 64rem) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .differentiatorsPanel {
+    width: 100%;
   }
 
   .statsRow {
@@ -640,7 +644,12 @@
 
 @media (max-width: 40rem) {
   .statsRow {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statLabel {
+    font-size: 0.625rem;
+    white-space: normal;
   }
 
   .checklist {

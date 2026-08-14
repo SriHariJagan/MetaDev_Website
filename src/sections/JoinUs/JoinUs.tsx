@@ -27,7 +27,7 @@ export function JoinUs({
   subtitle = 'We hire senior people and give them real ownership. If you care about craft, this is the place.',
 }: JoinUsProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
 
   return (
     <Section className={styles.root} id="open-roles">

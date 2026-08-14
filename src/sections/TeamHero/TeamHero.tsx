@@ -80,7 +80,7 @@ export function TeamHero({
   subtitle = 'A distributed team of engineers, designers and AI specialists who chose craftsmanship over shortcuts — and ship together from six countries.',
 }: TeamHeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const isInView = useInView(sectionRef, { once: false, amount: 0.15 });
 
   return (
     <Section size="md" className={styles.hero}>

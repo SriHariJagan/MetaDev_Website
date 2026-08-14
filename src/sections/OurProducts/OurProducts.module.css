@@ -426,6 +426,14 @@
 }
 
 @media (max-width: 40rem) {
+  .heroStats {
+    gap: var(--space-3);
+  }
+
+  .heroStatLabel {
+    white-space: nowrap;
+  }
+
   .explorerFeatures {
     grid-template-columns: 1fr;
   }

@@ -305,7 +305,7 @@ function GrowthIllustration({ inView }: { inView: boolean }) {
 
 export function WhyMetaNext() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.15 });
+  const isInView = useInView(containerRef, { once: false, amount: 0.15 });
 
   return (
     <Section bordered>
