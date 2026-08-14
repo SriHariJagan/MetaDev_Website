@@ -1,17 +1,12 @@
 // OurProducts.tsx
-import { useEffect, useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 import {
   motion,
+  AnimatePresence,
   useInView,
-  animate,
-  useMotionValue,
-  type Variants,
 } from "framer-motion";
 import {
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle2,
   HeartPulse,
   BookOpen,
@@ -33,16 +28,15 @@ import {
 import { Section } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
 import { GradientText } from "@/components/common/GradientText";
-import { GlassCard } from "@/components/common/GlassCard";
-import { IconCircle } from "@/components/common/IconCircle";
-import { IconButton } from "@/components/common/IconButton";
-import { GradientDefs } from "@/components/common/GradientDefs";
 import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
 import { Button } from "@/components/common/Button";
 import { fadeUp, staggerContainer } from "@/constants/motion";
 import { ProductMockup } from "./ProductMockup";
 import styles from "./OurProducts.module.css";
+
+import metaAddsImage from "@/assets/images/ourProducts/metaAdds.png";
+import metaHireImage from "@/assets/images/ourProducts/metaHire.png";
 
 type Accent = "teal" | "blue" | "violet" | "amber";
 
@@ -185,6 +179,7 @@ const PRODUCTS: Product[] = [
     ],
     ctaLabel: "Explore MetaHire",
     href: "/products/metahire",
+    screenshotUrl: metaHireImage,
   },
   {
     id: "metacheck",
@@ -231,6 +226,7 @@ const PRODUCTS: Product[] = [
     ],
     ctaLabel: "Explore MetaAdds",
     href: "/products/metaadds",
+    screenshotUrl: metaAddsImage,
   },
   {
     id: "metagreen",
@@ -288,7 +284,7 @@ interface HeroStat {
 }
 
 const HERO_STATS: HeroStat[] = [
-  { icon: Boxes, value: "3+", label: "Core Platforms", accent: "violet" },
+  { icon: Boxes, value: "8+", label: "SaaS Products", accent: "violet" },
   { icon: Layers, value: "25+", label: "Modules", accent: "blue" },
   { icon: Workflow, value: "500+", label: "Integrations", accent: "amber" },
   { icon: Globe2, value: "100%", label: "Global Ready", accent: "teal" },
@@ -302,194 +298,19 @@ const containerVariants = staggerContainer(0.07);
 
 const itemVariants = fadeUp(20, 0.35);
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 28, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.4, ease: "easeOut" },
-  },
-};
-
-const AUTOPLAY_MS = 3200;
-const SLIDE_MS = 550;
-
-/* ------------------------------------------------------------------ */
-/* Product card                                                        */
-/* ------------------------------------------------------------------ */
-
-function ProductCard({ product }: { product: Product }) {
-  const Icon = product.icon;
-
-  return (
-    <GlassCard
-      as={motion.li}
-      hover="lgSoft"
-      className={`${styles.card} ${styles[`accent-${product.accent}`]}`}
-      variants={cardVariants}
-    >
-      <Link to={product.href} className={styles.cardLinkWrap}>
-        <div className={styles.cardHeader}>
-          <IconCircle size="md" variant="gradient">
-            <Icon
-              size={18}
-              stroke={`url(#grad-${product.accent})`}
-              aria-hidden="true"
-            />
-          </IconCircle>
-          <div className={styles.cardHeading}>
-            <h3 className={styles.cardName}>{product.name}</h3>
-            <span className={styles.cardSubtitle}>{product.subtitle}</span>
-          </div>
-          <span className={styles.cardBadge}>{product.badge}</span>
-        </div>
-
-        <ProductMockup
-          id={product.id}
-          name={product.name}
-          icon={product.icon}
-          screenshotUrl={product.screenshotUrl}
-        />
-
-        <ul className={styles.featureList}>
-          {product.features.map((feature) => (
-            <li key={feature} className={styles.featureItem}>
-              <CheckCircle2
-                size={15}
-                className={styles.featureCheck}
-                aria-hidden="true"
-              />
-              <span>{feature}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div className={styles.miniStats}>
-          {product.stats.map((stat) => (
-            <div key={stat.label} className={styles.miniStat}>
-              <stat.icon
-                size={16}
-                className={styles.miniStatIcon}
-                aria-hidden="true"
-              />
-              <span className={styles.miniStatValue}>{stat.value}</span>
-              <span className={styles.miniStatLabel}>{stat.label}</span>
-            </div>
-          ))}
-        </div>
-
-        <span className={styles.cardLink}>
-          {product.ctaLabel}
-          <ArrowRight
-            size={14}
-            className={styles.cardLinkArrow}
-            aria-hidden="true"
-          />
-        </span>
-      </Link>
-    </GlassCard>
-  );
-}
-
 /* ------------------------------------------------------------------ */
 /* Main section                                                        */
 /* ------------------------------------------------------------------ */
 
 export function OurProducts() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLUListElement>(null);
-  const paused = useRef(false);
-  const direction = useRef<1 | -1>(1);
-  const wheelLock = useRef(0);
-  const x = useMotionValue(0);
-  const [unit, setUnit] = useState(0);
-  const [index, setIndex] = useState(0);
+  const [activeProductId, setActiveProductId] = useState(PRODUCTS[0].id);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
-
-  useEffect(() => {
-    const measure = () => {
-      const track = trackRef.current;
-      const card = track?.firstElementChild;
-      if (!track || !(card instanceof HTMLElement)) return;
-      const gap = parseFloat(getComputedStyle(track).columnGap || "16px") || 16;
-      setUnit(card.getBoundingClientRect().width + gap);
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (viewportRef.current) observer.observe(viewportRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (unit <= 0) return;
-    const controls = animate(x, -(index * unit), {
-      duration: SLIDE_MS / 1000,
-      ease: "easeInOut",
-    });
-    return () => controls.stop();
-  }, [index, unit, x]);
-
-  const advance = useCallback(
-    (current: number, dir: 1 | -1): number => {
-      const next = current + dir;
-      if (next > PRODUCTS.length) {
-        x.jump(0);
-        return 0;
-      }
-      if (next < 0) {
-        x.jump(-PRODUCTS.length * unit);
-        return PRODUCTS.length;
-      }
-      return next;
-    },
-    [x, unit],
-  );
-
-  useEffect(() => {
-    if (unit <= 0) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const id = window.setInterval(() => {
-      if (paused.current) return;
-      setIndex((current) => advance(current, direction.current));
-    }, AUTOPLAY_MS);
-
-    return () => window.clearInterval(id);
-  }, [unit, x, advance]);
-
-  useEffect(() => {
-    const el = viewportRef.current;
-    if (!el) return;
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const delta =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (Math.abs(delta) < 5) return;
-      const now = performance.now();
-      if (now - wheelLock.current < 180) return;
-      wheelLock.current = now;
-      direction.current = delta > 0 ? 1 : -1;
-      setIndex((current) => advance(current, direction.current));
-    };
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [advance]);
-
-  const goTo = (dir: 1 | -1) => {
-    direction.current = dir;
-    setIndex((current) => advance(current, dir));
-  };
-
-  const doubled = [...PRODUCTS, ...PRODUCTS];
+  const activeProduct =
+    PRODUCTS.find((product) => product.id === activeProductId) ?? PRODUCTS[0];
 
   return (
     <Section bordered>
-      <GradientDefs />
       <BackgroundDecor>
         <div className={styles.glow} />
         <CornerDots corner="right" />
@@ -512,16 +333,27 @@ export function OurProducts() {
           </motion.p>
 
           <motion.div className={styles.heroStats} variants={itemVariants}>
-            {HERO_STATS.map((stat) => (
+            {HERO_STATS.map((stat, index) => (
               <div
                 key={stat.label}
                 className={`${styles.heroStat} ${styles[`accent-${stat.accent}`]}`}
               >
-                <stat.icon
-                  size={22}
-                  className={styles.heroStatIcon}
-                  aria-hidden="true"
-                />
+                <motion.span
+                  className={styles.heroStatIconWrap}
+                  animate={isInView ? { y: [0, -5, 0] } : { y: 0 }}
+                  transition={{
+                    duration: 2.8,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.15,
+                  }}
+                >
+                  <stat.icon
+                    size={20}
+                    className={styles.heroStatIcon}
+                    aria-hidden="true"
+                  />
+                </motion.span>
                 {stat.value && (
                   <span className={styles.heroStatValue}>{stat.value}</span>
                 )}
@@ -533,42 +365,104 @@ export function OurProducts() {
       </Container>
 
       <Container maxWidth="wide">
-        <div className={styles.showcase}>
-          <IconButton
-            label="Previous products"
-            className={styles.navButton}
-            onClick={() => goTo(-1)}
-          >
-            <ChevronLeft size={16} />
-          </IconButton>
-
-          <div
-            ref={viewportRef}
-            className={styles.viewport}
-            onMouseEnter={() => (paused.current = true)}
-            onMouseLeave={() => (paused.current = false)}
-          >
-            <motion.ul
-              ref={trackRef}
-              className={styles.track}
-              style={{ x }}
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-            >
-              {doubled.map((product, i) => (
-                <ProductCard key={`${product.id}-${i}`} product={product} />
-              ))}
-            </motion.ul>
+        <div className={styles.explorer}>
+          <div className={styles.explorerTabs} role="tablist">
+            {PRODUCTS.map((product) => {
+              const isActive = product.id === activeProductId;
+              return (
+                <button
+                  key={product.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  className={`${styles.explorerTab} ${styles[`accent-${product.accent}`]} ${
+                    isActive ? styles.explorerTabActive : ""
+                  }`}
+                  onClick={() => setActiveProductId(product.id)}
+                >
+                  <product.icon size={14} aria-hidden="true" />
+                  {product.name}
+                </button>
+              );
+            })}
           </div>
 
-          <IconButton
-            label="Next products"
-            className={styles.navButton}
-            onClick={() => goTo(1)}
-          >
-            <ChevronRight size={16} />
-          </IconButton>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeProduct.id}
+              className={`${styles.explorerPanel} ${styles[`accent-${activeProduct.accent}`]}`}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+            >
+              <div className={styles.explorerImage}>
+                <ProductMockup
+                  id={activeProduct.id}
+                  name={activeProduct.name}
+                  icon={activeProduct.icon}
+                  screenshotUrl={activeProduct.screenshotUrl}
+                />
+              </div>
+
+              <div className={styles.explorerContent}>
+                <span className={styles.explorerBadge}>
+                  {activeProduct.badge}
+                </span>
+                <h3 className={styles.explorerTitle}>{activeProduct.name}</h3>
+                <p className={styles.explorerSubtitle}>
+                  {activeProduct.subtitle}
+                </p>
+
+                <ul className={styles.explorerFeatures}>
+                  {activeProduct.features.map((feature) => (
+                    <li key={feature} className={styles.explorerFeatureItem}>
+                      <CheckCircle2
+                        size={16}
+                        className={styles.explorerFeatureCheck}
+                        aria-hidden="true"
+                      />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className={styles.explorerStats}>
+                  {activeProduct.stats.map((stat, statIndex) => (
+                    <div key={stat.label} className={styles.explorerStat}>
+                      <motion.span
+                        className={styles.explorerStatIconWrap}
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{
+                          duration: 2.8,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: statIndex * 0.15,
+                        }}
+                      >
+                        <stat.icon
+                          size={22}
+                          className={styles.explorerStatIcon}
+                          aria-hidden="true"
+                        />
+                      </motion.span>
+                      <span className={styles.explorerStatValue}>
+                        {stat.value}
+                      </span>
+                      <span className={styles.explorerStatLabel}>
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <Button to={activeProduct.href} variant="outline" size="sm">
+                  {activeProduct.ctaLabel}
+                  <ArrowRight size={14} aria-hidden="true" />
+                </Button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </Container>
 

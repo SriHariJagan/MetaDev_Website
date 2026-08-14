@@ -4,7 +4,6 @@ import {
   BrainCircuit,
   Briefcase,
   Building2,
-  CalendarDays,
   Cloud,
   Globe,
   Headset,
@@ -242,10 +241,6 @@ export function Hero() {
             <Button to="/solutions" size="md" variant="gradient">
               Explore Solutions
               <ArrowRight size={16} aria-hidden="true" />
-            </Button>
-            <Button to="/contact" size="md" variant="outline">
-              Schedule a Demo
-              <CalendarDays size={16} aria-hidden="true" />
             </Button>
           </motion.div>
 

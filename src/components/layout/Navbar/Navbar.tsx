@@ -21,8 +21,8 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: 'Home', to: '/' },
-  { label: 'Solutions', to: '/solutions' },
-  { label: 'OurProducts', to: '/products', dropdown: true },
+  { label: 'Our Solutions', to: '/solutions' },
+  { label: 'Our Platforms', to: '/products', dropdown: true },
   { label: 'Team', to: '/team' },
   { label: 'About Us', to: '/about' },
   { label: 'Careers', to: '/careers' },

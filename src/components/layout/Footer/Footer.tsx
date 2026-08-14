@@ -132,19 +132,10 @@ export function LetsBuildFuture() {
 
         <motion.div className={styles.ctaActions} variants={itemVariants}>
           <Button
-            to="/contact?intent=demo"
+            to="/contact?intent=sales"
             variant="gradient"
             size="md"
             className={styles.primaryBtn}
-          >
-            Book a Demo
-            <ArrowRight size={14} aria-hidden="true" />
-          </Button>
-          <Button
-            to="/contact?intent=sales"
-            variant="outline"
-            size="md"
-            className={styles.secondaryBtn}
           >
             Talk to Sales
             <ArrowRight size={14} aria-hidden="true" />

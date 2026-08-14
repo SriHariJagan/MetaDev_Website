@@ -37,8 +37,8 @@
   filter: blur(10px);
 }
 
-:global([data-theme='light']) .glowTop,
-:global([data-theme='light']) .glowBottom {
+:global([data-theme="light"]) .glowTop,
+:global([data-theme="light"]) .glowBottom {
   opacity: 0.1;
 }
 
@@ -178,37 +178,200 @@
   color: var(--color-text-muted);
 }
 
-/* ---------- Image visual ---------- */
+/* ---------- Constellation visual ---------- */
 
 .visual {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 480px;
-  padding: var(--space-8) 0;
 }
 
-.image {
-  display: block;
+.constellation {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+.constellationSvg {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: calc(1.6rem - 1px);
+  pointer-events: none;
 }
 
-.visual:hover .imageFrame {
-  transform: translateY(-6px);
+.constellationLine {
+  stroke: rgba(19, 121, 194, 0.4);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 5;
+  vector-effect: non-scaling-stroke;
+}
+
+[data-theme="light"] .constellationLine {
+  stroke: rgba(19, 121, 194, 0.28);
+}
+
+/* Flowing energy spark travelling from the core out to each node */
+.flowDot {
+  fill: rgb(var(--accent, 94 184 255));
+  filter: drop-shadow(0 0 5px rgba(var(--accent, 94 184 255), 0.95));
+}
+
+/* Soft blurred halo trailing behind the core spark */
+.flowGlow {
+  fill: rgb(var(--accent, 94 184 255));
+  filter: blur(2.5px);
+}
+
+/* Hub — plain positioning shell; keeps translate(-50%,-50%) centering intact
+   even though .hubInner animates scale (Framer would otherwise overwrite a
+   transform declared on the same element it animates). */
+.hubNode {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.hubInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--product-accent-violet, 139 92 246), 0.45);
+  background: radial-gradient(
+    circle,
+    rgba(var(--product-accent-violet, 139 92 246), 0.14) 0%,
+    var(--glass-navy) 75%
+  );
   box-shadow:
-    0 40px 90px -22px rgba(2, 10, 30, 0.6),
-    0 0 70px -8px rgba(var(--accent-blue-rgb, 37 99 235), 0.45);
+    0 0 0 6px rgba(2, 10, 30, 0.35),
+    0 12px 34px -10px rgba(var(--product-accent-violet, 139 92 246), 0.55);
+}
+
+:global([data-theme="light"]) .hubInner {
+  background: radial-gradient(
+    circle,
+    rgba(var(--product-accent-violet, 139 92 246), 0.16) 0%,
+    var(--glass-navy-light-soft) 75%
+  );
+  box-shadow: 0 12px 34px -10px
+    rgba(var(--product-accent-violet, 139 92 246), 0.4);
+}
+
+.hubRing {
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  border: 1px dashed rgba(var(--product-accent-violet, 139 92 246), 0.4);
+}
+
+.hubIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--product-accent-violet, 139 92 246));
+}
+
+.hubTitle {
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.hubTag {
+  font-size: 0.55rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1.5px;
+  color: rgb(var(--product-accent-violet, 139 92 246));
+}
+
+/* Satellite nodes — fixed width so labels wrap consistently at every position */
+/* The wrap's box is exactly the icon's box, so translate(-50%,-50%) puts the
+   icon's centre precisely on the line endpoint. The label is a separately
+   anchored child so its text never shifts the icon off the line. */
+.satelliteWrap {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.satelliteNode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.4);
+  background: rgba(var(--accent, 94 184 255), 0.12);
+  color: rgb(var(--accent, 94 184 255));
+  box-shadow: 0 6px 18px -6px rgba(var(--accent, 94 184 255), 0.5);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.satelliteWrap:hover .satelliteNode {
+  box-shadow: 0 8px 24px -6px rgba(var(--accent, 94 184 255), 0.75);
+}
+
+.satelliteLabel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.35rem;
+  width: 92px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.satelliteTitle {
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.satelliteSubtitle {
+  font-size: 0.58rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.accent-green {
+  --accent: var(--product-accent-green, 34 197 94);
+}
+
+.accent-indigo {
+  --accent: var(--product-accent-indigo, 99 102 241);
+}
+
+.accent-rose {
+  --accent: var(--product-accent-rose, 190 18 60);
 }
 
 /* Trust badge overlay */
 .avatarBadge {
   position: absolute;
-  top: 8%;
-  right: 2%;
+  top: 14px;
+  right: 6%;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -244,90 +407,21 @@
   }
 }
 
-.avatarBadgeDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgb(var(--product-accent-green, 34 197 94));
-  box-shadow: 0 0 0 3px rgba(var(--product-accent-green, 34 197 94), 0.25);
-  animation: dotPulse 2s ease-in-out infinite;
-}
-
-@keyframes dotPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 3px rgba(var(--product-accent-green, 34 197 94), 0.25);
-  }
-  50% {
-    box-shadow: 0 0 0 6px rgba(var(--product-accent-green, 34 197 94), 0.1);
-  }
-}
-
-/* Floating chips */
-.chip {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.85rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  font-size: var(--font-size-4xs);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  box-shadow: 0 10px 28px rgba(2, 10, 30, 0.3);
-  white-space: nowrap;
-}
-
-.chipTopLeft {
-  top: 14%;
-  left: 2%;
-}
-
-.chipTopRight {
-  top: 26%;
-  right: 0%;
-}
-
-.chipBottomLeft {
-  bottom: 18%;
-  left: 6%;
-}
-
-.chipBottomRight {
-  bottom: 8%;
-  right: 6%;
-}
-
-.chipIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-}
-
+/* Satellite accent colors */
 .accent-cyan {
-  color: rgb(var(--product-accent-cyan, 6 182 212));
-  background: rgba(var(--product-accent-cyan, 6 182 212), 0.14);
+  --accent: var(--product-accent-cyan, 6 182 212);
 }
 
 .accent-violet {
-  color: rgb(var(--product-accent-violet, 139 92 246));
-  background: rgba(var(--product-accent-violet, 139 92 246), 0.14);
+  --accent: var(--product-accent-violet, 139 92 246);
 }
 
 .accent-amber {
-  color: rgb(var(--product-accent-amber, 245 158 11));
-  background: rgba(var(--product-accent-amber, 245 158 11), 0.14);
+  --accent: var(--product-accent-amber, 217 119 6);
 }
 
 .accent-blue {
-  color: rgb(var(--product-accent-blue, 59 130 246));
-  background: rgba(var(--product-accent-blue, 59 130 246), 0.14);
+  --accent: var(--product-accent-blue, 37 99 235);
 }
 
 /* ---------- Responsive ---------- */
@@ -352,11 +446,11 @@
   }
 
   .visual {
-    min-height: 400px;
+    min-height: 420px;
   }
 
-  .imageFrame {
-    width: min(100%, 380px);
+  .constellation {
+    max-width: 420px;
   }
 }
 
@@ -366,25 +460,36 @@
   }
 
   .visual {
-    min-height: 320px;
+    min-height: 380px;
   }
 
-  .imageFrame {
-    width: min(100%, 300px);
+  .constellation {
+    max-width: 340px;
   }
 
-  .visualGlow {
-    width: 340px;
-    height: 340px;
+  .hubNode {
+    width: 68px;
+    height: 68px;
   }
 
-  .visualGlowSecondary {
-    width: 280px;
-    height: 280px;
+  .hubTitle {
+    font-size: 0.68rem;
   }
 
-  .chip {
-    font-size: 0.62rem;
-    padding: 0.35rem 0.7rem;
+  .satelliteWrap {
+    width: 34px;
+    height: 34px;
+  }
+
+  .satelliteLabel {
+    width: 74px;
+  }
+
+  .satelliteTitle {
+    font-size: 0.6rem;
+  }
+
+  .satelliteSubtitle {
+    display: none;
   }
 }

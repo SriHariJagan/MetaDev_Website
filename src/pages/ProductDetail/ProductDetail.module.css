@@ -33,6 +33,30 @@
   --grad-2: var(--product-grad-teal-2, 4 120 87);
 }
 
+.accent-orange {
+  --accent: var(--product-accent-orange, 234 88 12);
+  --grad-1: var(--product-grad-orange-1, 249 115 22);
+  --grad-2: var(--product-grad-orange-2, 194 65 12);
+}
+
+.accent-green {
+  --accent: var(--product-accent-green, 22 163 74);
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
+}
+
+.accent-indigo {
+  --accent: var(--product-accent-indigo, 79 70 229);
+  --grad-1: var(--product-grad-indigo-1, 99 102 241);
+  --grad-2: var(--product-grad-indigo-2, 67 56 202);
+}
+
+.accent-cyan {
+  --accent: var(--product-accent-cyan, 8 145 178);
+  --grad-1: var(--product-grad-cyan-1, 6 182 212);
+  --grad-2: var(--product-grad-cyan-2, 8 145 178);
+}
+
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
 /* ------------------------------------------------------------------ */
@@ -40,6 +64,7 @@
 .hero {
   position: relative;
   overflow: hidden;
+  padding-top: calc(var(--navbar-height) + var(--space-12)) !important;
 }
 
 /* Colourful aurora backdrop */

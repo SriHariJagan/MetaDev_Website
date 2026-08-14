@@ -1,7 +1,13 @@
 /* SolutionsShowcase.module.css — selection-driven showcase: names on top, detail below */
 
+/* NOTE: deliberately a plain <section>, not the shared `.section` wrapper —
+   that sets overflow:hidden, which breaks `position: sticky` on `.tabList` below. */
+
 .root {
-  padding-top: var(--space-16);
+  position: relative;
+  background-color: var(--color-bg);
+  scroll-margin-top: calc(var(--navbar-height) + 1rem);
+  padding-block: var(--space-16);
 }
 
 /* ---------- Background detailing ---------- */
@@ -87,81 +93,102 @@
   color: var(--color-text-muted);
 }
 
-/* ---------- Top: solution name tabs ---------- */
+/* ---------- Layout: side stack + detail panel ---------- */
 
-.tabsWrap {
-  display: flex;
-  justify-content: center;
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
 }
 
-.tabsRow {
+.tabList {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.4rem;
-  width: 100%;
+  flex-direction: column;
+  gap: 0.05rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .tab {
   position: relative;
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.32rem 0.75rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
+  gap: 0.55rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
+  text-align: left;
   transition:
-    color var(--transition-fast),
     background var(--transition-fast),
     border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+    box-shadow var(--transition-fast);
 }
 
 .tab:hover {
-  color: var(--color-text);
-  border-color: rgba(var(--accent), 0.35);
-  transform: translateY(-2px);
+  background: var(--glass-bg);
 }
 
 .tabActive {
-  color: var(--color-text);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--accent), 0.16) 0%,
-    rgba(var(--accent), 0.06) 100%
-  );
-  border-color: rgba(var(--accent), 0.5);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 8px 24px rgba(var(--accent), 0.15),
-    0 0 0 1px rgba(var(--accent), 0.15);
+    0 12px 28px -14px rgba(2, 10, 30, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.tabIcon {
+.tabIconWrap {
   flex-shrink: 0;
-  color: rgb(var(--accent));
-  opacity: 0.9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+:global([data-theme="light"]) .tabIconWrap {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.tabActive .tabIconWrap {
+  color: #fff;
+  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+  box-shadow: 0 6px 18px -4px rgba(var(--accent), 0.65);
 }
 
 .tabActive .tabLabel {
   color: var(--color-text);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
 }
 
 .tabLabel {
-  font-size: 0.64rem;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8rem;
   font-weight: var(--font-weight-medium);
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
   white-space: nowrap;
-  transition: color var(--transition-fast);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    color var(--transition-fast),
+    font-weight var(--transition-fast);
 }
 
 .tabDot {
+  flex-shrink: 0;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -173,114 +200,61 @@
 
 .tabAccent-blue {
   --accent: var(--product-accent-blue, 37 99 235);
+  --grad-1: var(--product-grad-blue-1, 59 130 246);
+  --grad-2: var(--product-grad-blue-2, 29 78 216);
 }
 .tabAccent-amber {
   --accent: var(--product-accent-amber, 217 119 6);
+  --grad-1: var(--product-grad-amber-1, 245 158 11);
+  --grad-2: var(--product-grad-amber-2, 180 83 9);
 }
 .tabAccent-violet {
   --accent: var(--product-accent-violet, 139 92 246);
+  --grad-1: var(--product-grad-violet-1, 139 92 246);
+  --grad-2: var(--product-grad-violet-2, 109 40 217);
 }
 .tabAccent-teal {
   --accent: var(--product-accent-teal, 20 184 166);
+  --grad-1: var(--product-grad-teal-1, 20 184 166);
+  --grad-2: var(--product-grad-teal-2, 4 120 87);
 }
 .tabAccent-orange {
   --accent: var(--product-accent-orange, 234 130 46);
+  --grad-1: var(--product-grad-orange-1, 249 115 22);
+  --grad-2: var(--product-grad-orange-2, 194 65 12);
 }
 .tabAccent-pink {
   --accent: var(--product-accent-pink, 236 72 153);
+  --grad-1: var(--product-grad-pink-1, 236 72 153);
+  --grad-2: var(--product-grad-pink-2, 190 24 93);
 }
 .tabAccent-green {
   --accent: var(--product-accent-green, 34 197 94);
+  --grad-1: var(--product-grad-green-1, 34 197 94);
+  --grad-2: var(--product-grad-green-2, 21 128 61);
 }
 .tabAccent-cyan {
   --accent: var(--product-accent-cyan, 6 182 212);
+  --grad-1: var(--product-grad-cyan-1, 6 182 212);
+  --grad-2: var(--product-grad-cyan-2, 8 145 178);
 }
 .tabAccent-indigo {
   --accent: var(--product-accent-indigo, 99 102 241);
+  --grad-1: var(--product-grad-indigo-1, 99 102 241);
+  --grad-2: var(--product-grad-indigo-2, 67 56 202);
 }
 .tabAccent-red {
   --accent: var(--product-accent-red, 239 68 68);
+  --grad-1: var(--product-grad-red-1, 239 68 68);
+  --grad-2: var(--product-grad-red-2, 185 28 28);
 }
 
-/* ---------- Bottom: detail stage ---------- */
+/* ---------- Right: detail stage ---------- */
 
 .panelStage {
+  position: sticky;
+  top: calc(var(--navbar-height, 4rem) + 1.5rem);
   min-width: 0;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* ---------- Selection placeholder ---------- */
-
-.placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  text-align: center;
-  width: 100%;
-  max-width: 58rem;
-  min-height: 240px;
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  border: 1px dashed rgba(var(--accent-violet), 0.35);
-  background: var(--glass-navy);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 30px 70px rgba(2, 10, 30, 0.25);
-}
-
-:global([data-theme="light"]) .placeholder {
-  background: var(--glass-navy-light-soft);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 30px 70px rgba(37, 99, 235, 0.1);
-}
-
-.placeholderIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  background: rgba(var(--accent-violet), 0.12);
-  border: 1px solid rgba(var(--accent-violet), 0.3);
-  color: var(--navbar-accent);
-  box-shadow: 0 0 24px rgba(var(--accent-violet), 0.2);
-  animation: pulse 2.4s ease-in-out infinite;
-}
-
-.placeholderTitle {
-  margin: 0;
-  padding: 0;
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
-}
-
-.placeholderText {
-  margin: 0;
-  max-width: 24rem;
-  font-size: 0.68rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.06);
-    opacity: 0.85;
-  }
 }
 
 /* ---------- Detail panel ---------- */
@@ -292,7 +266,6 @@
   flex-direction: column;
   gap: var(--space-2);
   width: 100%;
-  max-width: 58rem;
   padding: var(--space-4);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(var(--accent), 0.3);
@@ -534,7 +507,9 @@
 
 /* ---------- Block wrap (points / tech) ---------- */
 .blockLabel {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.6rem;
   font-weight: var(--font-weight-bold);
   letter-spacing: 1px;
@@ -652,8 +627,8 @@
 
 .pointList {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.4rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -662,78 +637,24 @@
 .pointItem {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.55rem;
   min-width: 0;
-  padding: 0.35rem 0.5rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition:
-    border-color var(--transition-medium),
-    background var(--transition-medium),
-    box-shadow var(--transition-medium),
-    transform var(--transition-medium);
 }
 
-.pointItem:hover {
-  border-color: rgba(94, 184, 255, 0.5);
-  background: rgba(var(--accent-blue-rgb), 0.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 12px 28px -10px rgba(var(--accent-blue-rgb), 0.35),
-    0 0 0 1px rgba(94, 184, 255, 0.25);
-  transform: translateY(-2px);
-}
-
-:global([data-theme="light"]) .pointItem {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-}
-
-:global([data-theme="light"]) .pointItem:hover {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    0 12px 28px -10px rgba(var(--accent-blue-rgb), 0.3),
-    0 0 0 1px rgba(94, 184, 255, 0.35);
-}
-
-/* Light-tinted circle + gradient check icon (light → dark stroke) */
-.pointIcon {
+.pointDot {
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: rgba(var(--accent), 0.12);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--accent), 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    background var(--transition-fast);
-}
-
-.pointItem:hover .pointIcon {
-  transform: scale(1.1) rotate(-4deg);
-  background: rgba(var(--accent), 0.18);
-  box-shadow:
-    inset 0 0 0 1px rgba(var(--accent), 0.4),
-    0 0 14px rgba(var(--accent), 0.25);
+  background: rgb(var(--accent));
+  box-shadow: 0 0 8px rgba(var(--accent), 0.6);
 }
 
 .pointText {
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
   line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .panelFooter {
@@ -769,5 +690,24 @@
 
   .panel {
     padding: var(--space-4);
+  }
+}
+
+@media (max-width: 56rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .tabList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    width: auto;
+  }
+
+  .panelStage {
+    position: static;
   }
 }

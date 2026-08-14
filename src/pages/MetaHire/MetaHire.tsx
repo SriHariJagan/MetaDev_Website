@@ -2,7 +2,6 @@
 // Concept: a live recruiting kanban board.
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   ArrowRight,
   BarChart3,
   CalendarDays,
@@ -17,7 +16,6 @@ import {
   UserCheck,
   UserPlus,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Container } from '@/components/common/Container';
@@ -272,13 +270,7 @@ export function MetaHirePage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              <motion.div variants={defaultItemVariants}>
-                <Link to="/products" className={styles.breadcrumb}>
-                  <ArrowLeft size={16} className={styles.breadcrumbIcon} aria-hidden="true" />
-                  All products
-                </Link>
-              </motion.div>
-
+              
               <motion.div variants={defaultItemVariants}>
                 <Badge variant="glass">
                   <UserPlus size={14} aria-hidden="true" />

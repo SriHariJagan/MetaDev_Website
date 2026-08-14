@@ -16,8 +16,8 @@ import {
   Sparkles,
   Zap,
 } from 'lucide-react';
-import { GradientText } from '@/components/common/GradientText';
 import { Link } from 'react-router-dom';
+import { GradientText } from '@/components/common/GradientText';
 import { cn } from '@/utils/cn';
 import styles from './Login.module.css';
 

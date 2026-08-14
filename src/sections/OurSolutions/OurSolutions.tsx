@@ -10,12 +10,8 @@ import {
   Headset,
   Users,
   Award,
-  Workflow,
-  Share2,
   BrainCircuit,
-  Cloud,
   Smartphone,
-  Sparkles,
   Code,
   PenTool,
   Blocks,
@@ -234,52 +230,6 @@ const HERO_STATS: HeroStat[] = [
   { icon: Award, value: "ISO 27001", label: "Certified Security" },
 ];
 
-export interface Capability {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  accent?: Accent;
-}
-
-const CAPABILITIES: Capability[] = [
-  {
-    icon: Workflow,
-    title: "Integrated Ecosystem",
-    description: "All solutions work seamlessly together",
-    accent: "violet",
-  },
-  {
-    icon: Share2,
-    title: "Scalable & Flexible",
-    description: "Grows with your business needs",
-    accent: "blue",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure by Design",
-    description: "Enterprise-grade security and compliance",
-    accent: "green",
-  },
-  {
-    icon: BrainCircuit,
-    title: "AI Powered Insights",
-    description: "Smarter decisions with real-time analytics",
-    accent: "pink",
-  },
-  {
-    icon: Cloud,
-    title: "Cloud Ready",
-    description: "Available on cloud or on-premise",
-    accent: "cyan",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile First",
-    description: "Access anywhere, anytime",
-    accent: "orange",
-  },
-];
-
 /* ------------------------------------------------------------------ */
 /* Animation variants                                                  */
 /* ------------------------------------------------------------------ */
@@ -307,6 +257,7 @@ interface SolutionCardProps {
   solution: Solution;
   active: boolean;
   highlighted: boolean;
+  showDescription: boolean;
   onHoverStart: (id: string) => void;
   onHoverEnd: () => void;
   onFocusStart: (id: string) => void;
@@ -317,6 +268,7 @@ const SolutionCard = memo(function SolutionCard({
   solution,
   active,
   highlighted,
+  showDescription,
   onHoverStart,
   onHoverEnd,
   onFocusStart,
@@ -373,8 +325,8 @@ const SolutionCard = memo(function SolutionCard({
                     : { type: "spring", stiffness: 400, damping: 25 }
                 }
               >
-                <IconCircle size="xs" rounded="sm" variant="gradient">
-                  <Icon size={16} stroke={`url(#grad-${solution.accent})`} aria-hidden="true" />
+                <IconCircle size="xl" rounded="sm" variant="gradient">
+                  <Icon size={22} stroke={`url(#grad-${solution.accent})`} aria-hidden="true" />
                 </IconCircle>
               </motion.div>
             </div>
@@ -386,16 +338,19 @@ const SolutionCard = memo(function SolutionCard({
             >
               {solution.name}
             </motion.h3>
-            <p className={styles.cardDesc}>{solution.description}</p>
-
-            {solution.features && solution.features.length > 0 && (
-              <ul className={styles.featureList}>
-                {solution.features.map((feature) => (
-                  <li key={feature} className={styles.featureItem}>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+            {showDescription && (
+              <>
+                <p className={styles.cardDesc}>{solution.description}</p>
+                {solution.features && solution.features.length > 0 && (
+                  <ul className={styles.featureList}>
+                    {solution.features.map((feature) => (
+                      <li key={feature} className={styles.featureItem}>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
           </div>
         </GlassCard>
@@ -416,7 +371,7 @@ interface OurSolutionsProps {
   columns?: 5 | 6;
   solutions?: Solution[];
   stats?: HeroStat[];
-  capabilities?: Capability[];
+  showDescriptions?: boolean;
 }
 
 const DEFAULT_TITLE: ReactNode = (
@@ -435,7 +390,7 @@ export function OurSolutions({
   columns = 5,
   solutions = SOLUTIONS,
   stats = HERO_STATS,
-  capabilities = CAPABILITIES,
+  showDescriptions = true,
 }: OurSolutionsProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.1 });
@@ -559,6 +514,7 @@ export function OurSolutions({
                   solution={solution}
                   active={activeId === solution.id}
                   highlighted={highlightId === solution.id}
+                  showDescription={showDescriptions}
                   onHoverStart={handleHoverStart}
                   onHoverEnd={handleHoverEnd}
                   onFocusStart={handleFocusStart}
@@ -568,58 +524,6 @@ export function OurSolutions({
             </motion.ul>
           </LayoutGroup>
         </div>
-      </Container>
-
-      <Container maxWidth="wide" className={styles.capabilityRow}>
-        <motion.div
-          className={styles.capabilityHeader}
-          variants={itemVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <span className={styles.capabilityHeaderLine} />
-          <span className={styles.capabilityHeaderPill}>
-            <Sparkles size={13} aria-hidden="true" />
-            Built for the Modern Enterprise
-          </span>
-          <span className={styles.capabilityHeaderLine} />
-        </motion.div>
-
-        <motion.ul
-          className={styles.capabilityStrip}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {capabilities.map((cap, index) => (
-            <motion.li
-              key={cap.title}
-              className={cn(
-                styles.capabilityItem,
-                cap.accent && styles[`accent-${cap.accent}`]
-              )}
-              variants={itemVariants}
-            >
-              <span className={styles.capabilityNum}>
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className={styles.capabilityIcon}>
-                <cap.icon size={18} aria-hidden="true" />
-              </span>
-              <div className={styles.capabilityText}>
-                <span className={styles.capabilityTitle}>{cap.title}</span>
-                <span className={styles.capabilityDesc}>
-                  {cap.description}
-                </span>
-              </div>
-              <cap.icon
-                className={styles.capabilityWatermark}
-                size={60}
-                aria-hidden="true"
-              />
-            </motion.li>
-          ))}
-        </motion.ul>
       </Container>
     </Section>
   );

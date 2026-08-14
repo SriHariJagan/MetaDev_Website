@@ -1,25 +1,21 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  BarChart3,
+  AppWindow,
+  ArrowUpRight,
   BrainCircuit,
-  Box,
   Boxes,
   CheckCircle2,
   Cloud,
-  Code2,
-  Database,
   Globe,
   Handshake,
   Headphones,
   Landmark,
-  Layers,
   Network,
+  Puzzle,
   Rocket,
-  Settings,
   ShieldCheck,
-  Users,
-  Zap,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/common/Section";
@@ -27,6 +23,7 @@ import { Container } from "@/components/common/Container";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { GradientText } from "@/components/common/GradientText";
 import { CountUp } from "@/components/common/CountUp";
+import { Badge } from "@/components/common/Badge";
 import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
 import { fadeUp, staggerContainer } from "@/constants/motion";
@@ -56,8 +53,8 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-  { icon: Box, value: "8+", label: "Digital Platforms", accent: "blue" },
-  { icon: Layers, value: "50+", label: "Business Modules", accent: "cyan" },
+  { icon: AppWindow, value: "8+", label: "SaaS", accent: "blue" },
+  { icon: Puzzle, value: "50+", label: "Business Modules", accent: "cyan" },
   { icon: Cloud, value: "99.9%", label: "Cloud Availability", accent: "violet" },
   { icon: Headphones, value: "24/7", label: "Support", accent: "green" },
 ];
@@ -132,25 +129,6 @@ const DIFFERENTIATORS: Differentiator[] = [
   },
 ];
 
-interface ProgressItem {
-  icon: LucideIcon;
-  accent: Accent;
-  label: string;
-  value: number;
-}
-
-const PROGRESS: ProgressItem[] = [
-  { icon: Zap, accent: "blue", label: "Faster implementation", value: 90 },
-  { icon: Settings, accent: "cyan", label: "Less manual work", value: 78 },
-  {
-    icon: Database,
-    accent: "violet",
-    label: "Unified business data",
-    value: 86,
-  },
-  { icon: BarChart3, accent: "orange", label: "Better decisions", value: 68 },
-];
-
 interface ChecklistItem {
   accent: Accent;
   label: string;
@@ -163,72 +141,162 @@ const CHECKLIST: ChecklistItem[] = [
   { accent: "orange", label: "Dedicated support" },
 ];
 
-/* ---------- Orbit graphic (original WhyMeta left design) ---------- */
+/* ---------- Growth illustration (left panel) ---------- */
 
-type NodeAccent = "cyan" | "green" | "violet" | "amber" | "blue" | "rose" | "indigo";
+const GROWTH_POINTS = [
+  { x: 20, y: 160 },
+  { x: 80, y: 128 },
+  { x: 140, y: 142 },
+  { x: 200, y: 82 },
+  { x: 260, y: 42 },
+];
 
-function OrbitGraphic({ inView }: { inView: boolean }) {
-  const nodes: Array<{
-    icon: LucideIcon;
-    accent: NodeAccent;
-    className: string;
-    delay: number;
-  }> = [
-    { icon: Cloud, accent: "cyan", className: styles.nodeTop, delay: 0 },
-    { icon: Users, accent: "green", className: styles.nodeUpperLeft, delay: 0.08 },
-    { icon: Code2, accent: "violet", className: styles.nodeUpperRight, delay: 0.16 },
-    { icon: BarChart3, accent: "amber", className: styles.nodeLeft, delay: 0.24 },
-    { icon: ShieldCheck, accent: "blue", className: styles.nodeRight, delay: 0.32 },
-    { icon: Database, accent: "rose", className: styles.nodeLowerLeft, delay: 0.4 },
-    { icon: BrainCircuit, accent: "indigo", className: styles.nodeLowerRight, delay: 0.48 },
-  ];
+const GROWTH_LINE_PATH =
+  "M20,160 C50,148 60,138 80,128 C110,136 120,150 140,142 C170,128 180,98 200,82 C225,68 240,54 260,42";
+const GROWTH_AREA_PATH = `${GROWTH_LINE_PATH} L260,188 L20,188 Z`;
 
+const GROWTH_DOTS = [
+  { className: "growthDotOne", duration: 4, delay: 0 },
+  { className: "growthDotTwo", duration: 5, delay: 0.6 },
+  { className: "growthDotThree", duration: 3.6, delay: 1.1 },
+];
+
+function GrowthIllustration({ inView }: { inView: boolean }) {
   return (
     <motion.div
-      className={styles.orbit}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      className={styles.growthArt}
+      animate={inView ? { y: [0, -8, 0] } : { y: 0 }}
+      transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
     >
-      <div className={styles.orbitRing} />
-      <div className={styles.orbitRingGlow} />
-      <div className={styles.pedestalRingOuter} />
-      <div className={styles.pedestalRingInner} />
-      <div className={styles.pedestalGlow} />
-      <div className={styles.orbitCenterGlow} />
+      <div className={styles.growthRing} />
 
-      <div className={styles.cube}>
-        <img
-          src="/logo-noBg.png"
-          alt="metadev logo"
-          className={styles.cubeLogo}
-          draggable={false}
+      {GROWTH_DOTS.map((dot) => (
+        <motion.span
+          key={dot.className}
+          className={`${styles.growthDot} ${styles[dot.className]}`}
+          animate={
+            inView
+              ? { y: [0, -10, 0], opacity: [0.25, 0.75, 0.25] }
+              : { opacity: 0 }
+          }
+          transition={{
+            duration: dot.duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: dot.delay,
+          }}
         />
-      </div>
-
-      {nodes.map(({ icon: Icon, accent, className, delay }, index) => (
-        <div key={index} className={`${styles.node} ${className}`}>
-          <motion.span
-            className={`${styles.nodeIcon} ${styles[`node-${accent}`]}`}
-            initial={{ opacity: 0, scale: 0.4, y: 0 }}
-            animate={
-              inView
-                ? { opacity: 1, scale: 1, y: [0, -6, 0] }
-                : { opacity: 0, scale: 0.4, y: 0 }
-            }
-            whileHover={{ scale: 1.12 }}
-            transition={{
-              duration: 0.35,
-              ease: "easeOut",
-              delay: index * 0.06,
-              y: { duration: 2.4, repeat: Infinity, ease: "easeInOut", delay },
-              scale: { duration: 0.2 },
-            }}
-          >
-            <Icon size={15} aria-hidden="true" />
-          </motion.span>
-        </div>
       ))}
+
+      <svg
+        viewBox="0 0 280 200"
+        className={styles.growthSvg}
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="growthLine" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#5eb8ff" />
+            <stop offset="100%" stopColor="#9b6bff" />
+          </linearGradient>
+          <linearGradient id="growthFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#5eb8ff" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#5eb8ff" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        <motion.path
+          d={GROWTH_AREA_PATH}
+          fill="url(#growthFill)"
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        />
+
+        <motion.path
+          d={GROWTH_LINE_PATH}
+          fill="none"
+          stroke="url(#growthLine)"
+          strokeWidth={3}
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={inView ? { pathLength: 1 } : { pathLength: 0 }}
+          transition={{ duration: 1.4, ease: "easeInOut" }}
+        />
+
+        <motion.path
+          d={GROWTH_LINE_PATH}
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeDasharray="18 480"
+          className={styles.growthComet}
+          initial={{ strokeDashoffset: 0, opacity: 0 }}
+          animate={
+            inView
+              ? { strokeDashoffset: [-498, 0], opacity: [0, 0.9, 0] }
+              : { opacity: 0 }
+          }
+          transition={{
+            duration: 2.6,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 1.6,
+            repeatDelay: 0.6,
+          }}
+        />
+
+        {GROWTH_POINTS.map((point, index) => (
+          <g key={index}>
+            <motion.circle
+              cx={point.x}
+              cy={point.y}
+              r={5}
+              className={styles.growthNode}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={
+                inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+              }
+              transition={{ delay: 0.3 + index * 0.18, duration: 0.3 }}
+            />
+            <motion.circle
+              cx={point.x}
+              cy={point.y}
+              r={5}
+              className={styles.growthNodePing}
+              initial={{ scale: 1, opacity: 0 }}
+              animate={
+                inView
+                  ? { scale: [1, 2.6], opacity: [0.55, 0] }
+                  : { scale: 1, opacity: 0 }
+              }
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                ease: "easeOut",
+                delay: 1 + index * 0.3,
+              }}
+            />
+          </g>
+        ))}
+      </svg>
+
+      <motion.span
+        className={styles.growthBadge}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={
+          inView
+            ? { opacity: 1, scale: 1, y: [0, -6, 0] }
+            : { opacity: 0, scale: 0.6, y: 0 }
+        }
+        transition={{
+          opacity: { duration: 0.4, delay: 1.1 },
+          scale: { duration: 0.4, delay: 1.1 },
+          y: { duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: 1.4 },
+        }}
+      >
+        <ArrowUpRight size={20} aria-hidden="true" />
+      </motion.span>
     </motion.div>
   );
 }
@@ -253,13 +321,16 @@ export function WhyMetaNext() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {/* <motion.span className={styles.eyebrow} variants={itemVariants}>
-            Why MetaDev?
-          </motion.span> */}
           <SectionHeader
             align="center"
             variants={itemVariants}
             itemVariants={itemVariants}
+            eyebrow={
+              <Badge variant="solid">
+                <Sparkles size={14} aria-hidden="true" />
+                <span>We the MetaDev</span>
+              </Badge>
+            }
             title={
               <>
                 Built for complexity.{" "}
@@ -279,101 +350,82 @@ export function WhyMetaNext() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {STATS.map((stat) => (
+          {STATS.map((stat, index) => (
             <motion.li
               key={stat.label}
               className={`${styles.statCard} ${styles[`accent-${stat.accent}`]}`}
               variants={itemVariants}
             >
-              <span className={styles.statTop}>
-                <span className={styles.statIcon}>
-                  <stat.icon size={18} aria-hidden="true" />
-                </span>
+              <motion.span
+                className={styles.statIconBig}
+                animate={isInView ? { y: [0, -6, 0] } : { y: 0 }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: index * 0.15,
+                }}
+              >
+                <stat.icon className={styles.statIconGlyph} aria-hidden="true" />
                 <CountUp
                   value={stat.value}
                   duration={1.4}
                   className={styles.statValue}
                 />
-              </span>
+              </motion.span>
               <span className={styles.statLabel}>{stat.label}</span>
             </motion.li>
           ))}
         </motion.ul>
 
         <div className={styles.layout}>
-          {/* ---------- Left: stats with percents + orbit design below ---------- */}
+          {/* ---------- Left: growth illustration + supporting text ---------- */}
           <motion.div
-            className={styles.impactPanel}
+            className={styles.growthPanel}
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <div className={styles.impactHead}>
-              <h3 className={styles.impactTitle}>Business Impact</h3>
-              <span className={styles.builtBadge}>Built to scale</span>
-            </div>
+            <motion.div variants={itemVariants}>
+              <GrowthIllustration inView={isInView} />
+            </motion.div>
+            <motion.h3 className={styles.growthTitle} variants={itemVariants}>
+              Momentum That <GradientText variant="violet">Compounds</GradientText>
+            </motion.h3>
+            <motion.p className={styles.growthText} variants={itemVariants}>
+              Every workflow, integration, and module we ship adds to a
+              platform that gets faster, smarter, and easier to scale —
+              quarter after quarter.
+            </motion.p>
+          </motion.div>
 
-            <ul className={styles.progressList}>
-              {PROGRESS.map((item) => (
+          {/* ---------- Right: differentiators as a single list card ---------- */}
+          <motion.div
+            className={styles.differentiatorsPanel}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <ul className={styles.differentiatorsList}>
+              {DIFFERENTIATORS.map((item) => (
                 <motion.li
-                  key={item.label}
-                  className={styles.progressItem}
+                  key={item.title}
+                  className={styles.differentiatorRow}
                   variants={itemVariants}
                 >
-                  <span className={styles.progressHead}>
-                    <span
-                      className={`${styles.progressIcon} ${styles[`accent-${item.accent}`]}`}
-                    >
-                      <item.icon size={14} aria-hidden="true" />
-                    </span>
-                    <span className={styles.progressLabel}>{item.label}</span>
-                    <span className={styles.progressValue}>{item.value}%</span>
+                  <span
+                    className={`${styles.cardIcon} ${styles[`accent-${item.accent}`]}`}
+                  >
+                    <item.icon size={20} aria-hidden="true" />
                   </span>
-                  <div className={styles.progressTrack}>
-                    <motion.span
-                      className={`${styles.progressFill} ${styles[`fill-${item.accent}`]}`}
-                      initial={{ width: 0 }}
-                      animate={
-                        isInView ? { width: `${item.value}%` } : { width: 0 }
-                      }
-                      transition={{
-                        duration: 1.1,
-                        ease: "easeOut",
-                        delay: 0.3,
-                      }}
-                    />
-                  </div>
+                  <span className={styles.differentiatorBody}>
+                    <h3 className={styles.cardTitle}>{item.title}</h3>
+                    <p className={styles.cardText}>{item.description}</p>
+                  </span>
                 </motion.li>
               ))}
             </ul>
-
-            <OrbitGraphic inView={isInView} />
           </motion.div>
-
-          {/* ---------- Right: differentiator cards (3 x 3) ---------- */}
-          <motion.ul
-            className={styles.cardsGrid}
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            transition={{ delayChildren: 0.1, staggerChildren: 0.06 }}
-          >
-            {DIFFERENTIATORS.map((item) => (
-              <motion.li
-                key={item.title}
-                className={`${styles.card} ${styles[`accent-${item.accent}`]}`}
-                variants={itemVariants}
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 350, damping: 30, mass: 0.8 }}
-              >
-                <span className={styles.cardIcon}>
-                  <item.icon size={20} aria-hidden="true" />
-                </span>
-                <h3 className={styles.cardTitle}>{item.title}</h3>
-                <p className={styles.cardText}>{item.description}</p>
-              </motion.li>
-            ))}
-          </motion.ul>
         </div>
 
         <motion.ul

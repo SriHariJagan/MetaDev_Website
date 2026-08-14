@@ -1,0 +1,375 @@
+/* SecurityCompliance.module.css */
+
+/* ---------- Background detailing ---------- */
+
+.glow {
+  position: absolute;
+  top: -200px;
+  right: 8%;
+  width: 680px;
+  height: 440px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-violet) 0%,
+    var(--navbar-accent-end) 100%
+  );
+  opacity: 0.08;
+  filter: blur(44px);
+}
+
+:global([data-theme="light"]) .glow {
+  opacity: 0.05;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: var(--space-8);
+  align-items: center;
+}
+
+/* ---------- Left: copy + feature grid ---------- */
+
+.left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.4rem 1rem 0.4rem 0.4rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  color: var(--navbar-accent);
+  font-size: 0.78rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.4px;
+}
+
+.eyebrowIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
+  box-shadow: 0 0 12px rgba(var(--accent-blue-rgb), 0.45);
+}
+
+.title {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.subtitle {
+  max-width: 32rem;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-4);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.featureItem {
+  --accent: 59 130 246;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.featureText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.featureIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--accent), 0.4);
+  color: rgb(var(--accent));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--accent), 0.2) 0%,
+    rgba(var(--accent), 0.07) 100%
+  );
+  box-shadow: 0 0 16px rgba(var(--accent), 0.24);
+}
+
+.featureTitle {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.featureDesc {
+  font-size: var(--font-size-3xs);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.accent-blue {
+  --accent: 59 130 246;
+}
+.accent-violet {
+  --accent: 139 92 246;
+}
+.accent-green {
+  --accent: 34 197 94;
+}
+.accent-cyan {
+  --accent: 6 182 212;
+}
+
+/* ---------- Right: orbiting shield visual ---------- */
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbit {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.orbitCenterGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 74%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(94, 184, 255, 0.3) 0%,
+    rgba(155, 107, 255, 0.14) 45%,
+    transparent 70%
+  );
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+/* The rings baked into security.png are a faint light-gray stroke — nearly
+   invisible against a dark background, so redraw them ourselves in dark mode. */
+
+.orbitRingOuter,
+.orbitRingInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px dashed transparent;
+  pointer-events: none;
+}
+
+.orbitRingOuter {
+  width: 100%;
+}
+
+.orbitRingInner {
+  width: 70%;
+}
+
+:global([data-theme="dark"]) .orbitRingOuter,
+:global([data-theme="dark"]) .orbitRingInner {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.shieldImage {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 16px 32px rgba(2, 8, 23, 0.3));
+}
+
+.node {
+  position: absolute;
+  z-index: 2;
+  width: 15%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.nodeIcon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--node-rgb), 0.32) 0%,
+      rgba(var(--node-rgb), 0.08) 55%,
+      transparent 100%
+    ),
+    var(--glass-bg);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  color: rgb(var(--node-rgb));
+  box-shadow:
+    0 10px 22px -8px rgba(15, 23, 42, 0.38),
+    0 0 0 4px rgba(var(--node-rgb), 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -10px 14px rgba(255, 255, 255, 0.06);
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* Diagonal gloss sheen for extra glass depth */
+.nodeIcon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.nodeIcon svg {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+}
+
+.node:hover .nodeIcon {
+  transform: scale(1.08);
+  border-color: rgba(var(--node-rgb), 0.6);
+  box-shadow:
+    0 14px 28px -8px rgba(15, 23, 42, 0.42),
+    0 0 0 6px rgba(var(--node-rgb), 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -10px 14px rgba(255, 255, 255, 0.08);
+}
+
+.node-blue {
+  --node-rgb: 96 165 250;
+  --node-color: #60a5fa;
+}
+.node-violet {
+  --node-rgb: 167 139 250;
+  --node-color: #a78bfa;
+}
+.node-green {
+  --node-rgb: 52 211 153;
+  --node-color: #34d399;
+}
+.node-cyan {
+  --node-rgb: 34 211 238;
+  --node-color: #22d3ee;
+}
+.node-amber {
+  --node-rgb: 251 191 36;
+  --node-color: #fbbf24;
+}
+.node-rose {
+  --node-rgb: 251 113 133;
+  --node-color: #fb7185;
+}
+
+.nodeTop {
+  top: 4%;
+  left: 50%;
+}
+.nodeUpperLeft {
+  top: 22%;
+  left: 12%;
+}
+.nodeUpperRight {
+  top: 22%;
+  left: 88%;
+}
+.nodeLeft {
+  top: 60%;
+  left: 2%;
+}
+.nodeRight {
+  top: 60%;
+  left: 98%;
+}
+.nodeBottom {
+  top: 92%;
+  left: 50%;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 64rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .right {
+    order: -1;
+  }
+
+  .orbit {
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 30rem) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}

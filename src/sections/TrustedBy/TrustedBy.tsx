@@ -1,19 +1,12 @@
 // TrustedBy.tsx
 import { useMemo, useRef } from "react";
-import {
-  motion,
-  useAnimationFrame,
-  useInView,
-  useMotionValue,
-  animate,
-} from "framer-motion";
-import { Users2, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, useAnimationFrame, useInView, useMotionValue } from "framer-motion";
+import { Users2 } from "lucide-react";
 import { Section } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { Badge } from "@/components/common/Badge";
 import { GradientText } from "@/components/common/GradientText";
-import { IconButton } from "@/components/common/IconButton";
 import { fadeUp, staggerContainer } from "@/constants/motion";
 import styles from "./TrustedBy.module.css";
 
@@ -93,20 +86,13 @@ function LogoCard({ logo }: { logo: PartnerLogo }) {
 
 function LogoMarquee() {
   const x = useMotionValue(0);
-  const paused = useRef(false);
   const loopWidth = CARD_WIDTH * PARTNER_LOGOS.length;
 
   useAnimationFrame((_, delta) => {
-    if (paused.current) return;
     let next = x.get() - (SPEED * delta) / 1000;
     if (next <= -loopWidth) next += loopWidth;
     x.set(next);
   });
-
-  const nudge = (direction: 1 | -1) => {
-    const target = x.get() - direction * CARD_WIDTH;
-    animate(x, target, { duration: 0.45, ease: "easeInOut" });
-  };
 
   const doubled = useMemo(
     () => [...PARTNER_LOGOS, ...PARTNER_LOGOS],
@@ -116,33 +102,13 @@ function LogoMarquee() {
   return (
     <div className={styles.marqueeWrapper}>
       <div className={styles.logoBanner}>
-        <IconButton
-          label="Scroll logos left"
-          className={styles.navButtonLeft}
-          onClick={() => nudge(-1)}
-        >
-          <ChevronLeft size={18} />
-        </IconButton>
-
-        <div
-          className={styles.marqueeViewport}
-          onMouseEnter={() => (paused.current = true)}
-          onMouseLeave={() => (paused.current = false)}
-        >
+        <div className={styles.marqueeViewport}>
           <motion.ul className={styles.marqueeTrack} style={{ x }}>
             {doubled.map((logo, i) => (
               <LogoCard key={`${logo.id}-${i}`} logo={logo} />
             ))}
           </motion.ul>
         </div>
-
-        <IconButton
-          label="Scroll logos right"
-          className={styles.navButtonRight}
-          onClick={() => nudge(1)}
-        >
-          <ChevronRight size={18} />
-        </IconButton>
       </div>
     </div>
   );

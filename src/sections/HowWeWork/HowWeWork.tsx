@@ -146,6 +146,11 @@ export function HowWeWork({
                   <h3 className={styles.cardTitle}>{value.title}</h3>
                   <p className={styles.cardDesc}>{value.description}</p>
                 </div>
+                <value.icon
+                  className={styles.cardWatermark}
+                  size={100}
+                  aria-hidden="true"
+                />
               </motion.article>
             ))}
           </motion.div>

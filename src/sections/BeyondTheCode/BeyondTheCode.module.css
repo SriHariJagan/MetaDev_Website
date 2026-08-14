@@ -27,7 +27,7 @@
   opacity: 0.07;
 }
 
-/* ---------- Header ---------- */
+/* ---------- Layout: left copy | right showcase ---------- */
 
 .container {
   display: flex;
@@ -35,12 +35,24 @@
   gap: var(--space-8);
 }
 
-.header {
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr minmax(260px, 0.85fr);
+  gap: var(--space-10);
+  align-items: center;
+}
+
+.left {
+  order: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-2);
+  align-items: flex-start;
+  text-align: left;
+  gap: var(--space-3);
+}
+
+.showcase {
+  order: 1;
 }
 
 .eyebrowLabel {
@@ -54,8 +66,7 @@
   color: var(--navbar-accent);
 }
 
-.eyebrowLabel::before,
-.eyebrowLabel::after {
+.eyebrowLabel::before {
   content: "";
   width: 18px;
   height: 2px;
@@ -67,12 +78,8 @@
   );
 }
 
-.eyebrowLabel::after {
-  transform: scaleX(-1);
-}
-
 .title {
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
   font-weight: var(--font-weight-bold);
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -83,10 +90,24 @@
 }
 
 .subtitle {
-  max-width: 36rem;
+  max-width: 30rem;
   font-size: var(--font-size-3xs);
   color: var(--color-text-muted);
+  line-height: 1.65;
   margin: 0;
+}
+
+.leftAccentLine {
+  display: block;
+  width: 52px;
+  height: 3px;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end)
+  );
 }
 
 /* ---------- Per-hobby accent colors ---------- */
@@ -122,121 +143,82 @@
   --grad-2: var(--product-grad-cyan-2, 8 145 178);
 }
 
-/* ---------- Sticker wall ---------- */
+/* ---------- Right showcase: staggered floating chips ---------- */
 
-.wall {
+.showcase {
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-2);
-  row-gap: var(--space-4);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4) var(--space-3);
   margin: 0;
-  padding: var(--space-2) 0 0;
+  padding: var(--space-3) 0;
   list-style: none;
 }
 
-.stickerWrap {
+.showcaseGlow {
+  position: absolute;
+  inset: -60px;
+  background: radial-gradient(
+    circle at 30% 20%,
+    var(--color-primary) 0%,
+    transparent 60%
+  );
+  opacity: 0.14;
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+:global([data-theme='light']) .showcaseGlow {
+  opacity: 0.07;
+}
+
+.showcaseItem {
   position: relative;
-  transition: transform var(--transition-medium);
+  z-index: 1;
 }
 
-.stickerWrap:hover {
-  z-index: 2;
+.showcaseItemOffset {
+  margin-top: var(--space-7);
 }
 
-.tiltLeft {
-  transform: rotate(-2.2deg);
-}
-
-.tiltRight {
-  transform: rotate(1.8deg);
-}
-
-.stickerWrap:hover {
-  transform: rotate(0deg) scale(1.04);
-}
-
-.sticker {
-  position: relative;
+.showcaseChip {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: var(--space-2);
-  padding: var(--space-5) var(--space-4) var(--space-4);
-  border-radius: var(--radius-md);
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-full);
   border: 1px solid var(--glass-border);
   background: var(--glass-navy);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition:
     border-color var(--transition-medium),
     box-shadow var(--transition-medium),
-    transform var(--transition-medium);
+    transform var(--transition-fast),
+    background var(--transition-medium);
 }
 
-.stickerWrap:hover .sticker {
-  transform: translateY(-8px);
-  border-color: rgba(var(--accent, 94 184 255), 0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
-    0 18px 40px rgba(2, 10, 30, 0.35),
-    0 0 50px -12px rgba(var(--accent, 94 184 255), 0.4);
-}
-
-:global([data-theme='light']) .sticker {
+:global([data-theme='light']) .showcaseChip {
   background: var(--glass-navy-light-soft);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* Washi tape strip */
-.sticker::before {
-  content: "";
-  position: absolute;
-  top: -11px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  width: 86px;
-  height: 20px;
-  border-radius: 3px;
-  background: rgba(var(--accent, 94 184 255), 0.4);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: background var(--transition-fast);
+.showcaseItem:hover .showcaseChip {
+  transform: scale(1.05);
+  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 32px rgba(2, 10, 30, 0.35),
+    0 0 30px -8px rgba(var(--accent, 94 184 255), 0.55);
 }
 
-.stickerWrap:hover .sticker::before {
-  background: rgba(var(--accent, 94 184 255), 0.6);
-}
-
-/* Corner accent glow on hover */
-.sticker::after {
-  content: "";
-  position: absolute;
-  top: -70px;
-  right: -60px;
-  width: 190px;
-  height: 190px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(var(--accent, 94 184 255), 0.16) 0%,
-    transparent 70%
-  );
-  filter: blur(26px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--transition-medium);
-}
-
-.stickerWrap:hover .sticker::after {
-  opacity: 1;
-}
-
-.stickerIcon {
+.showcaseIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   border-radius: 50%;
   color: #fff;
   background: linear-gradient(
@@ -246,45 +228,36 @@
   );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 8px 24px rgba(var(--grad-2, 94 184 255), 0.45);
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
+    0 6px 18px rgba(var(--grad-2, 94 184 255), 0.4);
+  transition: transform var(--transition-fast);
 }
 
-.stickerWrap:hover .stickerIcon {
+.showcaseItem:hover .showcaseIcon {
   transform: scale(1.1) rotate(-8deg);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 10px 30px rgba(var(--grad-2, 94 184 255), 0.6);
 }
 
-.stickerTitle {
-  font-size: var(--font-size-3xs);
+.showcaseText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.showcaseTitle {
+  font-size: 0.82rem;
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  margin: 0;
-  padding-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.stickerNote {
-  font-size: var(--font-size-4xs);
+.showcaseNote {
+  font-size: 0.68rem;
   color: var(--color-text-muted);
-  margin: 0;
-}
-
-.stickerDots {
-  display: inline-flex;
-  gap: 4px;
-  margin-top: var(--space-1);
-}
-
-.stickerDots span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgb(var(--accent, 94 184 255));
-  opacity: 0.65;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---------- Interests marquee ---------- */
@@ -338,15 +311,40 @@
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 64rem) {
-  .wall {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 68rem) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .left {
+    order: 1;
+    align-items: center;
+    text-align: center;
+  }
+
+  .showcase {
+    order: 2;
+  }
+
+  .leftAccentLine {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
 @media (max-width: 40rem) {
-  .wall {
+  .showcase {
     grid-template-columns: 1fr;
+  }
+
+  .showcaseItemOffset {
+    margin-top: 0;
+  }
+
+  .showcaseTitle,
+  .showcaseNote {
+    white-space: normal;
   }
 
   .marqueeLine {

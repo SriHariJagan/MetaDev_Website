@@ -81,7 +81,7 @@
   --z-toast: 300;
 
   /* Navbar */
-  --navbar-height: 75px;
+  --navbar-height: 90px;
   --navbar-text: #0a1624;
   --navbar-text-muted: rgba(15, 23, 42, 0.75);
   --navbar-accent: #3b82f6;
@@ -172,7 +172,7 @@
   --color-primary-contrast: #0f1115;
 
   /* Surfaces */
-  --color-bg: #050816;
+  --color-bg: #0a1624;
   --color-surface: #161a22;
   --color-surface-elevated: #1c212b;
   --color-text: #f1f5f9;

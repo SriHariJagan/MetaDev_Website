@@ -63,7 +63,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: var(--space-20) var(--space-12);
+  padding-block: calc(var(--navbar-height) + var(--space-12)) var(--space-12);
   background:
     radial-gradient(
       1100px 500px at 50% -10%,

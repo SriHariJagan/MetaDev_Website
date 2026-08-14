@@ -1,8 +1,7 @@
-// SolutionsShowcase.tsx — solution names on top, detail panel below on selection
-import { useRef, useState, type ReactNode } from "react";
+// SolutionsShowcase.tsx — solution names as a side stack, detail panel on the right
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import { CheckCircle2, MousePointerClick } from "lucide-react";
-import { Section } from "@/components/common/Section";
+import { CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/common/Container";
 import { GradientText } from "@/components/common/GradientText";
 import { GradientDefs } from "@/components/common/GradientDefs";
@@ -38,6 +37,8 @@ export interface SolutionsShowcaseProps {
 const containerVariants = staggerContainer(0.05);
 
 const itemVariants = fadeUp(16, 0.3);
+
+const AUTO_ADVANCE_MS = 4500;
 
 /* ------------------------------------------------------------------ */
 /* Detail panel — rendered below the tabs once a solution is selected  */
@@ -101,27 +102,24 @@ function SolutionPanel({
 
       {/* What you get */}
       <div className={styles.blockWrap}>
-        <span className={styles.blockLabel}>What you get</span>
+        <span className={styles.blockLabel}>
+          <CheckCircle2 size={14} aria-hidden="true" />
+          What you get
+        </span>
         <ul className={styles.pointList}>
           {solution.points.map((point, i) => (
             <motion.li
               key={point}
               className={styles.pointItem}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                duration: 0.35,
-                delay: 0.28 + i * 0.07,
+                duration: 0.3,
+                delay: 0.28 + i * 0.05,
                 ease: "easeOut",
               }}
             >
-              <span className={styles.pointIcon}>
-                <CheckCircle2
-                  size={13}
-                  stroke={`url(#grad-${solution.accent})`}
-                  aria-hidden="true"
-                />
-              </span>
+              <span className={styles.pointDot} aria-hidden="true" />
               <span className={styles.pointText}>{point}</span>
             </motion.li>
           ))}
@@ -196,31 +194,6 @@ function SolutionPanel({
 }
 
 /* ------------------------------------------------------------------ */
-/* Placeholder — shown until a solution is selected                    */
-/* ------------------------------------------------------------------ */
-
-function SelectionPlaceholder() {
-  return (
-    <motion.div
-      key="placeholder"
-      className={styles.placeholder}
-      initial={{ opacity: 0, y: 26, scale: 0.985 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -18, scale: 0.99 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-    >
-      <div className={styles.placeholderIcon}>
-        <MousePointerClick size={26} aria-hidden="true" />
-      </div>
-      <h3 className={styles.placeholderTitle}>Select a solution</h3>
-      <p className={styles.placeholderText}>
-        Choose any service above to explore its details, outcomes and tech stack.
-      </p>
-    </motion.div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* Main component                                                      */
 /* ------------------------------------------------------------------ */
 
@@ -238,13 +211,25 @@ export function SolutionsShowcase({
 }: SolutionsShowcaseProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(rootRef, { once: true, amount: 0.1 });
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState(0);
+  const pausedRef = useRef(false);
 
-  const solution = selected !== null ? solutions[selected] : null;
+  const solution = solutions[selected];
   const count = solutions.length;
 
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return;
+      setSelected((current) => (current + 1) % count);
+    }, AUTO_ADVANCE_MS);
+
+    return () => window.clearInterval(id);
+  }, [count]);
+
   return (
-    <Section className={cn(styles.root, className)}>
+    <section className={cn(styles.root, className)}>
       <GradientDefs />
       <BackgroundDecor>
         <div className={styles.glow} />
@@ -270,61 +255,65 @@ export function SolutionsShowcase({
           </motion.p>
         </motion.div>
 
-        {/* ---------- Solution names — top row ---------- */}
-        <motion.div
-          className={styles.tabsWrap}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+        {/* ---------- Layout: solution names on the left, detail panel on the right ---------- */}
+        <div
+          className={styles.layout}
+          onMouseEnter={() => (pausedRef.current = true)}
+          onMouseLeave={() => (pausedRef.current = false)}
         >
-          <div className={styles.tabsRow} role="tablist" aria-label="Solution navigation">
+          <motion.ul
+            className={styles.tabList}
+            role="tablist"
+            aria-label="Solution navigation"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
             {solutions.map((s, i) => {
               const TabIcon = s.icon;
               const active = i === selected;
               return (
-                <button
-                  key={s.slug}
-                  type="button"
-                  role="tab"
-                  aria-selected={active}
-                  className={cn(
-                    styles.tab,
-                    active && styles.tabActive,
-                    styles[`tabAccent-${s.accent}`],
-                  )}
-                  onClick={() => setSelected(active ? null : i)}
-                >
-                  <TabIcon size={12} className={styles.tabIcon} aria-hidden="true" />
-                  <span className={styles.tabLabel}>{s.name}</span>
-                  {active && <span className={styles.tabDot} aria-hidden="true" />}
-                </button>
+                <motion.li key={s.slug} variants={itemVariants}>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    className={cn(
+                      styles.tab,
+                      active && styles.tabActive,
+                      styles[`tabAccent-${s.accent}`],
+                    )}
+                    onClick={() => setSelected(i)}
+                  >
+                    <span className={styles.tabIconWrap}>
+                      <TabIcon size={15} aria-hidden="true" />
+                    </span>
+                    <span className={styles.tabLabel}>{s.name}</span>
+                    {active && <span className={styles.tabDot} aria-hidden="true" />}
+                  </button>
+                </motion.li>
               );
             })}
-          </div>
-        </motion.div>
+          </motion.ul>
 
-        {/* ---------- Detail panel — below, only once selected ---------- */}
-        <motion.div
-          className={styles.panelStage}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            {selected !== null && solution ? (
+          <motion.div
+            className={styles.panelStage}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <AnimatePresence mode="wait">
               <SolutionPanel
                 key={solution.slug}
                 solution={solution}
                 index={selected}
                 count={count}
               />
-            ) : (
-              <SelectionPlaceholder />
-            )}
-          </AnimatePresence>
-        </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </Container>
-    </Section>
+    </section>
   );
 }
 

@@ -39,7 +39,6 @@ interface Step {
   accent: Accent;
   title: string;
   description: string;
-  deliverables: string[];
 }
 
 const STEPS: Step[] = [
@@ -50,7 +49,6 @@ const STEPS: Step[] = [
     accent: 'violet',
     title: 'Discover',
     description: 'We understand your business, goals, and challenges in depth.',
-    deliverables: ['Requirement Analysis', 'Stakeholder Interviews', 'Project Roadmap'],
   },
   {
     id: 'plan',
@@ -59,7 +57,6 @@ const STEPS: Step[] = [
     accent: 'blue',
     title: 'Plan',
     description: 'We define the strategy, architecture, and execution plan.',
-    deliverables: ['Solution Architecture', 'Tech Stack Design', 'Project Plan & Estimation'],
   },
   {
     id: 'design',
@@ -68,7 +65,6 @@ const STEPS: Step[] = [
     accent: 'cyan',
     title: 'Design',
     description: 'We craft intuitive UI/UX and seamless product experiences.',
-    deliverables: ['Wireframes & Prototypes', 'UI/UX Design', 'Design System'],
   },
   {
     id: 'develop',
@@ -77,7 +73,6 @@ const STEPS: Step[] = [
     accent: 'green',
     title: 'Develop',
     description: 'We build scalable, secure and future-ready solutions.',
-    deliverables: ['Clean Code', 'Module Development', 'Integration'],
   },
   {
     id: 'test',
@@ -86,7 +81,6 @@ const STEPS: Step[] = [
     accent: 'amber',
     title: 'Test',
     description: 'We ensure quality, security and performance at every step.',
-    deliverables: ['Functional Testing', 'Security Testing', 'Performance Testing'],
   },
   {
     id: 'deploy',
@@ -95,7 +89,6 @@ const STEPS: Step[] = [
     accent: 'orange',
     title: 'Deploy',
     description: 'We deploy with precision and ensure smooth launch.',
-    deliverables: ['Production Deployment', 'Data Migration', 'Go-Live Support'],
   },
   {
     id: 'support',
@@ -104,7 +97,6 @@ const STEPS: Step[] = [
     accent: 'pink',
     title: 'Support',
     description: 'We provide continuous support and drive long-term success.',
-    deliverables: ['24/7 Support', 'Monitoring & Alerts', 'Continuous Improvement'],
   },
 ];
 
@@ -220,16 +212,6 @@ export function ProvenProcess() {
                   <span className={styles.stepNum}>{step.number}</span>
                   <h3 className={styles.stepTitle}>{step.title}</h3>
                   <p className={styles.stepDesc}>{step.description}</p>
-
-                  <span className={styles.deliverableLabel}>Deliverables</span>
-                  <ul className={styles.deliverableList}>
-                    {step.deliverables.map((deliverable) => (
-                      <li key={deliverable} className={styles.deliverableItem}>
-                        <span className={styles.deliverableDot} aria-hidden="true" />
-                        <span>{deliverable}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </motion.li>
               ))}
             </motion.ul>

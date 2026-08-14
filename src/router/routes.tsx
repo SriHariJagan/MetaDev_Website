@@ -18,6 +18,10 @@ const MetaGreenPage = lazy(() => import('@/pages/MetaGreen').then((module) => ({
 const MetaFlowPage = lazy(() => import('@/pages/MetaFlow').then((module) => ({ default: module.MetaFlowPage })));
 const MetaHealthPage = lazy(() => import('@/pages/MetaHealth').then((module) => ({ default: module.MetaHealthPage })));
 const MetaEduPage = lazy(() => import('@/pages/MetaEdu').then((module) => ({ default: module.MetaEduPage })));
+const MetaNavPage = lazy(() => import('@/pages/MetaNav').then((module) => ({ default: module.MetaNavPage })));
+const MetaLedgerPage = lazy(() => import('@/pages/MetaLedger').then((module) => ({ default: module.MetaLedgerPage })));
+const MetaCardPage = lazy(() => import('@/pages/MetaCard').then((module) => ({ default: module.MetaCardPage })));
+const MetaIMPage = lazy(() => import('@/pages/MetaIM').then((module) => ({ default: module.MetaIMPage })));
 const LoginPage = lazy(() => import('@/pages/Login').then((module) => ({ default: module.LoginPage })));
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword').then((module) => ({ default: module.ForgotPasswordPage })));
 const NotFoundPage = lazy(() => import('@/pages/NotFound').then((module) => ({ default: module.NotFoundPage })));
@@ -49,6 +53,10 @@ export const routes: RouteObject[] = [
           { path: 'metaflow', element: <MetaFlowPage /> },
           { path: 'metahealth', element: <MetaHealthPage /> },
           { path: 'metaedu', element: <MetaEduPage /> },
+          { path: 'metanav', element: <MetaNavPage /> },
+          { path: 'metaledger', element: <MetaLedgerPage /> },
+          { path: 'metacard', element: <MetaCardPage /> },
+          { path: 'metaim', element: <MetaIMPage /> },
           { path: ':productSlug', element: <ProductDetailPage /> },
         ],
       },

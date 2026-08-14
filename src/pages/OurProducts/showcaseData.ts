@@ -10,6 +10,14 @@ import {
   Layers,
   Share2,
   Building2,
+  Truck,
+  Receipt,
+  CreditCard,
+  Package,
+  Navigation,
+  HandCoins,
+  QrCode,
+  Boxes,
 } from 'lucide-react';
 import type { ShowcaseProduct } from '@/components/common/ProductShowcase';
 
@@ -160,5 +168,89 @@ export const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
       { icon: Users, value: '1M+', label: 'Students Impacted' },
     ],
     href: '/products/metaedu',
+  },
+  {
+    id: 'metanav',
+    name: 'MetaNav',
+    icon: Navigation,
+    accent: 'orange',
+    tagline: 'Fleet & Logistics Management',
+    description:
+      'A fleet management platform that tracks every vehicle in real time — live GPS, route optimization, driver safety and fuel intelligence across your entire fleet.',
+    features: [
+      'Live GPS Vehicle Tracking',
+      'AI Route Optimization',
+      'Driver Behaviour & Safety',
+      'Fuel & Maintenance Management',
+    ],
+    stats: [
+      { icon: Layers, value: '16+', label: 'Modules' },
+      { icon: Share2, value: '40+', label: 'Integrations' },
+      { icon: Truck, value: '50K+', label: 'Vehicles Tracked' },
+    ],
+    href: '/products/metanav',
+  },
+  {
+    id: 'metaledger',
+    name: 'MetaLedger',
+    icon: Receipt,
+    accent: 'green',
+    tagline: 'Billing & Invoicing',
+    description:
+      'A billing and invoicing platform that turns revenue into a straight line — professional invoices, recurring billing, online payments and GST-ready ledger accuracy.',
+    features: [
+      'Invoicing & Recurring Billing',
+      'Online Payments & Links',
+      'GST / Tax Compliance',
+      'Receivables & Dunning',
+    ],
+    stats: [
+      { icon: Layers, value: '14+', label: 'Modules' },
+      { icon: Share2, value: '30+', label: 'Integrations' },
+      { icon: HandCoins, value: '$2B+', label: 'Invoiced Annually' },
+    ],
+    href: '/products/metaledger',
+  },
+  {
+    id: 'metacard',
+    name: 'MetaCard',
+    icon: CreditCard,
+    accent: 'indigo',
+    tagline: 'Digital ID Cards',
+    description:
+      'A digital identity platform that issues beautiful, verifiable ID cards — employee badges, student IDs, membership cards and visitor passes with QR & NFC security.',
+    features: [
+      'Card Design Studio',
+      'QR & NFC Smart Badges',
+      'Instant Issuance & Revocation',
+      'Access & Attendance Control',
+    ],
+    stats: [
+      { icon: Layers, value: '12+', label: 'Modules' },
+      { icon: Share2, value: '25+', label: 'Integrations' },
+      { icon: QrCode, value: '3M+', label: 'Cards Issued' },
+    ],
+    href: '/products/metacard',
+  },
+  {
+    id: 'metaim',
+    name: 'MetaIM',
+    icon: Package,
+    accent: 'cyan',
+    tagline: 'Inventory Management',
+    description:
+      'An inventory management platform that keeps every SKU perfectly in sync — real-time stock, multi-warehouse tracking, barcode scanning and AI demand forecasting.',
+    features: [
+      'Real-Time Stock Tracking',
+      'Multi-Warehouse Management',
+      'Barcode & QR Scanning',
+      'AI Demand Forecasting',
+    ],
+    stats: [
+      { icon: Layers, value: '18+', label: 'Modules' },
+      { icon: Share2, value: '35+', label: 'Integrations' },
+      { icon: Boxes, value: '10M+', label: 'SKUs Managed' },
+    ],
+    href: '/products/metaim',
   },
 ];

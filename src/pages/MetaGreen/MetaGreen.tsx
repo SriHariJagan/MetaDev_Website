@@ -2,7 +2,6 @@
 // Concept: concentric emissions rings with scope coverage gauges.
 import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   ArrowRight,
   CheckCircle2,
   CloudSun,
@@ -16,7 +15,6 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Container } from '@/components/common/Container';
@@ -180,13 +178,7 @@ export function MetaGreenPage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              <motion.div variants={defaultItemVariants}>
-                <Link to="/products" className={styles.breadcrumb}>
-                  <ArrowLeft size={16} className={styles.breadcrumbIcon} aria-hidden="true" />
-                  All products
-                </Link>
-              </motion.div>
-
+              
               <motion.div variants={defaultItemVariants}>
                 <Badge variant="glass">
                   <Leaf size={14} aria-hidden="true" />

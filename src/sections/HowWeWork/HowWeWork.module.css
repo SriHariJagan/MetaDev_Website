@@ -94,7 +94,7 @@
 .split {
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
-  align-items: stretch;
+  align-items: start;
   gap: var(--space-6);
 }
 
@@ -110,8 +110,8 @@
 .imageFrame {
   position: relative;
   width: 100%;
-  max-width: 30rem;
-  aspect-ratio: 4 / 5;
+  max-width: 26rem;
+  aspect-ratio: 4 / 3.2;
   padding: 1px;
   border-radius: var(--radius-lg);
   background: linear-gradient(
@@ -223,8 +223,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: var(--space-3);
-  padding: var(--space-4);
+  padding: var(--space-5) var(--space-4);
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   background: var(--glass-navy);
@@ -315,6 +316,23 @@
   color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0;
+}
+
+.cardWatermark {
+  position: absolute;
+  right: -16px;
+  bottom: -16px;
+  color: rgb(var(--accent, 94 184 255));
+  opacity: 0.06;
+  pointer-events: none;
+  transition:
+    opacity var(--transition-medium),
+    transform var(--transition-medium);
+}
+
+.card:hover .cardWatermark {
+  opacity: 0.14;
+  transform: scale(1.08) rotate(-6deg);
 }
 
 /* ---------- Accents ---------- */

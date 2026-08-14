@@ -29,7 +29,7 @@ export function IndustriesMarquee({
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
 
   return (
-    <Section bordered className={cn(styles.root, className)}>
+    <Section className={cn(styles.root, className)}>
       <GradientDefs />
       <Container className={styles.container} ref={containerRef}>
         <motion.div
@@ -61,12 +61,10 @@ export function IndustriesMarquee({
         animate={isInView ? "visible" : "hidden"}
       >
         <div className={styles.bannerHeader}>
-          <span className={styles.bannerLine} aria-hidden="true" />
           <span className={styles.bannerPill}>
             <span className={styles.bannerPillDot} aria-hidden="true" />
             Trusted across {items.length}+ industries
           </span>
-          <span className={styles.bannerLine} aria-hidden="true" />
         </div>
 
         <InfiniteMarquee

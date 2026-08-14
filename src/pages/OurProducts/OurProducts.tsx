@@ -49,7 +49,7 @@ interface HeroStat {
 }
 
 const HERO_STATS: HeroStat[] = [
-  { icon: Rocket, value: '07', label: 'Flagship Products' },
+  { icon: Rocket, value: '11', label: 'Flagship Products' },
   { icon: Clock, value: '99.9%', label: 'System Uptime' },
   { icon: Users, value: '5M+', label: 'Users Empowered' },
   { icon: ShieldCheck, value: '100%', label: 'Cloud Ready' },
@@ -323,7 +323,7 @@ function ProductGridSection() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
             <span className={styles.headerLine} />
-            <span className={styles.headerPill}>Our Products (01 – 07)</span>
+            <span className={styles.headerPill}>Our Products (01 – 11)</span>
             <span className={styles.headerLine} />
           </motion.div>
 

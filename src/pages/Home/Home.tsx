@@ -27,16 +27,22 @@ import {
 import { Hero } from "@/sections/Hero";
 import { TrustedBy } from "@/sections/TrustedBy";
 import { WhyMetaNext } from "@/sections/WhyMetaNext";
+import { WhatMatters } from "@/sections/WhatMatters";
 import { StatsStrip } from "@/sections/StatsStrip";
 import { OurProducts } from "@/sections/OurProducts";
 import {
   OurSolutions,
   type Solution,
   type HeroStat,
-  type Capability,
 } from "@/sections/OurSolutions";
+import {
+  EnterpriseCapabilities,
+  type Capability,
+} from "@/sections/EnterpriseCapabilities";
+import { StickyFeatureShowcase } from "@/sections/StickyFeatureShowcase";
 import { ProvenProcess } from "@/sections/ProvenProcess";
 import { TechStackNew } from "@/sections/TechStackNew";
+import { SecurityCompliance } from "@/sections/SecurityCompliance";
 import { GradientText } from "@/components/common/GradientText";
 import styles from "./Home.module.css";
 
@@ -200,6 +206,7 @@ export function HomePage() {
       <Hero />
       <TrustedBy />
       <WhyMetaNext />
+      <WhatMatters />
       <StatsStrip />
       <OurProducts />
       <OurSolutions
@@ -210,8 +217,10 @@ export function HomePage() {
         columns={6}
         solutions={WHY_CARDS}
         stats={WHY_STATS}
-        capabilities={WHY_CAPABILITIES}
+        showDescriptions={false}
       />
+      <EnterpriseCapabilities items={WHY_CAPABILITIES} />
+      <StickyFeatureShowcase />
       <ProvenProcess />
       <TechStackNew />
     </div>

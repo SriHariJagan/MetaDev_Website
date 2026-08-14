@@ -127,112 +127,142 @@
 
 .timeline {
   position: relative;
-  max-width: 60rem;
+  max-width: 64rem;
   margin: 0 auto;
   padding: 0;
   list-style: none;
 }
 
-.line {
+/* Flowing S-curve backbone, built from measured marker positions */
+.curveSvg {
   position: absolute;
   top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    var(--navbar-accent-start),
-    var(--color-primary),
-    var(--navbar-accent-end)
-  );
-  opacity: 0.12;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.curvePathBg {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 2;
+  opacity: 0.35;
 }
 
 /* Bright gradient overlay that draws itself as you scroll */
-.lineProgress {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform-origin: top;
-  background: linear-gradient(
-    180deg,
-    var(--navbar-accent-start),
-    var(--color-primary),
-    var(--navbar-accent-end)
-  );
-  box-shadow: 0 0 12px rgba(var(--product-accent-violet, 139 92 246), 0.5);
+.curvePathFg {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(var(--product-accent-violet, 139 92 246), 0.55));
 }
 
 .item {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 48px 1fr;
+  grid-template-columns: 1fr 56px 1fr;
   gap: var(--space-4);
-  padding: var(--space-5) 0;
+  padding: var(--space-6) 0;
 }
 
-/* Marker dot on the line */
+/* Marker on the curve */
 .marker {
   grid-column: 2;
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
-.markerDot {
-  width: 14px;
-  height: 14px;
+/* Default (unlit) state — dim, until the curve reaches this marker */
+.markerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgb(var(--accent, 94 184 255));
+  color: var(--color-text-muted);
+  background: var(--color-surface);
   box-shadow:
-    0 0 0 4px rgba(var(--accent, 94 184 255), 0.22),
-    0 0 18px rgba(var(--accent, 94 184 255), 0.65);
-  transition: box-shadow var(--transition-medium);
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 0 4px var(--color-bg),
+    0 0 0 5px var(--glass-border);
+  transition:
+    color var(--transition-medium),
+    background var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
 }
 
-/* Expanding ring right after the dot pops in */
+/* Lit state — the drawing curve has reached this marker */
+.markerLit {
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--grad-1, 94 184 255)) 0%,
+    rgb(var(--grad-2, 94 184 255)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 4px var(--color-bg),
+    0 0 0 5px rgba(var(--accent, 94 184 255), 0.3),
+    0 0 20px rgba(var(--accent, 94 184 255), 0.55);
+}
+
+/* Expanding ring right after the marker pops in */
 .markerPing {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 50%;
-  width: 14px;
-  height: 14px;
-  margin-left: -7px;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
   border-radius: 50%;
-  background: rgba(var(--accent, 94 184 255), 0.45);
+  background: rgba(var(--accent, 94 184 255), 0.4);
   pointer-events: none;
 }
 
-.item:hover .markerDot {
+.item:hover .markerIcon {
+  transform: scale(1.08);
+}
+
+.item:hover .markerLit {
   box-shadow:
-    0 0 0 6px rgba(var(--accent, 94 184 255), 0.28),
-    0 0 26px rgba(var(--accent, 94 184 255), 0.85);
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 4px var(--color-bg),
+    0 0 0 5px rgba(var(--accent, 94 184 255), 0.4),
+    0 0 28px rgba(var(--accent, 94 184 255), 0.8);
 }
 
-.item:last-child .markerDot {
-  animation: dotPulse 2.4s ease-in-out infinite;
+.item:last-child .markerLit {
+  animation: markerPulse 2.4s ease-in-out infinite;
 }
 
-@keyframes dotPulse {
+@keyframes markerPulse {
   0%,
   100% {
     box-shadow:
-      0 0 0 4px rgba(var(--accent, 94 184 255), 0.22),
-      0 0 18px rgba(var(--accent, 94 184 255), 0.65);
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 0 4px var(--color-bg),
+      0 0 0 5px rgba(var(--accent, 94 184 255), 0.3),
+      0 0 20px rgba(var(--accent, 94 184 255), 0.55);
   }
   50% {
     box-shadow:
-      0 0 0 8px rgba(var(--accent, 94 184 255), 0.12),
-      0 0 30px rgba(var(--accent, 94 184 255), 0.9);
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 0 4px var(--color-bg),
+      0 0 0 7px rgba(var(--accent, 94 184 255), 0.18),
+      0 0 32px rgba(var(--accent, 94 184 255), 0.9);
   }
 }
 
-/* Connector extending from the dot toward the card */
+/* Connector extending from the marker toward the card */
 .connector {
   position: absolute;
-  top: 6px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 24px;
   height: 2px;
   border-radius: var(--radius-full);
@@ -251,6 +281,10 @@
 
 /* ---------- Cards ---------- */
 
+/* Diagonally-tinted card: each milestone's own accent colors the whole
+   panel (not a flat neutral box + left bar + watermark number — that
+   combination is already used by EnterpriseCapabilities on the Home
+   page, so this timeline gets its own distinct treatment). */
 .card {
   grid-column: 1;
   position: relative;
@@ -259,9 +293,13 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-navy);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.22);
+  background: linear-gradient(
+    155deg,
+    rgba(var(--accent, 94 184 255), 0.14) 0%,
+    var(--glass-navy) 55%
+  );
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition:
     border-color var(--transition-medium),
@@ -278,103 +316,47 @@
   border-color: rgba(var(--accent, 94 184 255), 0.55);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
     0 18px 40px rgba(2, 10, 30, 0.35),
-    0 0 40px -12px rgba(var(--accent, 94 184 255), 0.35);
+    0 0 40px -12px rgba(var(--accent, 94 184 255), 0.4);
 }
 
 :global([data-theme='light']) .card {
-  background: var(--glass-navy-light-soft);
+  background: linear-gradient(
+    155deg,
+    rgba(var(--accent, 94 184 255), 0.12) 0%,
+    var(--glass-navy-light-soft) 55%
+  );
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* Left gradient edge strip */
-.card::before {
-  content: "";
+/* Soft glow blob in the corner, standing in for the old watermark number */
+.cardGlow {
   position: absolute;
-  left: 0;
-  top: 16px;
-  bottom: 16px;
-  width: 3px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(
-    180deg,
-    rgb(var(--grad-1, 94 184 255)) 0%,
-    rgb(var(--grad-2, 94 184 255)) 100%
+  top: -30%;
+  right: -20%;
+  width: 55%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent, 94 184 255), 0.35) 0%,
+    transparent 72%
   );
-  opacity: 0.85;
-}
-
-/* Ghost year behind the card */
-.cardYearWrap {
-  position: absolute;
-  top: -4px;
-  right: 10px;
+  filter: blur(6px);
   pointer-events: none;
 }
 
-.cardYear {
-  display: block;
-  font-size: 3.2rem;
-  font-weight: var(--font-weight-bold);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  background: linear-gradient(
-    135deg,
-    rgb(var(--grad-1, 94 184 255)) 0%,
-    rgb(var(--grad-2, 94 184 255)) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  opacity: 0.14;
-  font-variant-numeric: tabular-nums;
-}
-
-.cardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.cardIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-sm);
-  color: #fff;
-  background: linear-gradient(
-    135deg,
-    rgb(var(--grad-1, 94 184 255)) 0%,
-    rgb(var(--grad-2, 94 184 255)) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    0 4px 14px rgba(var(--grad-2, 94 184 255), 0.35);
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-.card:hover .cardIcon {
-  transform: scale(1.1) rotate(-5deg);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 6px 20px rgba(var(--grad-2, 94 184 255), 0.5);
-}
-
 .yearPill {
-  font-size: 0.7rem;
+  align-self: flex-start;
+  font-size: 0.78rem;
   font-weight: var(--font-weight-bold);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
   color: rgb(var(--accent, 94 184 255));
-  background: rgba(var(--accent, 94 184 255), 0.12);
-  border: 1px solid rgba(var(--accent, 94 184 255), 0.3);
-  border-radius: var(--radius-full);
-  padding: 0.2rem 0.65rem;
+  background: rgba(var(--accent, 94 184 255), 0.14);
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.35);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.7rem;
 }
 
 .cardTitle {
@@ -392,21 +374,52 @@
   margin: 0;
 }
 
+.statusPill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: var(--font-weight-semibold, 600);
+  color: rgb(var(--accent, 94 184 255));
+  background: rgba(var(--accent, 94 184 255), 0.1);
+  border: 1px solid rgba(var(--accent, 94 184 255), 0.25);
+  border-radius: var(--radius-full);
+  padding: 0.3rem 0.75rem;
+  margin-top: var(--space-1);
+}
+
+.statusPill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--accent, 94 184 255));
+  box-shadow: 0 0 8px rgba(var(--accent, 94 184 255), 0.8);
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 64rem) {
-  .line {
-    left: 17px;
-    transform: none;
-  }
-
   .item {
-    grid-template-columns: 34px 1fr;
+    grid-template-columns: 40px 1fr;
     gap: var(--space-3);
   }
 
   .marker {
     grid-column: 1;
+    align-items: flex-start;
+  }
+
+  .markerIcon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .markerPing {
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
   }
 
   .item:nth-child(odd) .card,

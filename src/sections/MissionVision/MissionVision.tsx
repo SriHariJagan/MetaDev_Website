@@ -3,8 +3,11 @@ import { motion, useInView } from 'framer-motion';
 import {
   Compass,
   Eye,
+  Flag,
   Gem,
+  Globe,
   Handshake,
+  Layers,
   Rocket,
   ShieldCheck,
   Sparkles,
@@ -36,28 +39,11 @@ const MISSION_PILLARS: Pillar[] = [
   { icon: Handshake, label: 'True Partnership', accent: 'accent-amber' },
 ];
 
-interface Milestone {
-  year: string;
-  title: string;
-  desc: string;
-}
-
-const VISION_MILESTONES: Milestone[] = [
-  {
-    year: 'Today',
-    title: 'Foundation',
-    desc: 'Design, engineering and AI under one roof.',
-  },
-  {
-    year: '2028',
-    title: 'Scale',
-    desc: '100+ products shipped for teams worldwide.',
-  },
-  {
-    year: '2030',
-    title: 'North Star',
-    desc: 'A global, AI-first software studio.',
-  },
+const VISION_PILLARS: Pillar[] = [
+  { icon: Globe, label: 'Global Scale', accent: 'accent-blue' },
+  { icon: Sparkles, label: 'AI-First Thinking', accent: 'accent-violet' },
+  { icon: Layers, label: '100+ Products', accent: 'accent-cyan' },
+  { icon: Flag, label: 'Vision 2030', accent: 'accent-amber' },
 ];
 
 export interface MissionVisionProps {
@@ -154,24 +140,32 @@ export function MissionVision({
             </div>
           </motion.article>
 
-          {/* Vision — horizon / ascent design */}
+          {/* Vision — radar / scan design */}
           <motion.article
             className={cn(styles.card, styles.visionCard)}
             variants={itemVariants}
           >
             <span className={styles.visionHalo} />
-            <span className={styles.visionGrid} />
 
-            <div className={styles.visionHead}>
+            <div className={styles.visionOrbit}>
+              <motion.span
+                className={styles.radarRing}
+                animate={{ scale: [1, 1.55], opacity: [0.55, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut' }}
+              />
+              <motion.span
+                className={styles.radarRing}
+                animate={{ scale: [1, 1.55], opacity: [0.55, 0] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: 1.2 }}
+              />
+              <span className={styles.radarRingInner} />
               <span className={styles.visionIcon}>
-                <Eye size={20} aria-hidden="true" />
+                <Eye size={22} aria-hidden="true" />
               </span>
-              <div>
-                <span className={styles.cardTag}>The Vision</span>
-                <h3 className={styles.cardTitle}>Where we are headed</h3>
-              </div>
             </div>
 
+            <span className={styles.cardTag}>The Vision</span>
+            <h3 className={styles.cardTitle}>Where we are headed</h3>
             <p className={styles.statement}>
               A world where every ambitious team — from garages to enterprises
               — has a technology partner that feels like their own engineering
@@ -179,28 +173,20 @@ export function MissionVision({
               much as they do.
             </p>
 
-            <div className={styles.horizon}>
-              <span className={styles.horizonLine} />
-              <motion.span
-                className={styles.horizonDot}
-                animate={{ opacity: [0.4, 1, 0.4], left: ['0%', '100%'] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <ol className={styles.milestoneRow}>
-                {VISION_MILESTONES.map((milestone, index) => (
-                  <li
-                    key={milestone.year}
-                    className={styles.milestone}
-                    style={{ '--rise': `${index * 14}px` } as React.CSSProperties}
-                  >
-                    <span className={styles.milestoneDot} />
-                    <span className={styles.milestoneYear}>{milestone.year}</span>
-                    <span className={styles.milestoneTitle}>{milestone.title}</span>
-                    <span className={styles.milestoneDesc}>{milestone.desc}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            <ul className={styles.pillarRow}>
+              {VISION_PILLARS.map((pillar) => (
+                <li
+                  key={pillar.label}
+                  className={cn(
+                    styles.pillar,
+                    styles[`pillar-${pillar.accent}`],
+                  )}
+                >
+                  <pillar.icon size={13} aria-hidden="true" />
+                  {pillar.label}
+                </li>
+              ))}
+            </ul>
 
             <div className={styles.visionFooter}>
               <Rocket size={14} aria-hidden="true" />
