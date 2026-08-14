@@ -7,13 +7,17 @@ import {
   ArrowRight,
   CheckCircle2,
   Cog,
+  Fuel,
   Gauge,
   Map,
   Navigation,
+  Radar,
   Route,
+  Satellite,
   Star,
   TrendingDown,
   Truck,
+  Wrench,
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Container } from '@/components/common/Container';

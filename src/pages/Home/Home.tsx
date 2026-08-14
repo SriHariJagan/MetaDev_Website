@@ -42,7 +42,6 @@ import {
 import { StickyFeatureShowcase } from "@/sections/StickyFeatureShowcase";
 import { ProvenProcess } from "@/sections/ProvenProcess";
 import { TechStackNew } from "@/sections/TechStackNew";
-import { SecurityCompliance } from "@/sections/SecurityCompliance";
 import { GradientText } from "@/components/common/GradientText";
 import styles from "./Home.module.css";
 
