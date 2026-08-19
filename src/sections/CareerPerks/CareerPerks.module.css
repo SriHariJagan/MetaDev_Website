@@ -446,6 +446,12 @@
 
   .textCol {
     position: static;
+    align-items: center;
+    text-align: center;
+  }
+
+  .subtitle {
+    max-width: none;
   }
 }
 

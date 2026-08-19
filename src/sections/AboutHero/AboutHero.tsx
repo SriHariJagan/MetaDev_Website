@@ -91,7 +91,12 @@ function ConstellationDiagram() {
       >
         {SATELLITES.map((node) => {
           const pathId = `flow-path-${node.id}`;
-          const pathD = `M ${HUB.x} ${HUB.y} L ${node.x} ${node.y}`;
+          const dx = node.x - HUB.x;
+          const dy = node.y - HUB.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const startX = HUB.x + (dx / dist) * 11;
+          const startY = HUB.y + (dy / dist) * 11;
+          const pathD = `M ${startX} ${startY} L ${node.x} ${node.y}`;
           return (
             <g key={node.id} className={styles[`accent-${node.accent}`]}>
               {/* pathLength normalizes every line (regardless of its real length,

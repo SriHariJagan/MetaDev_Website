@@ -58,14 +58,6 @@ function ContactCta() {
   );
 }
 
-function SignInCta() {
-  return (
-    <Link to="/login" className={styles.signIn}>
-      Sign in
-    </Link>
-  );
-}
-
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
@@ -185,12 +177,10 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-          <SignInCta />
           <ContactCta />
         </nav>
 
         <div className={styles.actions}>
-          <SignInCta />
           <ThemeToggle />
           <ContactCta />
           <button

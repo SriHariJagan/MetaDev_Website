@@ -237,6 +237,21 @@
   z-index: 2;
 }
 
+.hubNode::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--product-accent-violet, 139 92 246), 0.35) 0%,
+    rgba(var(--product-accent-violet, 139 92 246), 0.12) 45%,
+    transparent 70%
+  );
+  filter: blur(18px);
+  pointer-events: none;
+}
+
 .hubInner {
   position: absolute;
   inset: 0;
@@ -246,25 +261,31 @@
   justify-content: center;
   gap: 0.1rem;
   border-radius: 50%;
-  border: 1px solid rgba(var(--product-accent-violet, 139 92 246), 0.45);
+  border: 2px solid rgba(var(--product-accent-violet, 139 92 246), 0.7);
   background: radial-gradient(
-    circle,
-    rgba(var(--product-accent-violet, 139 92 246), 0.14) 0%,
-    var(--glass-navy) 75%
+    circle at 35% 30%,
+    rgba(var(--product-accent-violet, 139 92 246), 0.3) 0%,
+    #0a1229 55%,
+    #060d20 100%
   );
   box-shadow:
-    0 0 0 6px rgba(2, 10, 30, 0.35),
-    0 12px 34px -10px rgba(var(--product-accent-violet, 139 92 246), 0.55);
+    0 0 0 6px rgba(2, 10, 30, 0.45),
+    0 0 0 1px rgba(var(--product-accent-violet, 139 92 246), 0.35),
+    0 12px 34px -10px rgba(var(--product-accent-violet, 139 92 246), 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 :global([data-theme="light"]) .hubInner {
   background: radial-gradient(
-    circle,
-    rgba(var(--product-accent-violet, 139 92 246), 0.16) 0%,
-    var(--glass-navy-light-soft) 75%
+    circle at 35% 30%,
+    rgba(var(--product-accent-violet, 139 92 246), 0.2) 0%,
+    #ffffff 55%,
+    #eef4ff 100%
   );
-  box-shadow: 0 12px 34px -10px
-    rgba(var(--product-accent-violet, 139 92 246), 0.4);
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.7),
+    0 12px 34px -10px rgba(var(--product-accent-violet, 139 92 246), 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .hubRing {
@@ -432,9 +453,18 @@
     gap: var(--space-8);
   }
 
+  /* Visual comes first on mobile, content below */
+  .visual {
+    order: -1;
+  }
+
   .content {
     align-items: center;
     text-align: center;
+  }
+
+  .actions {
+    justify-content: center;
   }
 
   .roleLine {
@@ -446,11 +476,15 @@
   }
 
   .visual {
-    min-height: 420px;
+    min-height: 500px;
   }
 
   .constellation {
-    max-width: 420px;
+    max-width: 500px;
+  }
+
+  .satelliteLabel {
+    width: 84px;
   }
 }
 
@@ -460,11 +494,20 @@
   }
 
   .visual {
-    min-height: 380px;
+    min-height: 480px;
   }
 
   .constellation {
-    max-width: 340px;
+    max-width: 440px;
+  }
+
+  .avatarBadge {
+    top: -25px;
+    right: 0;
+    left: auto;
+    transform: none;
+    font-size: 0.62rem;
+    padding: 0.45rem 1rem;
   }
 
   .hubNode {
@@ -482,11 +525,11 @@
   }
 
   .satelliteLabel {
-    width: 74px;
+    width: 78px;
   }
 
   .satelliteTitle {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
   }
 
   .satelliteSubtitle {

@@ -531,37 +531,6 @@
   display: none;
 }
 
-.signIn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 11px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--navbar-text);
-  font-family: var(--font-family-base);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    color 300ms ease,
-    border-color 300ms ease,
-    background-color 300ms ease;
-}
-
-.signIn:hover {
-  color: var(--navbar-accent);
-  border-color: var(--navbar-accent-muted);
-  background-color: var(--navbar-accent-muted);
-}
-
-.nav .signIn {
-  display: none;
-}
-
 .actions {
   display: flex;
   align-items: center;
@@ -632,8 +601,7 @@
     gap: 14px;
   }
 
-  .actions .cta,
-  .actions .signIn {
+  .actions .cta {
     display: none;
   }
 }
@@ -644,7 +612,7 @@
   }
 
   .logoImage {
-    height: 34px;
+    height: 42px;
   }
 
   .brandTagline {
@@ -753,11 +721,36 @@
   .nav .cta {
     display: inline-flex;
     width: 100%;
+    height: auto;
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--glass-navy-light);
+    border: 1px solid var(--blue-soft-border);
+    color: var(--navbar-accent);
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: none;
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease,
+      transform 200ms ease,
+      gap 200ms ease;
   }
 
-  .nav .signIn {
-    display: inline-flex;
-    width: 100%;
-    border-color: var(--color-border);
+  :global([data-theme='dark']) .nav .cta {
+    background: var(--glass-navy);
+    border-color: rgba(49, 118, 255, 0.28);
+  }
+
+  .nav .cta:hover {
+    color: var(--navbar-accent);
+    transform: translateY(-2px);
+    border-color: rgba(94, 184, 255, 0.6);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 12px 28px -8px rgba(var(--accent-blue-rgb), 0.45),
+      0 0 0 1px rgba(94, 184, 255, 0.3),
+      0 0 24px -6px rgba(var(--accent-blue-rgb), 0.3);
   }
 }

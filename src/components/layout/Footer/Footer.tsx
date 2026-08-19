@@ -1,9 +1,10 @@
 // Footer.tsx
-import { useRef, useState, type FormEvent, type ReactElement } from "react";
+import { useRef, useState, type CSSProperties, type FormEvent, type ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, type Variants } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUpRight,
   Rocket,
   ShieldCheck,
   Headset,
@@ -11,9 +12,11 @@ import {
   BadgeCheck,
   Lock,
   FileCheck2,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/common/Button";
+import { cn } from "@/utils/cn";
 import styles from "./Footer.module.css";
 
 /* ==================================================================== */
@@ -145,9 +148,7 @@ export function LetsBuildFuture() {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        {/* <div className={styles.arcGlow} aria-hidden="true" /> */}
-        <div className={styles.stars}></div>
-        
+        <div className={styles.stars} aria-hidden="true" />
 
         <div className={styles.ctaTop}>
           <div className={styles.ctaLeft}>
@@ -195,7 +196,7 @@ export function LetsBuildFuture() {
           </Button>
           <Link to="/solutions" className={styles.tertiaryLink}>
             Explore Solutions
-            <ArrowRight size={14} aria-hidden="true" />
+            <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </motion.div>
       </motion.div>
@@ -219,73 +220,82 @@ const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: Soci
 
 interface FooterColumn {
   heading: string;
-  links: { label: string; href: string }[];
+  links: { label: string; href: string; disabled?: boolean }[];
+  wide?: boolean;
+  split?: boolean;
 }
 
 const FOOTER_COLUMNS: FooterColumn[] = [
   {
     heading: "Products",
+    wide: true,
     links: [
       { label: "MetaHealth", href: "/products/metahealth" },
-      { label: "Abhyasa", href: "/products/abhyasa" },
-      { label: "Metaflow", href: "/products/metaflow" },
-      { label: "Developer Platform", href: "/products/developer-platform" },
-      { label: "MetaAI Studio", href: "/products/metaai-studio" },
-      { label: "Communication Suite", href: "/products/communication-suite" },
+      { label: "MetaEdu", href: "/products/metaedu" },
+      { label: "MetaGreen", href: "/products/metagreen" },
+      { label: "MetaFlow", href: "/products/metaflow" },
+      { label: "MetaHire", href: "/products/metahire" },
+      { label: "MetaCheck", href: "/products/metacheck" },
+      { label: "MetaAdds", href: "/products/metaadds" },
+      { label: "MetaNav", href: "/products/metanav" },
+      { label: "MetaLedger", href: "/products/metaledger" },
+      { label: "MetaCard", href: "/products/metacard" },
+      { label: "MetaIM", href: "/products/metaim" },
     ],
   },
   {
     heading: "Solutions",
+    split: true,
     links: [
-      { label: "Digital Health", href: "/solutions/digital-health" },
-      { label: "Education", href: "/solutions/education" },
-      { label: "Government", href: "/solutions/government" },
-      { label: "Enterprise", href: "/solutions/enterprise" },
-      { label: "FinTech", href: "/solutions/fintech" },
-      { label: "AI Automation", href: "/solutions/ai-automation" },
+      { label: "Digital Health", href: "/solutions/digital-health", disabled: true },
+      { label: "Education", href: "/solutions/education", disabled: true },
+      { label: "Government", href: "/solutions/government", disabled: true },
+      { label: "Enterprise", href: "/solutions/enterprise", disabled: true },
+      { label: "FinTech", href: "/solutions/fintech", disabled: true },
+      { label: "AI Automation", href: "/solutions/ai-automation", disabled: true },
     ],
   },
   {
     heading: "Industries",
+    split: true,
     links: [
-      { label: "Healthcare", href: "/industries/healthcare" },
-      { label: "Education", href: "/industries/education" },
-      { label: "Government", href: "/industries/government" },
-      { label: "Retail", href: "/industries/retail" },
-      { label: "Manufacturing", href: "/industries/manufacturing" },
-      { label: "NGO & NPO", href: "/industries/ngo-npo" },
+      { label: "Healthcare", href: "/industries/healthcare", disabled: true },
+      { label: "Education", href: "/industries/education", disabled: true },
+      { label: "Government", href: "/industries/government", disabled: true },
+      { label: "Retail", href: "/industries/retail", disabled: true },
+      { label: "Manufacturing", href: "/industries/manufacturing", disabled: true },
+      { label: "NGO & NPO", href: "/industries/ngo-npo", disabled: true },
     ],
   },
   {
     heading: "Resources",
+    split: true,
     links: [
-      { label: "Documentation", href: "/resources/documentation" },
-      { label: "Blogs", href: "/resources/blogs" },
-      { label: "Case Studies", href: "/resources/case-studies" },
-      { label: "Whitepapers", href: "/resources/whitepapers" },
-      { label: "Webinars", href: "/resources/webinars" },
-      { label: "Help Center", href: "/resources/help-center" },
+      { label: "Documentation", href: "/resources/documentation", disabled: true },
+      { label: "Blogs", href: "/resources/blogs", disabled: true },
+      { label: "Case Studies", href: "/resources/case-studies", disabled: true },
+      { label: "Whitepapers", href: "/resources/whitepapers", disabled: true },
+      { label: "Webinars", href: "/resources/webinars", disabled: true },
+      { label: "Help Center", href: "/resources/help-center", disabled: true },
     ],
   },
   {
     heading: "Developers",
+    split: true,
     links: [
-      { label: "API Reference", href: "/developers/api-reference" },
-      { label: "SDKs & Libraries", href: "/developers/sdks" },
-      { label: "Changelog", href: "/developers/changelog" },
-      { label: "Status", href: "/developers/status" },
-      { label: "Community", href: "/developers/community" },
-      { label: "Developer Console", href: "/developers/console" },
+      { label: "API Reference", href: "/developers/api-reference", disabled: true },
+      { label: "SDKs & Libraries", href: "/developers/sdks", disabled: true },
+      { label: "Changelog", href: "/developers/changelog", disabled: true },
+      { label: "Status", href: "/developers/status", disabled: true },
+      { label: "Community", href: "/developers/community", disabled: true },
+      { label: "Developer Console", href: "/developers/console", disabled: true },
     ],
   },
   {
     heading: "Company",
     links: [
-      { label: "About Us", href: "/company/about" },
-      { label: "Careers", href: "/company/careers" },
-      { label: "Partners", href: "/company/partners" },
-      { label: "Newsroom", href: "/company/newsroom" },
-      { label: "Investors", href: "/company/investors" },
+      { label: "About Us", href: "/about" },
+      { label: "Careers", href: "/careers" },
       { label: "Contact Us", href: "/contact" },
     ],
   },
@@ -308,6 +318,42 @@ const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent 
   { icon: Lock, label: "GDPR", accent: "gdpr" },
 ];
 
+function FooterLinkColumn({ column }: { column: FooterColumn }) {
+  const isSplit = column.wide || column.split;
+  const splitRows = isSplit ? Math.ceil(column.links.length / 2) : undefined;
+
+  return (
+    <div
+      className={cn(
+        styles.linkCol,
+        column.wide && styles.linkColWide,
+        column.split && styles.linkColSplit,
+      )}
+    >
+      <h3 className={styles.colHeading}>{column.heading}</h3>
+      <ul
+        className={cn(styles.linkList, isSplit && styles.linkListSplit)}
+        style={splitRows ? ({ "--split-rows": splitRows } as CSSProperties) : undefined}
+      >
+        {column.links.map((link) => (
+          <li key={link.label}>
+            {link.disabled ? (
+              <span className={cn(styles.link, styles.linkDisabled)} title="Coming soon">
+                {link.label}
+                <span className={styles.soonDot} aria-hidden="true" />
+              </span>
+            ) : (
+              <Link to={link.href} className={styles.link}>
+                {link.label}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function Footer() {
   const year = new Date().getFullYear();
   const [email, setEmail] = useState("");
@@ -320,6 +366,9 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.main}>
+        <span className={styles.watermark} aria-hidden="true">
+          MetaDev
+        </span>
         <div className={styles.mainInner}>
           <div className={styles.brandCol}>
             <Link to="/" className={styles.brand}>
@@ -357,26 +406,27 @@ export function Footer() {
             </ul>
           </div>
 
-          {FOOTER_COLUMNS.map((column) => (
-            <div key={column.heading} className={styles.linkCol}>
-              <h3 className={styles.colHeading}>{column.heading}</h3>
-              <ul className={styles.linkList}>
-                {column.links.map((link) => (
-                  <li key={link.label}>
-                    <Link to={link.href} className={styles.link}>
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          <div className={styles.linkColsGroup}>
+            <div className={styles.linkCols}>
+              {FOOTER_COLUMNS.slice(0, 3).map((column) => (
+                <FooterLinkColumn key={column.heading} column={column} />
+              ))}
             </div>
-          ))}
+            <div className={cn(styles.linkCols, styles.linkColsRow2)}>
+              {FOOTER_COLUMNS.slice(3).map((column) => (
+                <FooterLinkColumn key={column.heading} column={column} />
+              ))}
+            </div>
+          </div>
 
           <div className={styles.newsletterCol}>
             <div className={styles.newsletterCard}>
+              <span className={styles.newsletterIcon} aria-hidden="true">
+                <Mail size={18} />
+              </span>
               <h3 className={styles.newsletterHeading}>Stay Updated</h3>
               <p className={styles.newsletterDesc}>
-                Subscribe to our newsletter for the latest updates.
+                Product news and engineering insights, straight to your inbox.
               </p>
               <form
                 className={styles.newsletterForm}
@@ -396,11 +446,11 @@ export function Footer() {
                   className={styles.newsletterSubmit}
                   aria-label="Subscribe"
                 >
-                  <Rocket size={15} aria-hidden="true" />
+                  <ArrowRight size={15} aria-hidden="true" />
                 </button>
               </form>
               <span className={styles.newsletterNote}>
-                We respect your privacy.
+                We respect your privacy. Unsubscribe anytime.
               </span>
             </div>
           </div>

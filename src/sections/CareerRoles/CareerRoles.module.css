@@ -741,6 +741,15 @@
 /* ---------- Responsive ---------- */
 
 @media (max-width: 48rem) {
+  .header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .subtitle {
+    max-width: none;
+  }
+
   .board {
     grid-template-columns: 1fr;
   }

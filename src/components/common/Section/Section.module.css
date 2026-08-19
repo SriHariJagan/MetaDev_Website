@@ -1,6 +1,9 @@
 .section {
   position: relative;
+  /* `clip` (not `hidden`) so `position: sticky` inside sections still works —
+     `overflow: hidden` creates a scroll container and disables sticky. */
   overflow: hidden;
+  overflow: clip;
   background-color: var(--color-bg);
   scroll-margin-top: calc(var(--navbar-height) + 1rem);
 }

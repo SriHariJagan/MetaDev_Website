@@ -440,7 +440,7 @@ export function WhyMetaNext() {
             </motion.ul>
           </motion.div>
 
-          {/* ---------- Right: 4 differentiators ---------- */}
+          {/* ---------- Right: 5 differentiators ---------- */}
           <motion.ul
             className={styles.differentiatorsGrid}
             variants={containerVariants}

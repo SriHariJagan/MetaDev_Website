@@ -250,15 +250,13 @@ export function TechStack({ className }: TechStackProps) {
                   >
                     <span className={styles.tabIconWrap}>
                       <GroupIcon
-                        size={28}
+                        size={26}
                         stroke={`url(#grad-${group.accent})`}
                         aria-hidden="true"
                       />
                     </span>
                     <span className={styles.tabName}>{group.category}</span>
-                    <span className={styles.tabCount}>
-                      {group.techs.length} techs
-                    </span>
+                    <span className={styles.tabCount}>{group.techs.length}</span>
                   </button>
                 </motion.li>
               );
