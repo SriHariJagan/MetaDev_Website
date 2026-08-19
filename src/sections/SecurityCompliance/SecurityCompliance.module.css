@@ -28,7 +28,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: var(--space-8);
   align-items: center;
 }
@@ -211,10 +211,21 @@
 
 .orbitRingOuter {
   width: 100%;
+  animation: orbitSpin 26s linear infinite;
 }
 
 .orbitRingInner {
   width: 70%;
+  animation: orbitSpin 19s linear infinite reverse;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 :global([data-theme="dark"]) .orbitRingOuter,
@@ -365,6 +376,15 @@
 
   .orbit {
     max-width: 260px;
+  }
+
+  .left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .subtitle {
+    margin-inline: auto;
   }
 }
 

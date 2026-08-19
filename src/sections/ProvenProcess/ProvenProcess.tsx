@@ -9,19 +9,20 @@ import {
   ShieldCheck,
   Rocket,
   Headphones,
-  CheckCircle2,
   Sparkles,
   Users,
   Calendar,
   BadgeCheck,
   Clock,
   BarChart3,
+  ArrowRight,
   type LucideIcon,
 } from 'lucide-react';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
 import { GradientText } from '@/components/common/GradientText';
 import { Badge } from '@/components/common/Badge';
+import { Button } from '@/components/common/Button';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
 import { fadeUp, staggerContainer } from '@/constants/motion';
 import styles from './ProvenProcess.module.css';
@@ -100,14 +101,6 @@ const STEPS: Step[] = [
   },
 ];
 
-const VALUES: { icon: LucideIcon; accent: Accent; label: string }[] = [
-  { icon: CheckCircle2, accent: 'violet', label: 'Customer Centric Approach' },
-  { icon: CheckCircle2, accent: 'blue', label: 'Agile & Iterative Delivery' },
-  { icon: CheckCircle2, accent: 'cyan', label: 'Transparent Communication' },
-  { icon: CheckCircle2, accent: 'green', label: 'Quality & Security First' },
-  { icon: CheckCircle2, accent: 'blue', label: 'On-Time, Every Time' },
-];
-
 interface StatItem {
   icon: LucideIcon;
   accent: Accent;
@@ -172,23 +165,16 @@ export function ProvenProcess() {
               high-quality digital solutions that drive real impact.
             </p>
 
-            <motion.ul
-              className={styles.valueList}
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-            >
-              {VALUES.map((value) => (
-                <motion.li
-                  key={value.label}
-                  className={`${styles.valueItem} ${styles[`accent-${value.accent}`]}`}
-                  variants={itemVariants}
-                >
-                  <value.icon size={12} className={styles.valueIcon} aria-hidden="true" />
-                  <span>{value.label}</span>
-                </motion.li>
-              ))}
-            </motion.ul>
+            <p className={styles.sidebarNote}>
+              Every engagement runs through the same seven-stage playbook,
+              refined across 250+ delivered projects — so nothing gets left
+              to chance between kickoff and launch.
+            </p>
+
+            <Button to="/contact" variant="gradient" size="md" className={styles.cta}>
+              Start Your Project
+              <ArrowRight size={16} aria-hidden="true" />
+            </Button>
           </motion.div>
 
           {/* ---------- Timeline ---------- */}

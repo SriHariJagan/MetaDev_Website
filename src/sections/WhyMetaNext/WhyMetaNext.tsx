@@ -11,6 +11,7 @@ import {
   Handshake,
   Headphones,
   Landmark,
+  Lightbulb,
   Network,
   Puzzle,
   Rocket,
@@ -38,7 +39,8 @@ type Accent =
   | "rose"
   | "amber"
   | "indigo"
-  | "teal";
+  | "teal"
+  | "pink";
 
 const containerVariants = staggerContainer(0.06);
 const itemVariants = fadeUp(18, 0.32);
@@ -66,7 +68,7 @@ interface Differentiator {
   description: string;
 }
 
-const DIFFERENTIATORS: Differentiator[] = [
+const DIFFERENTIATORS_LEFT: Differentiator[] = [
   {
     icon: Landmark,
     accent: "blue",
@@ -100,6 +102,9 @@ const DIFFERENTIATORS: Differentiator[] = [
     description:
       "Modular architecture that evolves as your organization grows.",
   },
+];
+
+const DIFFERENTIATORS_RIGHT: Differentiator[] = [
   {
     icon: Handshake,
     accent: "rose",
@@ -126,6 +131,13 @@ const DIFFERENTIATORS: Differentiator[] = [
     title: "Dedicated Support",
     description:
       "Around-the-clock care from a team that knows your platform.",
+  },
+  {
+    icon: Lightbulb,
+    accent: "pink",
+    title: "Continuous Innovation",
+    description:
+      "A steady cadence of enhancements keeps your platform ahead of the curve.",
   },
 ];
 
@@ -168,7 +180,6 @@ function GrowthIllustration({ inView }: { inView: boolean }) {
       animate={inView ? { y: [0, -8, 0] } : { y: 0 }}
       transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
     >
-      <div className={styles.growthRing} />
 
       {GROWTH_DOTS.map((dot) => (
         <motion.span
@@ -344,44 +355,38 @@ export function WhyMetaNext() {
           />
         </motion.div>
 
-        <motion.ul
-          className={styles.statsRow}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          {STATS.map((stat, index) => (
-            <motion.li
-              key={stat.label}
-              className={`${styles.statCard} ${styles[`accent-${stat.accent}`]}`}
-              variants={itemVariants}
-            >
-              <motion.span
-                className={styles.statIconBig}
-                animate={isInView ? { y: [0, -6, 0] } : { y: 0 }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: index * 0.15,
-                }}
+        <div className={styles.heroGrid}>
+          {/* ---------- Left: 5 differentiators ---------- */}
+          <motion.ul
+            className={styles.differentiatorsGrid}
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            {DIFFERENTIATORS_LEFT.map((item, index) => (
+              <motion.li
+                key={item.title}
+                className={`${styles.diffCard} ${styles[`accent-${item.accent}`]}`}
+                variants={itemVariants}
               >
-                <stat.icon className={styles.statIconGlyph} aria-hidden="true" />
-                <CountUp
-                  value={stat.value}
-                  duration={1.4}
-                  className={styles.statValue}
-                />
-              </motion.span>
-              <span className={styles.statLabel}>{stat.label}</span>
-            </motion.li>
-          ))}
-        </motion.ul>
+                <span className={styles.diffIndex} aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className={styles.cardHead}>
+                  <span className={styles.cardIcon}>
+                    <item.icon size={24} aria-hidden="true" />
+                  </span>
+                  <h3 className={styles.cardTitle}>{item.title}</h3>
+                </span>
+                <span className={styles.cardDivider} aria-hidden="true" />
+                <p className={styles.cardText}>{item.description}</p>
+              </motion.li>
+            ))}
+          </motion.ul>
 
-        <div className={styles.layout}>
-          {/* ---------- Left: growth illustration + supporting text ---------- */}
+          {/* ---------- Center: stats + growth spotlight ---------- */}
           <motion.div
-            className={styles.growthPanel}
+            className={styles.spotlight}
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -397,35 +402,71 @@ export function WhyMetaNext() {
               platform that gets faster, smarter, and easier to scale —
               quarter after quarter.
             </motion.p>
+
+            <motion.ul
+              className={styles.centerStats}
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              {STATS.map((stat, index) => (
+                <motion.li
+                  key={stat.label}
+                  className={`${styles.statRow} ${styles[`accent-${stat.accent}`]}`}
+                  variants={itemVariants}
+                >
+                  <motion.span
+                    className={styles.statMarker}
+                    animate={isInView ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.2,
+                    }}
+                  >
+                    <stat.icon className={styles.statMarkerIcon} aria-hidden="true" />
+                  </motion.span>
+                  <span className={styles.statTextGroup}>
+                    <CountUp
+                      value={stat.value}
+                      duration={1.4}
+                      className={styles.statValue}
+                    />
+                    <span className={styles.statLabel}>{stat.label}</span>
+                  </span>
+                </motion.li>
+              ))}
+            </motion.ul>
           </motion.div>
 
-          {/* ---------- Right: differentiators as a single list card ---------- */}
-          <motion.div
-            className={styles.differentiatorsPanel}
+          {/* ---------- Right: 4 differentiators ---------- */}
+          <motion.ul
+            className={styles.differentiatorsGrid}
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <ul className={styles.differentiatorsList}>
-              {DIFFERENTIATORS.map((item) => (
-                <motion.li
-                  key={item.title}
-                  className={styles.differentiatorRow}
-                  variants={itemVariants}
-                >
-                  <span
-                    className={`${styles.cardIcon} ${styles[`accent-${item.accent}`]}`}
-                  >
-                    <item.icon size={20} aria-hidden="true" />
+            {DIFFERENTIATORS_RIGHT.map((item, index) => (
+              <motion.li
+                key={item.title}
+                className={`${styles.diffCard} ${styles[`accent-${item.accent}`]}`}
+                variants={itemVariants}
+              >
+                <span className={styles.diffIndex} aria-hidden="true">
+                  {String(index + 6).padStart(2, "0")}
+                </span>
+                <span className={styles.cardHead}>
+                  <span className={styles.cardIcon}>
+                    <item.icon size={24} aria-hidden="true" />
                   </span>
-                  <span className={styles.differentiatorBody}>
-                    <h3 className={styles.cardTitle}>{item.title}</h3>
-                    <p className={styles.cardText}>{item.description}</p>
-                  </span>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+                  <h3 className={styles.cardTitle}>{item.title}</h3>
+                </span>
+                <span className={styles.cardDivider} aria-hidden="true" />
+                <p className={styles.cardText}>{item.description}</p>
+              </motion.li>
+            ))}
+          </motion.ul>
         </div>
 
         <motion.ul

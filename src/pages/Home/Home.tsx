@@ -211,12 +211,13 @@ export function HomePage() {
       <OurSolutions
         eyebrow="Why Choose MetaDev"
         title={WHY_TITLE}
+        titleClassName={styles.whyTitle}
         subtitle="We combine innovation, security, and scalability to deliver digital solutions that create measurable impact and long-term value."
         pillLabel="12 Reasons to Choose MetaDev"
         columns={6}
         solutions={WHY_CARDS}
         stats={WHY_STATS}
-        showDescriptions={false}
+        showDescriptions
       />
       <EnterpriseCapabilities items={WHY_CAPABILITIES} />
       <StickyFeatureShowcase />

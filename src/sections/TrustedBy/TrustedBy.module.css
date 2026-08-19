@@ -121,7 +121,7 @@
   overflow: hidden;
   flex: 1;
   min-width: 0;
-  height: 108px;
+  height: 140px;
   display: flex;
   align-items: center;
   background: transparent;
@@ -167,12 +167,12 @@
 
 .logoBannerItem {
   flex-shrink: 0;
-  width: 201px;
+  width: 260px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 22px 28px;
+  padding: 26px 34px;
   background: transparent;
 }
 
@@ -184,8 +184,8 @@
   display: block;
   width: auto;
   height: auto;
-  max-width: 148px;
-  max-height: 82px;
+  max-width: 190px;
+  max-height: 110px;
   object-fit: contain;
   filter: brightness(0) invert(1);
   transition: filter 0.35s ease;
@@ -195,7 +195,8 @@
   filter: brightness(0);
 }
 
-.logoBannerItem:hover .logoImage {
+.logoBannerItem:hover .logoImage,
+.marqueeSection:hover .logoImage {
   filter: none;
 }
 
@@ -205,16 +206,16 @@
   }
 
   .logoBanner {
-    height: 86px;
+    height: 110px;
   }
 
   .logoBannerItem {
-    width: 160px;
-    padding: 16px 18px;
+    width: 200px;
+    padding: 18px 20px;
   }
 
   .logoImage {
-    max-width: 110px;
-    max-height: 34px;
+    max-width: 140px;
+    max-height: 46px;
   }
 }

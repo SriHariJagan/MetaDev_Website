@@ -27,9 +27,9 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
   gap: var(--space-8);
-  align-items: start;
+  align-items: center;
 }
 
 /* ---------- Sidebar ---------- */
@@ -43,7 +43,7 @@
 
 .title {
   margin: var(--space-1) 0 0;
-  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-size: clamp(1.5rem, 2.3vw, 1.9rem);
   font-weight: var(--font-weight-bold);
   line-height: 1.25;
   color: var(--color-text);
@@ -52,51 +52,28 @@
 
 .subtitle {
   margin: var(--space-1) 0 0;
-  max-width: 24rem;
+  max-width: 27rem;
   font-size: var(--font-size-2xs);
   line-height: var(--line-height-base);
   color: var(--color-text-muted);
   text-align: left;
 }
 
-.valueList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  list-style: none;
+.sidebarNote {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) var(--space-4);
+  max-width: 27rem;
+  border-left: 2px solid rgba(var(--accent-blue-rgb), 0.4);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: rgba(var(--accent-blue-rgb), 0.06);
+  font-size: var(--font-size-3xs);
+  line-height: 1.55;
+  color: var(--color-text-muted);
+  text-align: left;
 }
 
-.valueItem {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  font-size: .8rem;
-  color: var(--color-text);
-}
-
-.valueIcon {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 1px solid rgba(var(--accent), 0.35);
-  background: rgba(var(--accent), 0.1);
-  color: rgb(var(--accent));
-  transition:
-    transform var(--transition-medium),
-    box-shadow var(--transition-medium);
-}
-
-.valueItem:hover .valueIcon {
-  transform: scale(1.1);
-  box-shadow: 0 0 14px -4px rgba(var(--accent), 0.5);
+.cta {
+  margin-top: var(--space-5);
 }
 
 /* ---------- Timeline area ---------- */
@@ -109,10 +86,10 @@
 .stepGrid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(7, minmax(108px, 1fr));
-  gap: var(--space-2);
+  grid-template-columns: repeat(7, minmax(110px, 1fr));
+  gap: var(--space-3);
   margin: 0;
-  padding: 30px 0 0;
+  padding: 34px 0 0;
   list-style: none;
   width: 100%;
 }
@@ -122,10 +99,11 @@
 .stepGrid::before {
   content: "";
   position: absolute;
-  top: 52px;
+  top: 56px;
   left: calc(100% / 14);
   right: calc(100% / 14);
-  height: 1px;
+  height: 2px;
+  border-radius: var(--radius-full);
   background: linear-gradient(
     90deg,
     rgb(139 92 246),
@@ -136,14 +114,48 @@
     rgb(234 130 46),
     rgb(236 72 153)
   );
-  opacity: 0.6;
+  opacity: 0.35;
   pointer-events: none;
+}
+
+/* Flowing current — a soft band of light that sweeps along the connector,
+   left to right, on an endless loop (no separate marker needed) */
+
+.stepGrid::after {
+  content: "";
+  position: absolute;
+  top: 56px;
+  left: calc(100% / 14);
+  right: calc(100% / 14);
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.95) 8%,
+    rgba(200, 225, 255, 0.5) 14%,
+    transparent 22%
+  );
+  background-size: 320% 100%;
+  filter: drop-shadow(0 0 6px rgba(148, 197, 255, 0.85))
+    drop-shadow(0 0 10px rgba(94, 184, 255, 0.45));
+  z-index: 0;
+  animation: stepFlow 7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes stepFlow {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -220% 0;
+  }
 }
 
 /* Zero-specificity defaults — `.accent-*` classes always override these */
 
 :where(.stepCard),
-:where(.valueItem),
 :where(.statItem) {
   --accent: 94 184 255;
   --grad-1: 94 184 255;
@@ -194,24 +206,19 @@
   gap: 0.3rem;
   min-width: 0;
   padding: 0 var(--space-2) var(--space-3);
-  border-left: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   transition:
     background-color var(--transition-medium),
-    border-left-color var(--transition-medium);
-}
-
-.stepCard:first-child {
-  border-left: none;
+    transform var(--transition-medium);
 }
 
 .stepCard:hover {
+  transform: translateY(-3px);
   background: linear-gradient(
     180deg,
     rgba(var(--accent), 0.08),
     transparent 80%
   );
-  border-left-color: rgba(var(--accent), 0.6);
 }
 
 .stepIcon {
@@ -371,40 +378,139 @@
   }
 
   .title,
-  .subtitle {
+  .subtitle,
+  .sidebarNote {
     text-align: center;
   }
-
-  .valueList {
-    align-items: center;
-  }
 }
+
+/* ---------- Vertical timeline (responsive) ---------- */
 
 @media (max-width: 48rem) {
   .stepGrid {
-    grid-template-columns: repeat(4, minmax(140px, 1fr));
-    row-gap: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    padding-top: 0;
+  }
+
+  .stepGrid::after {
+    content: none;
   }
 
   .stepGrid::before {
-    display: none;
+    content: "";
+    position: absolute;
+    top: 22px;
+    bottom: 22px;
+    left: 21px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    border-radius: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(139 92 246),
+      rgb(59 130 246),
+      rgb(6 182 212),
+      rgb(34 197 94),
+      rgb(245 158 11),
+      rgb(234 130 46),
+      rgb(236 72 153)
+    );
+    opacity: 0.45;
+    pointer-events: none;
   }
 
-  .stepCard:nth-child(4n + 1) {
-    border-left: none;
+  .stepCard {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    grid-template-areas:
+      "icon num"
+      "icon title"
+      "icon desc";
+    column-gap: var(--space-4);
+    row-gap: 0.2rem;
+    padding: 0;
+    border: none;
+    background: none;
+    border-radius: 0;
+  }
+
+  .stepCard:hover {
+    transform: translateX(4px);
+    background: none;
+    border-color: transparent;
+  }
+
+  .stepIcon {
+    grid-area: icon;
+    align-self: start;
+  }
+
+  .stepNum {
+    grid-area: num;
+    justify-self: start;
+    margin-top: 0;
+  }
+
+  .stepTitle {
+    grid-area: title;
+    text-align: left;
+  }
+
+  .stepDesc {
+    grid-area: desc;
+    text-align: left;
   }
 
   .statsBar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    margin-top: var(--space-6);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .statItem {
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--glass-border);
+    transition: background-color var(--transition-medium);
+  }
+
+  .statItem:hover {
+    background: rgba(var(--accent), 0.06);
+  }
+
+  .statItem:nth-child(odd) {
+    border-right: 1px solid var(--glass-border);
+  }
+
+  .statItem:last-child {
+    grid-column: 1 / -1;
     justify-content: center;
+    border-bottom: none;
+  }
+
+  .statIcon {
+    width: 38px;
+    height: 38px;
+    background: rgba(var(--accent), 0.15);
+  }
+
+  .statValue {
+    font-size: var(--font-size-2xs);
+  }
+
+  .statLabel {
+    font-size: var(--font-size-3xs);
   }
 }
 
-@media (max-width: 28rem) {
-  .stepGrid {
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
-  }
-
-  .stepCard:nth-child(odd) {
-    border-left: none;
+@media (max-width: 24rem) {
+  .statItem {
+    padding: var(--space-3);
   }
 }

@@ -18,28 +18,26 @@
   );
 }
 
-/* Brand linear gradient band — left to right, shown in light mode */
-.glowLinear {
+/* Diagonal shade — Solutions-page style wash from bottom-left toward top-right */
+.shadeDiagonal {
   position: absolute;
-  top: -160px;
-  left: -10%;
-  width: 95%;
-  height: 520px;
+  inset: 0;
   background: linear-gradient(
-    90deg,
-    rgba(53, 201, 255, 0.22) 0%,
-    rgba(47, 91, 255, 0.16) 45%,
-    rgba(167, 139, 250, 0.1) 75%,
-    transparent 100%
+    60deg,
+    rgba(94, 184, 255, 0.2) 0%,
+    rgba(155, 107, 255, 0.1) 38%,
+    transparent 76%
   );
-  filter: blur(48px);
-  opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-medium);
 }
 
-:global([data-theme='light']) .glowLinear {
-  opacity: 1;
+:global([data-theme="light"]) .shadeDiagonal {
+  background: linear-gradient(
+    60deg,
+    rgba(94, 184, 255, 0.28) 0%,
+    rgba(190, 227, 248, 0.6) 32%,
+    transparent 78%
+  );
 }
 
 /* Split-theme band — light left, dark right (light mode only) */
@@ -79,22 +77,6 @@
   opacity: 1;
 }
 
-.glowTop {
-  position: absolute;
-  top: -220px;
-  right: -160px;
-  width: 620px;
-  height: 620px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--navbar-accent-start) 0%,
-    transparent 70%
-  );
-  opacity: 0.22;
-  filter: blur(10px);
-}
-
 .glowBottom {
   position: absolute;
   bottom: -260px;
@@ -107,7 +89,6 @@
   filter: blur(10px);
 }
 
-:global([data-theme="light"]) .glowTop,
 :global([data-theme="light"]) .glowBottom {
   opacity: 0.1;
 }
@@ -171,9 +152,11 @@
 
 .stat {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-1) var(--space-2);
   padding: var(--space-3);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -200,8 +183,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  grid-column: 1;
+  grid-row: 1;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   border-radius: var(--radius-md);
   color: rgb(var(--stat-rgb));
@@ -210,13 +195,9 @@
   box-shadow: 0 0 16px rgba(var(--stat-rgb), 0.18);
 }
 
-.statText {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
 .statValue {
+  grid-column: 2;
+  grid-row: 1;
   margin: 0;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
@@ -235,6 +216,8 @@
 }
 
 .statLabel {
+  grid-column: 1 / -1;
+  grid-row: 2;
   margin: 0;
   font-size: var(--font-size-2xs);
   color: var(--color-text-muted);
@@ -349,17 +332,36 @@
   transform: translateX(-50%);
   z-index: 1;
   --globe-lit: rgba(148, 187, 255, 0.15);
+  --globe-bright: rgba(84, 130, 220, 0.6);
   --globe-mid: rgba(11, 30, 68, 0.92);
   --globe-deep: rgba(4, 9, 24, 0.97);
   --globe-line: rgba(148, 197, 255, 0.16);
+  --globe-edge: rgba(148, 197, 255, 0.35);
   --globe-arc-a: #38bdf8;
   --globe-arc-b: #a78bfa;
   --globe-dot: #7dd3fc;
 }
 
+:global([data-theme='light']) .globeWrap {
+  --globe-lit: rgba(235, 244, 255, 0.98);
+  --globe-bright: rgba(96, 150, 235, 0.85);
+  --globe-mid: rgba(34, 78, 168, 0.97);
+  --globe-deep: rgba(8, 20, 48, 0.99);
+  --globe-line: rgba(255, 255, 255, 0.38);
+  --globe-edge: #ffffff;
+  --globe-arc-a: #22d3ee;
+  --globe-arc-b: #c084fc;
+  --globe-dot: #ffffff;
+}
+
 .digitalGlobe {
   position: absolute;
   inset: 0;
+  filter: drop-shadow(0 14px 34px rgba(8, 22, 56, 0.4));
+}
+
+:global([data-theme='light']) .digitalGlobe {
+  filter: drop-shadow(0 18px 38px rgba(30, 64, 175, 0.32));
 }
 
 .globeSpin {
@@ -374,8 +376,36 @@
   height: 100%;
 }
 
+.atmosphere {
+  opacity: 0.55;
+  filter: blur(3px);
+}
+
+:global([data-theme='light']) .atmosphere {
+  opacity: 0.85;
+  filter: blur(2.5px);
+}
+
+.specular {
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+:global([data-theme='light']) .specular {
+  opacity: 0.45;
+}
+
+.nodeDot {
+  filter: drop-shadow(0 0 4px var(--globe-dot));
+}
+
 .graticule {
   opacity: 0.8;
+}
+
+:global([data-theme='light']) .graticule {
+  opacity: 0.55;
 }
 
 .arcFlow {
@@ -410,6 +440,16 @@
   border-top-color: rgba(56, 189, 248, 0.85);
   border-bottom-color: rgba(167, 139, 250, 0.85);
   animation: globeSpin 60s linear infinite;
+}
+
+:global([data-theme='light']) .orbitRing {
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+:global([data-theme='light']) .orbitRingReverse {
+  border-color: rgba(59, 130, 246, 0.25);
+  border-top-color: rgba(14, 165, 233, 0.95);
+  border-bottom-color: rgba(168, 85, 247, 0.9);
 }
 
 .orbitSatA,
@@ -545,6 +585,22 @@
   box-shadow:
     0 10px 28px rgba(59, 130, 246, 0.3),
     0 0 18px rgba(56, 189, 248, 0.18);
+}
+
+:global([data-theme='light']) .floatingCard {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(148, 187, 255, 0.5);
+  box-shadow:
+    0 10px 26px rgba(30, 64, 175, 0.14),
+    0 1px 2px rgba(30, 64, 175, 0.08);
+  color: var(--color-text);
+}
+
+:global([data-theme='light']) .floatingCard:hover {
+  border-color: rgba(59, 130, 246, 0.55);
+  box-shadow:
+    0 14px 32px rgba(37, 99, 235, 0.2),
+    0 0 18px rgba(56, 189, 248, 0.2);
 }
 
 .floatingIcon {
@@ -789,19 +845,24 @@
     gap: var(--space-8);
   }
 
-  /* Stacked layout: keep the copy light up top, darken toward the visual below */
+  .visual {
+    order: 1;
+  }
+
+  /* Stacked layout: visual on top, so darken toward it, fade to copy below */
   :global([data-theme='light']) .sectionGradient {
     background: linear-gradient(
       180deg,
-      transparent 0%,
-      transparent 38%,
-      rgba(10, 14, 34, 0.45) 58%,
-      rgba(7, 10, 26, 0.85) 80%,
-      #050816 100%
+      #050816 0%,
+      rgba(7, 10, 26, 0.85) 20%,
+      rgba(10, 14, 34, 0.45) 42%,
+      transparent 62%,
+      transparent 100%
     );
   }
 
   .content {
+    order: 2;
     align-items: center;
     text-align: center;
   }
@@ -827,7 +888,17 @@
   }
 
   .stats {
-    gap: var(--space-3);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+  }
+
+  .stat {
+    padding: var(--space-2-5, var(--space-2));
+  }
+
+  .statLabel {
+    white-space: normal;
+    line-height: 1.3;
   }
 
   .floatingCard {

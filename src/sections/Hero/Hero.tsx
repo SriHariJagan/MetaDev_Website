@@ -72,11 +72,8 @@ function HeroBackground() {
   return (
     <BackgroundDecor>
       <div className={styles.grid} />
-      <div className={styles.glowLinear} />
-      <div className={styles.sectionGradient} />
-      <div className={styles.glowTop} />
+      <div className={styles.shadeDiagonal} />
       <div className={styles.glowBottom} />
-      <div className={styles.sectionFade} />
     </BackgroundDecor>
   );
 }
@@ -251,12 +248,10 @@ export function Hero() {
                 className={`${styles.stat} ${styles[`stat-${stat.color}`]}`}
               >
                 <span className={styles.statIcon} aria-hidden="true">
-                  <stat.icon size={17} />
+                  <stat.icon size={20} />
                 </span>
-                <div className={styles.statText}>
-                  <dt className={styles.statValue}>{stat.value}</dt>
-                  <dd className={styles.statLabel}>{stat.label}</dd>
-                </div>
+                <dt className={styles.statValue}>{stat.value}</dt>
+                <dd className={styles.statLabel}>{stat.label}</dd>
               </div>
             ))}
           </motion.dl>

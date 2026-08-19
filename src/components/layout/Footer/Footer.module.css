@@ -374,14 +374,17 @@
   }
 
   .ctaActions {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
   }
 
   .ctaActions .primaryBtn,
   .ctaActions .secondaryBtn {
     justify-content: center;
-    width: 100%;
+    white-space: nowrap;
   }
 
   .ctaFeatures {
@@ -466,7 +469,7 @@
   max-width: 10.5rem;
 }
 
-/* Social icons — filled colored circles per platform */
+/* Social icons — brand-tinted rings, full brand fill + glow on hover */
 
 .socialList {
   display: flex;
@@ -481,33 +484,67 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--social);
+  background: color-mix(in srgb, var(--social) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--social) 35%, transparent);
   transition:
     transform var(--transition-fast),
-    opacity var(--transition-fast);
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .socialLink:hover {
-  transform: translateY(-2px);
-  opacity: 0.9;
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.06);
+  background: var(--social);
+  border-color: var(--social);
+  box-shadow: 0 8px 20px -8px rgb(var(--social-rgb) / 0.7);
 }
 
 .social-linkedin {
-  background-color: #0a66c2;
+  --social: #0a66c2;
+  --social-rgb: 10 102 194;
 }
+
 .social-x {
-  background-color: #000000;
+  --social: #0f1419;
+  --social-rgb: 15 20 25;
 }
+
+:global([data-theme="dark"]) .social-x {
+  --social: #e7e9ea;
+  --social-rgb: 231 233 234;
+}
+
+:global([data-theme="dark"]) .social-x:hover {
+  color: #ffffff;
+  background: #0f1419;
+  border-color: #0f1419;
+}
+
 .social-youtube {
-  background-color: #ff0000;
+  --social: #ff0000;
+  --social-rgb: 255 0 0;
 }
-.social-github {
-  background-color: #171515;
+
+.social-facebook {
+  --social: #1877f2;
+  --social-rgb: 24 119 242;
 }
+
 .social-instagram {
+  --social: #d6249f;
+  --social-rgb: 214 36 159;
+}
+
+.social-instagram:hover {
+  color: #ffffff;
+  border-color: transparent;
   background: radial-gradient(
     circle at 30% 110%,
     #fdf497 0%,
@@ -516,10 +553,7 @@
     #d6249f 60%,
     #285aeb 90%
   );
-}
-
-:global([data-theme="light"]) .social-github {
-  background-color: #24292f;
+  box-shadow: 0 8px 20px -8px rgba(214, 36, 159, 0.7);
 }
 
 /* Link columns */
@@ -778,7 +812,8 @@
   .brandCol {
     position: relative;
     overflow: hidden;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: var(--space-3);
     padding: var(--space-6) var(--space-5);
     border-radius: var(--radius-lg);
@@ -820,12 +855,13 @@
   .tagline {
     font-size: 0.85rem;
     line-height: 1.65;
-    max-width: 17rem;
+    max-width: 18rem;
     color: var(--color-text-muted);
   }
 
   .socialList {
     width: 100%;
+    justify-content: center;
     margin: var(--space-2) 0 0;
     padding-top: var(--space-4);
     border-top: 1px solid var(--color-border);
@@ -925,7 +961,21 @@
   }
 
   .brandCol {
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+  }
+
+  .ctaActions {
+    gap: var(--space-2);
+  }
+
+  .ctaActions .primaryBtn,
+  .ctaActions .secondaryBtn {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .ctaActions .tertiaryLink {
+    font-size: 0.75rem;
   }
 
   .legalList {

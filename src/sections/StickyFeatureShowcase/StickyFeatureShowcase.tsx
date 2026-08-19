@@ -9,11 +9,11 @@ import {
   type Variants,
 } from "framer-motion";
 import {
+  Headset,
   Rocket,
   ShieldCheck,
   Sparkles,
   TrendingUp,
-  Unplug,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -55,45 +55,45 @@ export interface FeatureRow {
 const DEFAULT_ITEMS: FeatureRow[] = [
   {
     icon: Rocket,
-    title: "Launch faster than WordPress or Wix.",
+    title: "Ship in weeks, not quarters.",
     description:
-      "Skip theme hunting, plugin installs, and hosting setup. MetaFlow gets you from a blank canvas to a live site in hours—not weeks of configuration.",
+      "Agile sprints, senior engineers, and a proven delivery framework take your product from kickoff to production without the usual scope creep.",
     accent: "blue",
   },
   {
-    icon: Unplug,
-    title: "No plugin maze.",
+    icon: Users,
+    title: "A dedicated team, not a ticket queue.",
     description:
-      "Forms, SEO, analytics, and hosting are built in from day one. One platform, zero compatibility headaches, and nothing extra to install or maintain.",
+      "You work with named engineers and a project lead who know your codebase inside out—not a rotating pool of contractors handed off between projects.",
     accent: "violet",
   },
   {
     icon: Sparkles,
-    title: "AI-assisted content and layout.",
+    title: "AI-augmented engineering.",
     description:
-      "Generate copy, suggest sections, and refine designs with AI that understands your brand—so you spend time polishing, not starting from scratch.",
+      "Our teams use AI tooling to speed up testing, code review, and documentation, so more of every sprint goes toward the features that matter.",
     accent: "pink",
   },
   {
     icon: ShieldCheck,
-    title: "Secure hosting included.",
+    title: "Security and compliance by default.",
     description:
-      "SSL, CDN, and automatic backups come standard with every plan. No separate hosting bills, no security plugins, and no surprise invoices.",
+      "Every build follows enterprise security standards from day one, with audits, encryption, and compliance frameworks baked into the architecture.",
     accent: "green",
   },
   {
-    icon: Users,
-    title: "Team collaboration built in.",
+    icon: TrendingUp,
+    title: "Architecture that scales with you.",
     description:
-      "Invite designers, marketers, and clients to edit together with role-based permissions. Everyone works in the same workspace, on the same pages.",
-    accent: "cyan",
+      "Cloud-native infrastructure and modular systems let your platform grow from MVP to millions of users without a costly rebuild.",
+    accent: "orange",
   },
   {
-    icon: TrendingUp,
-    title: "Scale from one page to a full site.",
+    icon: Headset,
+    title: "Support that doesn't end at launch.",
     description:
-      "Start with a landing page and grow into a multi-page site without switching platforms. MetaFlow grows with you as your needs expand.",
-    accent: "orange",
+      "24/7 monitoring, maintenance, and a direct line to your engineering team keep your platform running long after go-live.",
+    accent: "cyan",
   },
 ];
 
@@ -105,13 +105,13 @@ export interface StickyFeatureShowcaseProps {
 }
 
 export function StickyFeatureShowcase({
-  eyebrow = "Why MetaFlow",
+  eyebrow = "Why MetaDev",
   title = (
     <>
-      Built for builders who want to <span className={styles.titleAccent}>ship</span>, not configure.
+      Built for teams who need to <span className={styles.titleAccent}>scale</span>, not just launch.
     </>
   ),
-  subtitle = "Stop wrestling with plugins and hosting. MetaFlow gives you a complete website stack in one place—so you can focus on launching, not troubleshooting.",
+  subtitle = "From first sprint to global rollout, MetaDev pairs senior engineers with enterprise-grade infrastructure—so your product ships fast and holds up under real-world load.",
   items = DEFAULT_ITEMS,
 }: StickyFeatureShowcaseProps) {
   const headerRef = useRef<HTMLDivElement>(null);

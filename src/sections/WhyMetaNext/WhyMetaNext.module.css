@@ -49,119 +49,81 @@
   color: var(--color-text-muted);
 }
 
-/* ---------- Stats row (4 glass cards) ---------- */
+/* ---------- Hero grid: stats (left) + spotlight (center) + differentiators (right) ---------- */
 
-.statsRow {
+.heroGrid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin: var(--space-5) 0 var(--space-4);
-  padding: 0;
-  list-style: none;
-  width: 60%;
-  margin-inline: auto;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.2fr) minmax(280px, 1fr);
+  gap: var(--space-6);
+  align-items: stretch;
+  margin: var(--space-8) 0;
 }
 
-.statCard {
-  --accent: 59 130 246;
+/* ---------- Differentiators: stacked list, one after another ---------- */
+
+.differentiatorsGrid {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-0-5);
-  padding: var(--space-2) var(--space-2) var(--space-1-5);
-  text-align: center;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  backdrop-filter: blur(18px) saturate(180%);
-  overflow: hidden;
-  transition:
-    transform var(--transition-medium),
-    border-color var(--transition-medium),
-    box-shadow var(--transition-medium);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* Soft gloss sheen */
-.statCard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 55%
-  );
-  pointer-events: none;
-}
+/* ---------- Center stats (2x2 under the spotlight) ---------- */
 
-/* Accent corner glow (like GlassCard glow) */
-.statCard::after {
-  content: "";
-  position: absolute;
-  top: -45%;
-  left: -30%;
-  width: 130%;
-  height: 115%;
-  background: radial-gradient(
-    circle at 30% 10%,
-    rgba(var(--accent), 0.16) 0%,
-    transparent 55%
-  );
-  opacity: 0.7;
-  pointer-events: none;
-  transition: opacity var(--transition-medium);
-}
-
-.statCard:hover {
-  z-index: 3;
-  transform: translateY(-5px);
-  border-color: rgba(var(--accent), 0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 18px 40px -12px rgba(var(--accent), 0.45),
-    0 0 60px -16px rgba(var(--accent), 0.3);
-}
-
-.statCard:hover::after {
-  opacity: 1;
-}
-
-.statIconBig {
+.centerStats {
   position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.statRow {
+  --accent: 59 130 246;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.statMarker {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 1px solid rgba(var(--accent), 0.45);
   color: rgb(var(--accent));
-  background: radial-gradient(
-    circle at 32% 28%,
-    rgba(var(--accent), 0.3) 0%,
-    rgba(var(--accent), 0.08) 70%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 0 22px rgba(var(--accent), 0.28);
+  border: 2px solid rgba(var(--accent), 0.6);
+  background: transparent;
   transition:
-    transform var(--transition-medium),
-    box-shadow var(--transition-medium);
+    border-width var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
-.statIconBig::after {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1px solid rgba(var(--accent), 0.4);
-  animation: statPulse 2.6s ease-out infinite;
+.statRow:hover .statMarker {
+  border-width: 4px;
+  border-color: rgb(var(--accent));
+}
+
+.statMarkerIcon {
+  position: relative;
+  width: 20px;
+  height: 20px;
 }
 
 @keyframes statPulse {
@@ -179,136 +141,77 @@
   }
 }
 
-.statIconGlyph {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  opacity: .56;
-}
-
-.statCard:hover .statIconBig {
-  transform: scale(1.06);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 0 30px rgba(var(--accent), 0.45);
-}
-
-/* Glass shade refinement (dark mode, matching OurSolutions / GlassCard) */
-:global([data-theme="dark"]) .statCard {
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 55%,
-    rgba(255, 255, 255, 0.015) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-:global([data-theme="dark"]) .statCard::after {
-  background: radial-gradient(
-    circle at 30% 10%,
-    rgba(var(--accent), 0.22) 0%,
-    transparent 58%
-  );
+.statTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
 }
 
 .statValue {
-  position: relative;
-  z-index: 1;
-  font-size: 1.05rem;
+  font-size: clamp(1.6rem, 2.1vw, 2rem);
   font-weight: var(--font-weight-bold);
-  line-height: 1.15;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--color-text);
 }
 
 .statLabel {
   font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
   white-space: nowrap;
-  margin-top: 2px;
 }
 
-/* ---------- Layout ---------- */
+/* ---------- Spotlight (center: illustration + text) ---------- */
 
-.layout {
+.spotlight {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: var(--space-3);
-  align-items: stretch;
-}
-
-/* ---------- Growth panel (left: illustration + text) ---------- */
-
-.growthPanel {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-3);
-  height: 100%;
-  padding: var(--space-5) var(--space-4);
+  padding: var(--space-6);
   text-align: center;
+  border: none;
+  background: none;
 }
 
 .growthArt {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 320px;
+  max-width: 420px;
 }
 
 .growthArt::before {
   content: "";
   position: absolute;
-  inset: -18%;
+  inset: -30%;
   z-index: -1;
   background: radial-gradient(
-    circle at 50% 58%,
-    rgba(94, 184, 255, 0.24) 0%,
-    rgba(155, 107, 255, 0.14) 42%,
-    transparent 72%
+    circle at 50% 52%,
+    rgba(94, 184, 255, 0.32) 0%,
+    rgba(120, 140, 255, 0.2) 30%,
+    rgba(155, 107, 255, 0.1) 52%,
+    transparent 75%
   );
-  filter: blur(32px);
-  animation: growthGlowBreathe 4.8s ease-in-out infinite;
+  filter: blur(38px);
+  animation: growthGlowBreathe 5.2s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes growthGlowBreathe {
   0%,
   100% {
-    opacity: 0.7;
+    opacity: 0.65;
     transform: scale(1);
   }
   50% {
     opacity: 1;
-    transform: scale(1.08);
-  }
-}
-
-.growthRing {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 94%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  border: 1px dashed rgba(148, 163, 255, 0.24);
-  border-radius: 50%;
-  z-index: -1;
-  animation: growthSpin 40s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes growthSpin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: scale(1.06);
   }
 }
 
@@ -423,52 +326,92 @@
   color: var(--color-text-muted);
 }
 
-/* ---------- Differentiators (right: single list card) ---------- */
+/* ---------- Differentiators: stacked list, one after another ---------- */
 
-.differentiatorsPanel {
+.differentiatorsGrid {
   position: relative;
-  height: 100%;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(18px) saturate(180%);
-  backdrop-filter: blur(18px) saturate(180%);
-  overflow: hidden;
-  width: max-content;
-}
-
-:global([data-theme="dark"]) .differentiatorsPanel {
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 55%,
-    rgba(255, 255, 255, 0.015) 100%
-  );
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.differentiatorsList {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.differentiatorRow {
+.diffCard {
   --accent: 59 130 246;
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--glass-border);
+  gap: 0.1rem;
+  padding: var(--space-2);
+  margin-bottom: var(--space-1-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  overflow: hidden;
+  transition:
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium);
 }
 
-.differentiatorRow:last-child {
-  border-bottom: none;
+.diffCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(var(--accent), 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px -12px rgba(var(--accent), 0.45);
 }
 
-.differentiatorBody {
-  min-width: 0;
+.diffCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--grad-1, var(--accent))),
+    rgb(var(--grad-2, var(--accent)))
+  );
+  opacity: 0.45;
+  transition: opacity var(--transition-medium);
+}
+
+.diffCard:hover::before {
+  opacity: 1;
+}
+
+.diffIndex {
+  position: absolute;
+  top: 50%;
+  right: var(--space-1);
+  z-index: 0;
+  transform: translateY(-50%);
+  font-size: 1.7rem;
+  font-weight: var(--font-weight-extrabold, 800);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: rgb(var(--accent));
+  opacity: 0.08;
+  pointer-events: none;
+  transition: opacity var(--transition-medium);
+}
+
+.diffCard:hover .diffIndex {
+  opacity: 0.24;
+}
+
+.cardHead {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  padding-right: var(--space-6);
 }
 
 .cardIcon {
@@ -476,29 +419,57 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  border: 1px solid rgba(var(--accent), 0.45);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   color: rgb(var(--accent));
-  background: linear-gradient(
-    135deg,
-    rgba(var(--accent), 0.2) 0%,
-    rgba(var(--accent), 0.07) 100%
-  );
-  box-shadow: 0 0 16px rgba(var(--accent), 0.22);
+  border: 2px solid rgba(var(--accent), 0.6);
+  background: transparent;
+  transition:
+    border-width var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.diffCard:hover .cardIcon {
+  transform: scale(1.1);
+  border-width: 3px;
+  border-color: rgb(var(--accent));
 }
 
 .cardTitle {
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  line-height: 1.25;
+  line-height: 1.2;
+  transition: color var(--transition-medium);
+}
+
+.diffCard:hover .cardTitle {
+  color: rgb(var(--accent));
+}
+
+.cardDivider {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin: 0.05rem 0;
+  background: linear-gradient(90deg, rgba(var(--accent), 0.5), transparent 80%);
+  opacity: 0.5;
+  transition: opacity var(--transition-medium);
+}
+
+.diffCard:hover .cardDivider {
+  opacity: 0.9;
 }
 
 .cardText {
+  position: relative;
+  z-index: 1;
   font-size: var(--font-size-3xs);
-  line-height: var(--line-height-base);
+  line-height: 1.4;
   color: var(--color-text-muted);
 }
 
@@ -508,24 +479,32 @@
   --accent: 59 130 246;
   --accent-rgb: 59 130 246;
   --accent-color: #3b82f6;
+  --grad-1: 59 130 246;
+  --grad-2: 29 78 216;
 }
 
 .accent-cyan {
   --accent: 6 182 212;
   --accent-rgb: 34 211 238;
   --accent-color: #22d3ee;
+  --grad-1: 6 182 212;
+  --grad-2: 8 145 178;
 }
 
 .accent-violet {
   --accent: 139 92 246;
   --accent-rgb: 167 139 250;
   --accent-color: #a78bfa;
+  --grad-1: 139 92 246;
+  --grad-2: 109 40 217;
 }
 
 .accent-green {
   --accent: 34 197 94;
   --accent-rgb: 52 211 153;
   --accent-color: #34d399;
+  --grad-1: 34 197 94;
+  --grad-2: 21 128 61;
 }
 
 .accent-orange {
@@ -556,6 +535,14 @@
   --accent: 20 184 166;
   --accent-rgb: 45 212 191;
   --accent-color: #2dd4bf;
+}
+
+.accent-pink {
+  --accent: 236 72 153;
+  --accent-rgb: 244 114 182;
+  --accent-color: #f472b6;
+  --grad-1: 236 72 153;
+  --grad-2: 190 24 93;
 }
 
 /* ---------- Checklist bar ---------- */
@@ -629,22 +616,19 @@
 /* ---------- Responsive ---------- */
 
 @media (max-width: 64rem) {
-  .layout {
+  .heroGrid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .differentiatorsPanel {
-    width: 100%;
-  }
-
-  .statsRow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
   }
 }
 
 @media (max-width: 40rem) {
-  .statsRow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .centerStats {
+    gap: var(--space-4);
+  }
+
+  .statValue {
+    font-size: 1.5rem;
   }
 
   .statLabel {
@@ -653,7 +637,7 @@
   }
 
   .checklist {
-    border-radius: var(--radius-2xl);
+    border-radius: 1.5rem;
   }
 
   .checklistItem {

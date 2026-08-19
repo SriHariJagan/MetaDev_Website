@@ -249,6 +249,16 @@
   .left {
     position: static;
     top: auto;
+    align-items: center;
+    text-align: center;
+  }
+
+  .subtitle {
+    margin-inline: auto;
+  }
+
+  .progress {
+    justify-content: center;
   }
 
   .row {

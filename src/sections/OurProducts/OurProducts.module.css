@@ -215,7 +215,8 @@
   grid-area: content;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: var(--space-2);
   min-width: 0;
 }
@@ -250,6 +251,7 @@
   padding: 0;
   list-style: none;
   width: 100%;
+  text-align: left;
 }
 
 .explorerFeatureItem {
@@ -347,6 +349,11 @@
   color: var(--color-text-muted);
 }
 
+.explorerCta {
+  margin-top: auto;
+  align-self: center;
+}
+
 /* ---------- CTA ---------- */
 
 .ctaRow {
@@ -438,7 +445,84 @@
     grid-template-columns: 1fr;
   }
 
+  /* Tabs: swipeable horizontal strip instead of a wrapped wall of pills */
+
+  .explorerTabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 calc(var(--container-padding-x, 1.5rem) * -1) var(--space-4);
+    padding: 0.2rem var(--container-padding-x, 1.5rem) var(--space-3);
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 var(--container-padding-x, 1.5rem),
+      #000 calc(100% - var(--container-padding-x, 1.5rem)),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 var(--container-padding-x, 1.5rem),
+      #000 calc(100% - var(--container-padding-x, 1.5rem)),
+      transparent 100%
+    );
+  }
+
+  .explorerTabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .explorerTab {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Stats: a tight 3-across row instead of three tall stacked blocks */
+
   .explorerStats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .explorerStat {
+    padding: var(--space-3) var(--space-2);
+    gap: var(--space-1);
+  }
+
+  .explorerStatIconWrap {
+    width: 36px;
+    height: 36px;
+  }
+
+  .explorerStatValue {
+    font-size: var(--font-size-sm);
+  }
+
+  .explorerStatLabel {
+    font-size: 0.65rem;
+    line-height: 1.25;
+  }
+
+  .explorerCta {
+    width: 100%;
+    justify-content: center;
+    border: none;
+    color: #ffffff;
+    background: linear-gradient(
+      135deg,
+      rgb(var(--grad-1, var(--accent))) 0%,
+      rgb(var(--grad-2, var(--accent))) 100%
+    );
+    box-shadow: 0 10px 26px -10px rgba(var(--accent), 0.7);
+  }
+
+  .explorerCta:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -10px rgba(var(--accent), 0.85);
   }
 }

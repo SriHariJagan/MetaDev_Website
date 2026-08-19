@@ -366,6 +366,7 @@ const SolutionCard = memo(function SolutionCard({
 interface OurSolutionsProps {
   eyebrow?: string;
   title?: ReactNode;
+  titleClassName?: string;
   subtitle?: string;
   pillLabel?: string;
   columns?: 5 | 6;
@@ -385,6 +386,7 @@ const DEFAULT_TITLE: ReactNode = (
 export function OurSolutions({
   eyebrow = "Our Solutions",
   title = DEFAULT_TITLE,
+  titleClassName,
   subtitle = "MetaDev offers a comprehensive suite of enterprise-grade solutions that empower organizations to streamline operations, enhance productivity, and deliver exceptional experiences.",
   pillLabel = "Our Solutions (01 – 10)",
   columns = 5,
@@ -443,7 +445,7 @@ export function OurSolutions({
               {eyebrow}
             </motion.span>
 
-            <motion.h2 className={styles.title} variants={itemVariants}>
+            <motion.h2 className={cn(styles.title, titleClassName)} variants={itemVariants}>
               {title}
             </motion.h2>
 

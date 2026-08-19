@@ -2,7 +2,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  ArrowRight,
   ClipboardCheck,
   Eye,
   Fingerprint,
@@ -17,7 +16,6 @@ import {
 import { Section } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
 import { GradientText } from "@/components/common/GradientText";
-import { Button } from "@/components/common/Button";
 import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
 import { fadeUp, staggerContainer } from "@/constants/motion";
@@ -145,7 +143,12 @@ export function SecurityCompliance() {
 
       <Container ref={containerRef}>
         <div className={styles.layout}>
-          {/* ---------- Left: copy + feature grid ---------- */}
+          {/* ---------- Left: orbiting shield visual ---------- */}
+          <div className={styles.right}>
+            <SecurityOrbit inView={isInView} />
+          </div>
+
+          {/* ---------- Right: copy + feature grid ---------- */}
           <motion.div
             className={styles.left}
             variants={containerVariants}
@@ -187,19 +190,7 @@ export function SecurityCompliance() {
                 </motion.li>
               ))}
             </motion.ul>
-
-            <motion.div variants={itemVariants}>
-              <Button to="/contact" variant="gradient" size="md">
-                Talk to Our Security Team
-                <ArrowRight size={16} aria-hidden="true" />
-              </Button>
-            </motion.div>
           </motion.div>
-
-          {/* ---------- Right: orbiting shield visual ---------- */}
-          <div className={styles.right}>
-            <SecurityOrbit inView={isInView} />
-          </div>
         </div>
       </Container>
     </Section>

@@ -1,4 +1,4 @@
-// DigitalGlobe.tsx — subtle digital network sphere behind the hero logo
+// DigitalGlobe.tsx — polished digital network sphere behind the hero logo
 import styles from './Hero.module.css';
 
 const NODES: Array<{ x: number; y: number }> = [
@@ -42,16 +42,36 @@ export function DigitalGlobe() {
       <div className={styles.globeSpin}>
         <svg className={styles.globeSvg} viewBox="0 0 400 400">
           <defs>
-            <radialGradient id="dgSphere" cx="34%" cy="28%" r="82%">
+            <radialGradient id="dgSphere" cx="32%" cy="26%" r="85%">
               <stop offset="0%" stopColor="var(--globe-lit)" />
-              <stop offset="55%" stopColor="var(--globe-mid)" />
+              <stop offset="30%" stopColor="var(--globe-bright)" />
+              <stop offset="62%" stopColor="var(--globe-mid)" />
               <stop offset="100%" stopColor="var(--globe-deep)" />
             </radialGradient>
             <linearGradient id="dgArc" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="var(--globe-arc-a)" />
               <stop offset="100%" stopColor="var(--globe-arc-b)" />
             </linearGradient>
+            <linearGradient id="dgRim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="var(--globe-arc-a)" />
+              <stop offset="50%" stopColor="var(--globe-lit)" />
+              <stop offset="100%" stopColor="var(--globe-arc-b)" />
+            </linearGradient>
+            <radialGradient id="dgSpecular" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+            </radialGradient>
           </defs>
+
+          <circle
+            cx="200"
+            cy="200"
+            r="180"
+            fill="none"
+            stroke="url(#dgRim)"
+            strokeWidth="2"
+            className={styles.atmosphere}
+          />
 
           <circle
             cx="200"
@@ -60,6 +80,15 @@ export function DigitalGlobe() {
             fill="url(#dgSphere)"
             stroke="var(--globe-line)"
             strokeWidth="1"
+          />
+
+          <ellipse
+            cx="148"
+            cy="128"
+            rx="80"
+            ry="56"
+            fill="url(#dgSpecular)"
+            className={styles.specular}
           />
 
           <g className={styles.graticule}>
@@ -104,10 +133,10 @@ export function DigitalGlobe() {
                 d={d}
                 fill="none"
                 stroke="url(#dgArc)"
-                strokeWidth="1.2"
+                strokeWidth="1.4"
                 strokeLinecap="round"
                 strokeDasharray="4 7"
-                opacity="0.5"
+                opacity="0.65"
                 className={styles.arcFlow}
               />
             ))}
@@ -127,7 +156,7 @@ export function DigitalGlobe() {
                   className={styles.nodeRing}
                   style={{ animationDelay: `${index * 0.35}s` }}
                 />
-                <circle cx={node.x} cy={node.y} r="3" fill="var(--globe-dot)" />
+                <circle cx={node.x} cy={node.y} r="3.2" fill="var(--globe-dot)" className={styles.nodeDot} />
               </g>
             ))}
           </g>
@@ -143,6 +172,8 @@ export function DigitalGlobe() {
               style={{ animationDelay: `${particle.delay}s` }}
             />
           ))}
+
+          <circle cx="200" cy="200" r="172" fill="none" stroke="var(--globe-edge)" strokeWidth="1.2" />
         </svg>
       </div>
     </div>

@@ -8,7 +8,6 @@ import {
   Cloud,
   CloudSun,
   BrainCircuit,
-  Code2,
   Check,
   Bot,
   type LucideIcon,
@@ -244,7 +243,13 @@ export function TechStackNew() {
             </div>
 
             <span className={styles.hub}>
-              <Code2 size={18} strokeWidth={2} aria-hidden="true" /> 
+              <img
+                src="/favIocn.png"
+                alt=""
+                className={styles.hubLogo}
+                aria-hidden="true"
+                draggable={false}
+              />
             </span>
           </div>
 

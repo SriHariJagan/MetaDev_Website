@@ -9,7 +9,6 @@ import {
   ArrowRight,
   CheckCircle2,
   HeartPulse,
-  BookOpen,
   Boxes,
   ShieldCheck,
   Layers,
@@ -23,6 +22,13 @@ import {
   Megaphone,
   Leaf,
   GraduationCap,
+  Navigation,
+  Receipt,
+  CreditCard,
+  Package,
+  Truck,
+  HandCoins,
+  QrCode,
   type LucideIcon,
 } from "lucide-react";
 import { Section } from "@/components/common/Section";
@@ -89,27 +95,27 @@ const PRODUCTS: Product[] = [
     href: "/products/metahealth",
   },
   {
-    id: "abhyasa",
-    icon: BookOpen,
+    id: "metaedu",
+    icon: GraduationCap,
     accent: "blue",
-    name: "Abhyasa",
-    subtitle: "Education Platform",
+    name: "MetaEdu",
+    subtitle: "EdTech Platform",
     badge: "Education",
     features: [
       "Learning Management System",
-      "Student Information System",
-      "Virtual Classrooms",
-      "Assessments & Analytics",
-      "Attendance & Smart Tracking",
-      "Parent & Teacher Portal",
+      "Virtual Classrooms & Live Sessions",
+      "Student & Parent Portals",
+      "Exams, Grading & Assessments",
+      "AI-Powered Adaptive Learning",
+      "Institutional Analytics",
     ],
     stats: [
-      { icon: Layers, value: "12+", label: "Modules" },
-      { icon: Share2, value: "30+", label: "Integrations" },
-      { icon: Users, value: "2M+", label: "Students Impacted" },
+      { icon: Layers, value: "14+", label: "Modules" },
+      { icon: Share2, value: "32+", label: "Integrations" },
+      { icon: Users, value: "1M+", label: "Students Impacted" },
     ],
-    ctaLabel: "Explore Abhyasa",
-    href: "/products/abhyasa",
+    ctaLabel: "Explore MetaEdu",
+    href: "/products/metaedu",
   },
   {
     id: "metaflow",
@@ -252,27 +258,96 @@ const PRODUCTS: Product[] = [
     href: "/products/metagreen",
   },
   {
-    id: "metaedu",
-    icon: GraduationCap,
-    accent: "blue",
-    name: "MetaEdu",
-    subtitle: "EdTech Platform",
-    badge: "Education",
+    id: "metanav",
+    icon: Navigation,
+    accent: "teal",
+    name: "MetaNav",
+    subtitle: "Fleet & Logistics Management",
+    badge: "Logistics",
     features: [
-      "Learning Management System",
-      "Virtual Classrooms & Live Sessions",
-      "Student & Parent Portals",
-      "Exams, Grading & Assessments",
-      "AI-Powered Adaptive Learning",
-      "Institutional Analytics",
+      "Live GPS Vehicle Tracking",
+      "AI Route Optimization",
+      "Driver Behaviour & Safety",
+      "Fuel & Maintenance Management",
+      "Geofencing & Alerts",
+      "Fleet Analytics Dashboard",
+    ],
+    stats: [
+      { icon: Layers, value: "16+", label: "Modules" },
+      { icon: Share2, value: "40+", label: "Integrations" },
+      { icon: Truck, value: "50K+", label: "Vehicles Tracked" },
+    ],
+    ctaLabel: "Explore MetaNav",
+    href: "/products/metanav",
+  },
+  {
+    id: "metaledger",
+    icon: Receipt,
+    accent: "blue",
+    name: "MetaLedger",
+    subtitle: "Billing & Invoicing",
+    badge: "Finance",
+    features: [
+      "Invoicing & Recurring Billing",
+      "Online Payments & Links",
+      "GST / Tax Compliance",
+      "Receivables & Dunning",
+      "Multi-Currency Support",
+      "Financial Reporting & Insights",
     ],
     stats: [
       { icon: Layers, value: "14+", label: "Modules" },
-      { icon: Share2, value: "32+", label: "Integrations" },
-      { icon: Users, value: "1M+", label: "Students Impacted" },
+      { icon: Share2, value: "30+", label: "Integrations" },
+      { icon: HandCoins, value: "$2B+", label: "Invoiced Annually" },
     ],
-    ctaLabel: "Explore MetaEdu",
-    href: "/products/metaedu",
+    ctaLabel: "Explore MetaLedger",
+    href: "/products/metaledger",
+  },
+  {
+    id: "metacard",
+    icon: CreditCard,
+    accent: "violet",
+    name: "MetaCard",
+    subtitle: "Digital ID Cards",
+    badge: "Identity",
+    features: [
+      "Card Design Studio",
+      "QR & NFC Smart Badges",
+      "Instant Issuance & Revocation",
+      "Access & Attendance Control",
+      "Bulk Card Printing & Export",
+      "Visitor & Guest Passes",
+    ],
+    stats: [
+      { icon: Layers, value: "12+", label: "Modules" },
+      { icon: Share2, value: "25+", label: "Integrations" },
+      { icon: QrCode, value: "3M+", label: "Cards Issued" },
+    ],
+    ctaLabel: "Explore MetaCard",
+    href: "/products/metacard",
+  },
+  {
+    id: "metaim",
+    icon: Package,
+    accent: "amber",
+    name: "MetaIM",
+    subtitle: "Inventory Management",
+    badge: "Inventory",
+    features: [
+      "Real-Time Stock Tracking",
+      "Multi-Warehouse Management",
+      "Barcode & QR Scanning",
+      "AI Demand Forecasting",
+      "Purchase Order Management",
+      "Low-Stock Alerts & Reordering",
+    ],
+    stats: [
+      { icon: Layers, value: "18+", label: "Modules" },
+      { icon: Share2, value: "35+", label: "Integrations" },
+      { icon: Boxes, value: "10M+", label: "SKUs Managed" },
+    ],
+    ctaLabel: "Explore MetaIM",
+    href: "/products/metaim",
   },
 ];
 
@@ -456,7 +531,12 @@ export function OurProducts() {
                   ))}
                 </div>
 
-                <Button to={activeProduct.href} variant="outline" size="sm">
+                <Button
+                  to={activeProduct.href}
+                  variant="outline"
+                  size="sm"
+                  className={styles.explorerCta}
+                >
                   {activeProduct.ctaLabel}
                   <ArrowRight size={14} aria-hidden="true" />
                 </Button>
