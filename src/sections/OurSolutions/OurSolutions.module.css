@@ -25,32 +25,23 @@
 /* ---------- Layout ---------- */
 
 .container {
-  display: grid;
-  grid-template-columns: 23rem 1fr;
-  align-items: stretch;
-  gap: var(--space-8);
-}
-
-.leftColumn {
-  align-self: start;
-  position: sticky;
-  top: calc(var(--navbar-height) + var(--space-8));
   display: flex;
   flex-direction: column;
+  gap: var(--space-10);
 }
 
-/* ---------- Left intro column ---------- */
-
-.intro {
+.introWrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: var(--space-2);
 }
 
 .eyebrowLabel {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-3);
   font-size: 0.7rem;
   font-weight: var(--font-weight-bold);
@@ -72,10 +63,10 @@
 }
 
 .title {
-  font-size: 1.45rem;
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   color: var(--color-text);
   text-wrap: balance;
   padding-bottom: 0;
@@ -83,11 +74,22 @@
 }
 
 .subtitle {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: var(--color-text-muted);
+  max-width: 48rem;
+  margin: 0;
+}
+
+/* Content row: stats left, grid right */
+.contentRow {
+  display: grid;
+  grid-template-columns: 23rem 1fr;
+  align-items: start;
+  gap: var(--space-8);
 }
 
 /* Stats card — border only, transparent fill, stats split by lines */
-
 .statsPanel {
   position: relative;
   overflow: hidden;
@@ -97,10 +99,9 @@
   transition:
     border-color var(--transition-medium),
     box-shadow var(--transition-medium);
-  /* flex: 1; */
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--space-8));
+  margin-top: var(--space-12);
 }
 
 .statsPanel:hover {
@@ -417,21 +418,12 @@
 /* ---------- Responsive ---------- */
 
 @media (max-width: 68rem) {
-  .container {
+  .contentRow {
     grid-template-columns: 1fr;
   }
 
-  .leftColumn {
+  .statsPanel {
     position: static;
-  }
-
-  .intro {
-    align-items: center;
-    text-align: center;
-  }
-
-  .eyebrowLabel {
-    justify-content: center;
   }
 
   .headerRow {

@@ -150,16 +150,17 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — campaign dashboard                                    */
+/* Hero visual — creative A/B testing wall                             */
 /* ------------------------------------------------------------------ */
 
-.dashVisual {
+.labVisual {
   position: relative;
   width: min(500px, 100%);
   margin-inline: auto;
+  padding: var(--space-5) 0;
 }
 
-.dashGlow {
+.labGlow {
   position: absolute;
   inset: -12%;
   background: radial-gradient(circle, rgb(var(--grad-1)), transparent 65%);
@@ -168,37 +169,73 @@
   pointer-events: none;
 }
 
-.dashCard {
+.labGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--grad-1), 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grad-1), 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
+  pointer-events: none;
+}
+
+.labOrbit {
+  position: absolute;
+  inset: 0;
+  width: 104%;
+  height: 104%;
+  left: -2%;
+  top: -2%;
+  border-radius: 50%;
+  border: 1px dashed rgba(var(--grad-1), 0.14);
+  animation: spin 30s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.labCard {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  padding: var(--space-5);
-  border-radius: 20px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: 18px;
   border: 1px solid rgba(var(--grad-1), 0.3);
-  background: linear-gradient(160deg, rgba(var(--grad-1), 0.14), rgba(var(--grad-2), 0.05));
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  background: linear-gradient(
+    165deg,
+    rgba(var(--grad-1), 0.14),
+    rgba(6, 15, 30, 0.85) 55%,
+    rgba(236, 72, 153, 0.08)
+  );
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 24px 60px -20px rgba(var(--grad-2), 0.5);
+    0 30px 70px -22px rgba(var(--grad-2), 0.55);
+  z-index: 1;
 }
 
-.dashHeader {
+.labHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid rgba(var(--color-text), 0.08);
+  gap: var(--space-3);
+  padding-bottom: var(--space-2-5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.dashHeaderTitle {
+.labHeaderTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
 }
 
-.dashHeaderPill {
+.liveBadge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -206,98 +243,260 @@
   border-radius: var(--radius-full);
   font-size: var(--font-size-3xs);
   font-weight: var(--font-weight-bold);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #10b981;
-  background: rgba(16 185 129 / 0.1);
-  border: 1px solid rgba(16 185 129 / 0.35);
+  color: #34d399;
+  background: rgba(52 211 153 / 0.12);
+  border: 1px solid rgba(52 211 153 / 0.35);
+  white-space: nowrap;
 }
 
-.dashHeaderPill::before {
-  content: "";
+.liveDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #10b981;
+  background: #34d399;
   animation: pulseDot 2s ease-in-out infinite;
 }
 
-.dashKpis {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-2);
-}
-
-.dashKpi {
+/* Campaign switcher */
+.campaignRow {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 10px;
-  border-radius: var(--radius-md);
-  background: rgba(var(--grad-1), 0.1);
-  border: 1px solid rgba(var(--grad-1), 0.2);
+  flex-wrap: wrap;
+  gap: var(--space-1);
 }
 
-.dashKpiLabel {
+.campaignChip {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: var(--font-size-3xs);
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--color-text-muted);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
-.dashKpiValue {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  color: rgb(var(--grad-1));
+.campaignChip:hover {
+  color: var(--color-text);
 }
 
-.dashBars {
+.campaignChipActive {
+  border-color: rgba(var(--grad-1), 0.35);
+  background: rgba(var(--grad-1), 0.1);
+  color: var(--color-text);
+}
+
+.campaignDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Split-test body */
+.testBody {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
 }
 
-.dashBarRow {
+.testRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
-.dashBarLabel {
-  width: 68px;
-  flex-shrink: 0;
+.testLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: var(--font-size-3xs);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text);
+  white-space: nowrap;
 }
 
-.dashBarTrack {
+.testLabel svg {
+  color: rgb(var(--grad-1));
+}
+
+.testTrack {
   flex: 1;
-  height: 10px;
+  height: 6px;
   border-radius: var(--radius-full);
-  background: rgba(var(--color-text), 0.1);
+  background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 
-.dashBarFill {
+.testFill {
   display: block;
   height: 100%;
   border-radius: var(--radius-full);
   background: linear-gradient(90deg, rgb(var(--grad-1)), #ec4899);
 }
 
-.dashBarValue {
-  width: 58px;
-  flex-shrink: 0;
-  text-align: right;
+.testValue {
   font-size: var(--font-size-3xs);
   font-weight: var(--font-weight-bold);
-  color: #10b981;
+  color: rgb(var(--grad-1));
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Creative tiles */
+.creativeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+.creativeTile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color var(--transition-fast);
+}
+
+.creativeTileWinner {
+  border-color: rgba(var(--grad-1), 0.5);
+  background: rgba(var(--grad-1), 0.08);
+  animation: pulseRing 1.8s ease-in-out infinite;
+}
+
+.creativeThumb {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 52px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  overflow: hidden;
+}
+
+.creativeCta {
+  display: inline-flex;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
+  background: rgba(6, 15, 30, 0.65);
+}
+
+.creativeWinner {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-bold);
+  color: #fbbf24;
+  background: rgba(6, 15, 30, 0.7);
+}
+
+.creativeHeadline {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.creativeMetric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+}
+
+.creativeValue {
+  color: #34d399;
+  font-variant-numeric: tabular-nums;
+}
+
+.creativeBar {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.creativeBarFill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, rgb(var(--grad-1)), #ec4899);
+}
+
+/* Live budget spend */
+.spendRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2-5);
+  border-radius: var(--radius-md);
+  background: rgba(var(--grad-1), 0.06);
+  border: 1px solid rgba(var(--grad-1), 0.2);
+}
+
+.spendLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.spendLabel svg {
+  color: rgb(var(--grad-1));
+}
+
+.spendTrack {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.spendFill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.spendValue {
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Floating chips */
-
 .chip {
   position: absolute;
   display: inline-flex;
@@ -316,22 +515,22 @@
 }
 
 .chip1 {
-  top: -4%;
-  left: 2%;
+  top: -12px;
+  left: 0;
   background: linear-gradient(135deg, #a855f7, #6d28d9);
   animation: floatY 5.5s ease-in-out infinite;
 }
 
 .chip2 {
-  top: 10%;
-  right: -2%;
+  top: -12px;
+  right: 0;
   background: linear-gradient(135deg, #ec4899, #9d174d);
   animation: floatY 6.5s 0.8s ease-in-out infinite;
 }
 
 .chip3 {
-  bottom: -4%;
-  left: 8%;
+  bottom: -12px;
+  left: 18px;
   background: linear-gradient(135deg, #f59e0b, #b45309);
   animation: floatY 6s 1.6s ease-in-out infinite;
 }
@@ -907,10 +1106,21 @@
   }
 }
 
+@keyframes pulseRing {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(var(--grad-1), 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(var(--grad-1), 0.05);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .chip,
   .ctaDonutRing,
-  .dashHeaderPill::before,
+  .liveDot,
+  .creativeTileWinner,
   .sparkBars i {
     animation: none;
   }
@@ -940,8 +1150,8 @@
     justify-content: center;
   }
 
-  .dashVisual {
-    max-width: 480px;
+  .labVisual {
+    max-width: 460px;
   }
 
   .growthGrid {
@@ -973,5 +1183,14 @@
   .mixGrid,
   .moduleGrid {
     grid-template-columns: 1fr;
+  }
+
+  .testRow {
+    flex-wrap: wrap;
+  }
+
+  .chip1,
+  .chip2 {
+    display: none;
   }
 }

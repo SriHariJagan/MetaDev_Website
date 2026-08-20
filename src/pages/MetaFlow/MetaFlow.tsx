@@ -1,10 +1,13 @@
 // MetaFlow.tsx — custom landing page for MetaFlow (Enterprise Platform)
-// Concept: a branching workflow node graph.
-import { motion } from 'framer-motion';
+// Concept: automation control center with live flow pipeline.
+import { Fragment, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
   Boxes,
+  Check,
   CheckCircle2,
+  FileCheck2,
   GitBranch,
   GitMerge,
   Network,
@@ -34,67 +37,201 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['violet', 'blue', 'cyan', 'pink', 'amber', 'green'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — branching workflow graph                              */
+/* Hero visual — automation control center                             */
 /* ------------------------------------------------------------------ */
 
-const NODE_LANES = [
-  { label: 'Trigger', nodes: ['New request'] },
-  { label: 'Process', nodes: ['Validate', 'Enrich', 'Route'] },
-  { label: 'Decide', nodes: ['Approve', 'Escalate'] },
-  { label: 'Act', nodes: ['Sync ERP', 'Notify', 'Archive'] },
+const FLOW_RUNS = [
+  {
+    name: 'Invoice Approval',
+    domain: 'Finance · 4 regions',
+    color: '#a78bfa',
+    runs: '1,204',
+    success: '98.6%',
+    cycle: '2h 40m',
+    steps: ['Received', 'Validated', 'Approved', 'ERP sync', 'Notify'],
+  },
+  {
+    name: 'Employee Onboarding',
+    domain: 'HR · 12 departments',
+    color: '#22d3ee',
+    runs: '812',
+    success: '99.1%',
+    cycle: '1h 05m',
+    steps: ['Request', 'Accounts', 'IT setup', 'Welcome'],
+  },
+  {
+    name: 'Vendor Sync',
+    domain: 'Procurement · 3 ERP',
+    color: '#f472b6',
+    runs: '963',
+    success: '97.9%',
+    cycle: '38m',
+    steps: ['Invoice', 'Match', 'Approve', 'Pay'],
+  },
+  {
+    name: 'Support Triage',
+    domain: 'Ops · 24/7',
+    color: '#fbbf24',
+    runs: '2,417',
+    success: '99.4%',
+    cycle: '12m',
+    steps: ['Triage', 'Assign', 'Resolve', 'Close'],
+  },
 ] as const;
 
 function GraphVisual() {
+  const [flowIndex, setFlowIndex] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setFlowIndex((f) => (f + 1) % FLOW_RUNS.length), 3200);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [FLOW_RUNS.length]);
+
+  useEffect(() => {
+    const t = setInterval(
+      () => setStepIndex((s) => (s + 1) % (FLOW_RUNS[flowIndex].steps.length + 1)),
+      900,
+    );
+    return () => clearInterval(t);
+  }, [flowIndex]);
+
+  const current = FLOW_RUNS[flowIndex];
+
   return (
     <div className={styles.graphVisual} aria-hidden="true">
       <div className={styles.graphGlow} />
-      <div className={styles.graphCard}>
-        {NODE_LANES.map((lane, laneIndex) => (
-          <div key={lane.label} className={styles.graphLane}>
-            <span className={styles.graphLaneLabel}>{lane.label}</span>
-            <div className={styles.graphNodes}>
-              {lane.nodes.map((node, nodeIndex) => (
-                <motion.span
-                  key={node}
-                  className={cn(
-                    styles.graphNode,
-                    node === 'Approve' && styles.graphNodeGreen,
-                    node === 'Escalate' && styles.graphNodeAmber,
+      <div className={styles.graphGrid} />
+      <div className={styles.graphOrbit} />
+
+      <div className={styles.consoleCard}>
+        <div className={styles.consoleHeader}>
+          <span className={styles.consoleHeaderTitle}>
+            <Workflow size={14} aria-hidden="true" />
+            Flow Control Center
+          </span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live
+          </span>
+        </div>
+
+        <div className={styles.flowTabs}>
+          {FLOW_RUNS.map((f, i) => (
+            <button
+              key={f.name}
+              type="button"
+              className={cn(styles.flowTab, flowIndex === i && styles.flowTabActive)}
+              onClick={() => setFlowIndex(i)}
+              aria-label={`View ${f.name}`}
+            >
+              <span className={styles.flowTabDot} style={{ background: f.color }} />
+              <span>{f.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={flowIndex}
+            className={styles.consoleBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.flowHeader}>
+              <div>
+                <span className={styles.flowName}>{current.name}</span>
+                <span className={styles.flowDomain}>{current.domain}</span>
+              </div>
+              <span
+                className={styles.flowStatus}
+                style={{
+                  color: current.color,
+                  borderColor: `${current.color}55`,
+                  background: `${current.color}14`,
+                }}
+              >
+                <span className={styles.flowStatusDot} style={{ background: current.color }} />
+                Running
+              </span>
+            </div>
+
+            <div className={styles.pipeline}>
+              {current.steps.map((step, i) => (
+                <Fragment key={step}>
+                  {i > 0 && (
+                    <span
+                      className={cn(styles.pipeLink, i <= stepIndex && styles.pipeLinkActive)}
+                    />
                   )}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false, amount: 0.8 }}
-                  transition={{ delay: 0.2 + laneIndex * 0.18 + nodeIndex * 0.12, duration: 0.4 }}
-                >
-                  {node}
-                </motion.span>
+                  <span
+                    className={cn(
+                      styles.pipeStep,
+                      i < stepIndex && styles.pipeStepDone,
+                      i === stepIndex && styles.pipeStepActive,
+                    )}
+                  >
+                    <span className={styles.pipeStepDot}>
+                      {i < stepIndex ? <Check size={10} aria-hidden="true" /> : null}
+                    </span>
+                    <span className={styles.pipeStepLabel}>{step}</span>
+                  </span>
+                </Fragment>
               ))}
             </div>
-            {laneIndex < NODE_LANES.length - 1 && (
-              <span className={styles.graphConnector} />
-            )}
-          </div>
-        ))}
-        <div className={styles.graphFooter}>
-          <span className={styles.graphFooterItem}>
-            <Timer size={12} /> −73% cycle time
+
+            <div className={styles.kpiRow}>
+              <div className={styles.kpiCell}>
+                <Zap size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Runs today</span>
+                  <span className={styles.kpiValue}>{current.runs}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <CheckCircle2 size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Success</span>
+                  <span className={styles.kpiValue}>{current.success}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <Timer size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Cycle time</span>
+                  <span className={styles.kpiValue}>{current.cycle}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className={styles.consoleFooter}>
+          <span className={styles.consoleFooterItem}>
+            <ShieldCheck size={12} aria-hidden="true" /> SLA enforced
           </span>
-          <span className={styles.graphFooterItem}>
-            <Zap size={12} /> 0 errors
+          <span className={styles.consoleFooterItem}>
+            <FileCheck2 size={12} aria-hidden="true" /> Audit trail
+          </span>
+          <span className={styles.consoleFooterItem}>
+            <Plug size={12} aria-hidden="true" /> 45+ connectors
           </span>
         </div>
       </div>
 
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <Play size={13} />
-        Run 1,204 flows
+        <Play size={13} aria-hidden="true" />
+        1,204 runs
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <GitMerge size={13} />
+        <GitMerge size={13} aria-hidden="true" />
         Approval · 2m
       </div>
       <div className={`${styles.chip} ${styles.chip3}`}>
-        <Repeat size={13} />
+        <Repeat size={13} aria-hidden="true" />
         Re-running
       </div>
     </div>
@@ -280,6 +417,18 @@ export function MetaFlowPage() {
       <Section size="md" bordered className={styles.statsSection}>
         <div className={styles.statsGlow} aria-hidden="true" />
         <Container maxWidth="wide">
+          <SectionHeader
+            align="center"
+            spacing="md"
+            className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>By the numbers</span>}
+            title={
+              <>
+                The case for <GradientText>automation is hard to ignore</GradientText>
+              </>
+            }
+            subtitle="Workflow automation is no longer a pilot project — it is a board-level mandate."
+          />
           <motion.div
             className={styles.statsGrid}
             variants={defaultContainerVariants}
@@ -315,6 +464,8 @@ export function MetaFlowPage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>Capabilities</span>}
             title={
               <>
@@ -355,6 +506,8 @@ export function MetaFlowPage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>How it works</span>}
             title={
               <>

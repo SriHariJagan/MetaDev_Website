@@ -1,5 +1,6 @@
 // MetaCard.tsx — custom landing page for MetaCard (Digital ID Cards)
-// Concept: a live digital ID card with QR verification.
+// Concept: a 3D card flipper showing a MetaCard, an Aadhaar-style ID and a PAN-style ID.
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -13,6 +14,7 @@ import {
   ShieldCheck,
   Star,
   Wallet,
+  Wifi,
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Container } from '@/components/common/Container';
@@ -31,95 +33,144 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['indigo', 'violet', 'blue', 'purple', 'pink', 'cyan'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — digital ID card                                       */
+/* Hero visual — 3D card flipper                                       */
 /* ------------------------------------------------------------------ */
 
+const WALLET_CARDS = [
+  {
+    id: 'meta',
+    label: 'MetaCard',
+    tag: 'MetaCard · Infinite',
+    name: 'ARJUN MEHTA',
+    number: '5399 4821 7745 4213',
+    valid: '09/29',
+    grad: 'linear-gradient(135deg, #4f46e5, #7c3aed)',
+    accent: '#a5b4fc',
+    chip: true,
+  },
+  {
+    id: 'aadhaar',
+    label: 'Aadhaar',
+    tag: 'Government ID · Verified',
+    name: 'ARJUN MEHTA',
+    number: 'XXXX XXXX 4567',
+    valid: 'UIDAI',
+    grad: 'linear-gradient(135deg, #0f766e, #134e4a)',
+    accent: '#99f6e4',
+    chip: false,
+  },
+  {
+    id: 'pan',
+    label: 'PAN',
+    tag: 'Income Tax · E-KYC',
+    name: 'ARJUN MEHTA',
+    number: 'ABCPM1234F',
+    valid: 'Permanent',
+    grad: 'linear-gradient(135deg, #6d28d9, #4c1d95)',
+    accent: '#ddd6fe',
+    chip: false,
+  },
+] as const;
+
 function CardVisual() {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setActive((a) => (a + 1) % WALLET_CARDS.length), 2200);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [WALLET_CARDS.length]);
+
   return (
-    <motion.div
-      className={styles.cardVisual}
-      aria-hidden="true"
-      whileHover={{ rotateY: -6, rotateX: 4, scale: 1.015 }}
-      style={{ transformPerspective: 1400 }}
-      transition={{ type: 'spring', stiffness: 160, damping: 22 }}
-    >
+    <div className={styles.cardVisual} aria-hidden="true">
       <div className={styles.cardGlow} />
-      <div className={styles.cardStack}>
-        <div className={`${styles.stackCard} ${styles.stackCard1}`} />
-        <div className={`${styles.stackCard} ${styles.stackCard2}`} />
-      <div className={styles.idCard}>
-        <div className={styles.idCardHolo} />
-        <div className={styles.idCardShine} />
-        <div className={styles.idCardHeader}>
-          <span className={styles.idCardBrand}>
-            <IdCard size={14} /> METACARD
-          </span>
-          <span className={styles.idCardChip}>
-            <CreditCard size={16} />
-          </span>
-        </div>
-        <div className={styles.idCardBody}>
-          <div className={styles.idCardAvatar}>AK</div>
-          <div className={styles.idCardInfo}>
-            <span className={styles.idCardName}>Amara Kessler</span>
-            <span className={styles.idCardRole}>Senior Product Designer</span>
-            <span className={styles.idCardOrg}>MetaDev Technologies</span>
-          </div>
-        </div>
-        <div className={styles.idCardFooter}>
-          <div className={styles.idCardMeta}>
-            <span className={styles.idCardMetaItem}>
-              <BadgeCheck size={11} /> EMP-2041
-            </span>
-            <span className={styles.idCardMetaItem}>
-              <ShieldCheck size={11} /> Level 3 access
-            </span>
-            <span className={styles.idCardMetaItem}>
-              <Fingerprint size={11} /> Biometric enabled
-            </span>
-          </div>
-          <div className={styles.idCardQr}>
-            <svg viewBox="0 0 32 32" className={styles.qrSvg}>
-              <rect x="2" y="2" width="9" height="9" rx="1.5" fill="currentColor" />
-              <rect x="4" y="4" width="5" height="5" fill="#0f172a" />
-              <rect x="21" y="2" width="9" height="9" rx="1.5" fill="currentColor" />
-              <rect x="23" y="4" width="5" height="5" fill="#0f172a" />
-              <rect x="2" y="21" width="9" height="9" rx="1.5" fill="currentColor" />
-              <rect x="4" y="23" width="5" height="5" fill="#0f172a" />
-              <rect x="15" y="2" width="4" height="4" fill="currentColor" />
-              <rect x="21" y="12" width="4" height="4" fill="currentColor" />
-              <rect x="27" y="18" width="3" height="3" fill="currentColor" />
-              <rect x="2" y="14" width="3" height="3" fill="currentColor" />
-              <rect x="8" y="12" width="3" height="3" fill="currentColor" />
-              <rect x="14" y="10" width="3" height="3" fill="currentColor" />
-              <rect x="12" y="16" width="4" height="4" fill="currentColor" />
-              <rect x="18" y="16" width="3" height="3" fill="currentColor" />
-              <rect x="14" y="22" width="3" height="3" fill="currentColor" />
-              <rect x="19" y="22" width="3" height="3" fill="currentColor" />
-              <rect x="24" y="24" width="3" height="3" fill="currentColor" />
-              <rect x="2" y="28" width="3" height="3" fill="currentColor" />
-              <rect x="8" y="27" width="3" height="3" fill="currentColor" />
-              <rect x="16" y="28" width="3" height="3" fill="currentColor" />
-              <rect x="28" y="12" width="3" height="3" fill="currentColor" />
-            </svg>
-          </div>
-        </div>
+      <div className={styles.cardGrid} />
+      <div className={styles.cardOrbit} />
+
+      <div className={styles.walletHeader}>
+        <span className={styles.walletHeaderTitle}>
+          <Wallet size={14} aria-hidden="true" />
+          Digital Wallet
+        </span>
+        <span className={styles.liveBadge}>
+          <span className={styles.liveDot} />
+          Live · {WALLET_CARDS.length} cards
+        </span>
       </div>
+
+      <div className={styles.flipStage}>
+        {WALLET_CARDS.map((card, i) => {
+          const isActive = i === active;
+          return (
+            <motion.div
+              key={card.id}
+              className={styles.flipWrap}
+              style={{ zIndex: isActive ? 30 : 10 }}
+              initial={
+                isActive
+                  ? { x: 0, y: 0, scale: 1, opacity: 1 }
+                  : { x: 14, y: 18, scale: 0.9, opacity: 0.9 }
+              }
+              animate={
+                isActive
+                  ? { x: 0, y: 0, scale: 1, opacity: 1 }
+                  : { x: 14, y: 18, scale: 0.9, opacity: 0.9 }
+              }
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+            >
+              <div className={styles.flipFace} style={{ background: card.grad }}>
+                <div className={styles.flipTop}>
+                  {card.chip ? (
+                    <span className={styles.flipChip}>
+                      <CreditCard size={12} aria-hidden="true" />
+                      <Wifi size={9} aria-hidden="true" />
+                    </span>
+                  ) : (
+                    <span className={styles.flipGov} style={{ color: card.accent }}>
+                      {card.id === 'aadhaar' ? 'भारत सरकार' : 'GOVT. OF INDIA'}
+                    </span>
+                  )}
+                  <span className={styles.flipBrand} style={{ color: card.accent }}>
+                    {card.label}
+                  </span>
+                </div>
+                <span className={styles.flipNumber}>{card.number}</span>
+                <div className={styles.flipBottom}>
+                  <span className={styles.flipName}>{card.name}</span>
+                  <span className={styles.flipValid}>{card.valid}</span>
+                </div>
+                <span className={styles.flipTag}>{card.tag}</span>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className={styles.walletMeta}>
+        <span className={styles.walletMetaItem}>
+          <ShieldCheck size={12} aria-hidden="true" /> KYC verified
+        </span>
+        <span className={styles.walletMetaItem}>
+          <Fingerprint size={12} aria-hidden="true" /> Biometric linked
+        </span>
+        <span className={styles.walletMetaItem}>
+          <QrCode size={12} aria-hidden="true" /> Scan to verify
+        </span>
       </div>
 
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <QrCode size={13} />
+        <QrCode size={13} aria-hidden="true" />
         Scanned · verified
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <Wallet size={13} />
+        <Wallet size={13} aria-hidden="true" />
         In Apple & Google Wallet
       </div>
       <div className={`${styles.chip} ${styles.chip3}`}>
-        <ScanLine size={13} />
+        <ScanLine size={13} aria-hidden="true" />
         Gate 2 access granted
       </div>
-    </motion.div>
+    </div>
   );
 }
 

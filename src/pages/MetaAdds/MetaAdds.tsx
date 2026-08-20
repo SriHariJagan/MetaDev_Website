@@ -1,17 +1,17 @@
 // MetaAdds.tsx — custom landing page for MetaAdds (AdTech & Marketing Platform)
-// Concept: a live campaign dashboard with channel growth.
-import { motion } from 'framer-motion';
+// Concept: a live creative A/B testing wall with campaign switcher.
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
+  Award,
   BarChart3,
   CheckCircle2,
   CircleDollarSign,
   Crosshair,
-  Eye,
   Gauge,
   Layers,
   Megaphone,
-  MousePointerClick,
   PieChart,
   Sparkles,
   Target,
@@ -38,77 +38,218 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['violet', 'pink', 'amber', 'teal', 'blue', 'green'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — campaign dashboard                                    */
+/* Hero visual — creative A/B testing wall                             */
 /* ------------------------------------------------------------------ */
 
-const CHANNEL_BARS = [
-  { label: 'Social', value: 82, growth: '+14.6%' },
-  { label: 'CTV', value: 68, growth: '+13.8%' },
-  { label: 'Commerce', value: 54, growth: '+12.1%' },
-  { label: 'Search', value: 73, growth: '+9.5%' },
-  { label: 'Audio', value: 38, growth: '+8.2%' },
+const CAMPAIGNS = [
+  {
+    short: 'Launch',
+    name: 'Product Launch 360',
+    color: '#60a5fa',
+    confidence: 94,
+    spend: 71,
+    budget: 7100,
+    creatives: [
+      { headline: 'Meet the new flagship', cta: 'Shop now', ctr: 4.1, winner: true },
+      { headline: 'Upgrade your setup', cta: 'Learn more', ctr: 2.8, winner: false },
+      { headline: 'Launch week offer', cta: 'Claim deal', ctr: 3.5, winner: false },
+      { headline: 'See it in action', cta: 'Watch film', ctr: 1.9, winner: false },
+    ],
+  },
+  {
+    short: 'Flash',
+    name: 'Flash Sale Weekend',
+    color: '#f472b6',
+    confidence: 88,
+    spend: 58,
+    budget: 4200,
+    creatives: [
+      { headline: '48 hours only', cta: 'Shop deals', ctr: 5.2, winner: true },
+      { headline: 'Up to 40% off', cta: 'Browse sale', ctr: 3.6, winner: false },
+      { headline: 'Members save more', cta: 'Join free', ctr: 2.9, winner: false },
+      { headline: 'Last chance today', cta: 'Shop now', ctr: 4.4, winner: false },
+    ],
+  },
+  {
+    short: 'Loyalty',
+    name: 'Loyalty Rewards',
+    color: '#f59e0b',
+    confidence: 91,
+    spend: 44,
+    budget: 3800,
+    creatives: [
+      { headline: 'Earn on every order', cta: 'Join loyalty', ctr: 3.1, winner: true },
+      { headline: 'Double points week', cta: 'Start earning', ctr: 2.4, winner: false },
+      { headline: 'Unlock VIP perks', cta: 'See perks', ctr: 2.7, winner: false },
+      { headline: 'Your points await', cta: 'Check balance', ctr: 1.8, winner: false },
+    ],
+  },
+  {
+    short: 'Audience',
+    name: 'Lookalike Prospecting',
+    color: '#22d3ee',
+    confidence: 86,
+    spend: 66,
+    budget: 5400,
+    creatives: [
+      { headline: 'Built for people like you', cta: 'Explore', ctr: 3.9, winner: true },
+      { headline: 'New arrivals are here', cta: 'Shop new', ctr: 2.6, winner: false },
+      { headline: 'Trusted by 40k teams', cta: 'Learn more', ctr: 3.2, winner: false },
+      { headline: 'Your next favourite', cta: 'Discover', ctr: 2.1, winner: false },
+    ],
+  },
 ] as const;
 
-function DashboardVisual() {
+function CreativeVisual() {
+  const [campIndex, setCampIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setCampIndex((c) => (c + 1) % CAMPAIGNS.length), 3800);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [CAMPAIGNS.length]);
+
+  const current = CAMPAIGNS[campIndex];
+  const spent = Math.round((current.budget * current.spend) / 100);
+
   return (
-    <div className={styles.dashVisual} aria-hidden="true">
-      <div className={styles.dashGlow} />
+    <div className={styles.labVisual} aria-hidden="true">
+      <div className={styles.labGlow} />
+      <div className={styles.labGrid} />
+      <div className={styles.labOrbit} />
 
-      <div className={styles.dashCard}>
-        <div className={styles.dashHeader}>
-          <span className={styles.dashHeaderTitle}>Campaign Performance</span>
-          <span className={styles.dashHeaderPill}>Live</span>
+      <div className={styles.labCard}>
+        <div className={styles.labHeader}>
+          <span className={styles.labHeaderTitle}>
+            <Megaphone size={14} aria-hidden="true" />
+            Creative Lab
+          </span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · {current.name}
+          </span>
         </div>
 
-        <div className={styles.dashKpis}>
-          <div className={styles.dashKpi}>
-            <span className={styles.dashKpiLabel}>
-              <Eye size={12} /> Impressions
-            </span>
-            <span className={styles.dashKpiValue}>4.2M</span>
-          </div>
-          <div className={styles.dashKpi}>
-            <span className={styles.dashKpiLabel}>
-              <MousePointerClick size={12} /> CTR
-            </span>
-            <span className={styles.dashKpiValue}>3.8%</span>
-          </div>
-          <div className={styles.dashKpi}>
-            <span className={styles.dashKpiLabel}>
-              <CircleDollarSign size={12} /> ROAS
-            </span>
-            <span className={styles.dashKpiValue}>5.6×</span>
-          </div>
-        </div>
-
-        <div className={styles.dashBars}>
-          {CHANNEL_BARS.map((bar, index) => (
-            <div key={bar.label} className={styles.dashBarRow}>
-              <span className={styles.dashBarLabel}>{bar.label}</span>
-              <span className={styles.dashBarTrack}>
-                <motion.span
-                  className={styles.dashBarFill}
-                  initial={{ width: '12%' }}
-                  animate={{ width: `${bar.value}%` }}
-                  transition={{ duration: 1.1, ease: 'easeOut', delay: 0.25 + index * 0.12 }}
-                />
-              </span>
-              <span className={styles.dashBarValue}>{bar.growth}</span>
-            </div>
+        <div className={styles.campaignRow}>
+          {CAMPAIGNS.map((c, i) => (
+            <button
+              key={c.name}
+              type="button"
+              className={cn(styles.campaignChip, campIndex === i && styles.campaignChipActive)}
+              style={
+                campIndex === i
+                  ? {
+                      borderColor: c.color,
+                      background: c.color,
+                      color: '#fff',
+                      boxShadow: `0 4px 14px -4px ${c.color}99`,
+                    }
+                  : undefined
+              }
+              onClick={() => setCampIndex(i)}
+              aria-label={`View ${c.name}`}
+            >
+              <span
+                className={styles.campaignDot}
+                style={{ background: c.color }}
+              />
+              {c.short}
+            </button>
           ))}
         </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={campIndex}
+            className={styles.testBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.testRow}>
+              <span className={styles.testLabel}>
+                <Sparkles size={12} aria-hidden="true" />
+                Testing {current.creatives.length} creatives
+              </span>
+              <span className={styles.testTrack}>
+                <motion.span
+                  className={styles.testFill}
+                  initial={{ width: '0%' }}
+                  animate={{ width: `${current.confidence}%` }}
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                />
+              </span>
+              <span className={styles.testValue}>{current.confidence}% confidence</span>
+            </div>
+
+            <div className={styles.creativeGrid}>
+              {current.creatives.map((cr) => (
+                <div
+                  key={cr.headline}
+                  className={cn(styles.creativeTile, cr.winner && styles.creativeTileWinner)}
+                >
+                  <span
+                    className={styles.creativeThumb}
+                    style={{
+                      background: `linear-gradient(135deg, ${current.color}55, ${current.color}1f)`,
+                      borderColor: `${current.color}44`,
+                    }}
+                  >
+                    {cr.winner && (
+                      <span className={styles.creativeWinner}>
+                        <Award size={10} aria-hidden="true" /> Winner
+                      </span>
+                    )}
+                    <span className={styles.creativeCta}>{cr.cta}</span>
+                  </span>
+                  <span className={styles.creativeHeadline}>{cr.headline}</span>
+                  <span className={styles.creativeMetric}>
+                    <span>CTR</span>
+                    <span className={styles.creativeValue}>{cr.ctr}%</span>
+                  </span>
+                  <span className={styles.creativeBar}>
+                    <motion.span
+                      className={styles.creativeBarFill}
+                      initial={{ width: '0%' }}
+                      animate={{ width: `${cr.ctr * 18}%` }}
+                      transition={{ duration: 0.9, ease: 'easeOut', delay: 0.2 }}
+                    />
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.spendRow}>
+              <span className={styles.spendLabel}>
+                <CircleDollarSign size={12} aria-hidden="true" /> Daily budget
+              </span>
+              <span className={styles.spendTrack}>
+                <motion.span
+                  className={styles.spendFill}
+                  initial={{ width: '0%' }}
+                  animate={{ width: `${current.spend}%` }}
+                  transition={{ duration: 1.2, ease: 'easeOut' }}
+                />
+              </span>
+              <span className={styles.spendValue}>
+                ${spent.toLocaleString()} / ${current.budget.toLocaleString()}
+              </span>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <Target size={13} />
-        CPA −28%
+        <Crosshair size={13} aria-hidden="true" />
+        CTR 3.8%
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <Tv size={13} />
-        CTV · 26% of budget
+        <Target size={13} aria-hidden="true" />
+        CPA −28%
       </div>
       <div className={`${styles.chip} ${styles.chip3}`}>
-        <Zap size={13} />
+        <Zap size={13} aria-hidden="true" />
         AI-optimised
       </div>
     </div>
@@ -272,7 +413,7 @@ export function MetaAddsPage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              <DashboardVisual />
+              <CreativeVisual />
             </motion.div>
           </div>
         </Container>

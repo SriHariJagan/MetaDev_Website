@@ -425,36 +425,33 @@ export function OurSolutions({
         <CornerDots corner="right" />
       </BackgroundDecor>
 
-      <Container
-        maxWidth="wide"
-        className={styles.container}
-        ref={containerRef}
-      >
-        <div className={styles.leftColumn}>
-          {/* ---------- Left: intro ---------- */}
-          <motion.div
-            className={styles.intro}
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
-            <motion.span
-              className={styles.eyebrowLabel}
-              variants={itemVariants}
-            >
-              {eyebrow}
-            </motion.span>
+      <Container maxWidth="wide" className={styles.container} ref={containerRef}>
+        {/* ---------- Centered intro text (full width) ---------- */}
+        <motion.div
+          className={styles.introWrapper}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <motion.span className={styles.eyebrowLabel} variants={itemVariants}>
+            {eyebrow}
+          </motion.span>
+          <motion.h2 className={cn(styles.title, titleClassName)} variants={itemVariants}>
+            {title}
+          </motion.h2>
+          <motion.p className={styles.subtitle} variants={itemVariants}>
+            {subtitle}
+          </motion.p>
+        </motion.div>
 
-            <motion.h2 className={cn(styles.title, titleClassName)} variants={itemVariants}>
-              {title}
-            </motion.h2>
-
-            <motion.p className={styles.subtitle} variants={itemVariants}>
-              {subtitle}
-            </motion.p>
-          </motion.div>
-
-          {/* ---------- Stats glass card ---------- */}
+        {/* ---------- Side-by-side: stats left, grid right ---------- */}
+        <motion.div
+          className={styles.contentRow}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          {/* Stats panel */}
           <motion.div
             className={styles.statsPanel}
             variants={containerVariants}
@@ -484,48 +481,48 @@ export function OurSolutions({
               ))}
             </div>
           </motion.div>
-        </div>
 
-        {/* ---------- Right: solutions grid ---------- */}
-        <div className={styles.showcase}>
-          <motion.div
-            className={styles.headerRow}
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : undefined}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-          >
-            <span className={styles.headerLine} />
-            <span className={styles.headerPill}>{pillLabel}</span>
-            <span className={styles.headerLine} />
-          </motion.div>
-
-          <LayoutGroup>
-            <motion.ul
-              className={`${styles.grid} ${columns === 6 ? styles.gridSix : ""}`}
-              variants={containerVariants}
-              initial="hidden"
-              animate={isInView ? "visible" : "hidden"}
-              role="list"
-              aria-label="Enterprise solutions"
-              onMouseLeave={handleHoverEnd}
-              onBlur={handleFocusEnd}
+          {/* Solutions grid */}
+          <div className={styles.showcase}>
+            <motion.div
+              className={styles.headerRow}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : undefined}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
-              {solutions.map((solution) => (
-                <SolutionCard
-                  key={solution.id}
-                  solution={solution}
-                  active={activeId === solution.id}
-                  highlighted={highlightId === solution.id}
-                  showDescription={showDescriptions}
-                  onHoverStart={handleHoverStart}
-                  onHoverEnd={handleHoverEnd}
-                  onFocusStart={handleFocusStart}
-                  onFocusEnd={handleFocusEnd}
-                />
-              ))}
-            </motion.ul>
-          </LayoutGroup>
-        </div>
+              <span className={styles.headerLine} />
+              <span className={styles.headerPill}>{pillLabel}</span>
+              <span className={styles.headerLine} />
+            </motion.div>
+
+            <LayoutGroup>
+              <motion.ul
+                className={`${styles.grid} ${columns === 6 ? styles.gridSix : ""}`}
+                variants={containerVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                role="list"
+                aria-label="Enterprise solutions"
+                onMouseLeave={handleHoverEnd}
+                onBlur={handleFocusEnd}
+              >
+                {solutions.map((solution) => (
+                  <SolutionCard
+                    key={solution.id}
+                    solution={solution}
+                    active={activeId === solution.id}
+                    highlighted={highlightId === solution.id}
+                    showDescription={showDescriptions}
+                    onHoverStart={handleHoverStart}
+                    onHoverEnd={handleHoverEnd}
+                    onFocusStart={handleFocusStart}
+                    onFocusEnd={handleFocusEnd}
+                  />
+                ))}
+              </motion.ul>
+            </LayoutGroup>
+          </div>
+        </motion.div>
       </Container>
     </Section>
   );

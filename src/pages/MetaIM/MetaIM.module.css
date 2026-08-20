@@ -291,13 +291,13 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — warehouse rack */
+/* Hero visual — delivery fleet hub */
 
 .rackVisual {
   position: relative;
-  width: min(520px, 100%);
+  width: min(460px, 100%);
   margin-inline: auto;
-  padding: 0.5rem;
+  padding: var(--space-5) 0;
 }
 
 .rackGlow {
@@ -309,9 +309,226 @@
   pointer-events: none;
 }
 
-.rackUnit {
+.hubGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--grad-1), 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grad-1), 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
+  pointer-events: none;
+}
+
+.hubHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2-5);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hubTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.hubBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #34d399;
+  background: rgba(52 211 153 / 0.12);
+  border: 1px solid rgba(52 211 153 / 0.35);
+  white-space: nowrap;
+}
+
+.hubDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+.hubScene {
   position: relative;
+  height: 180px;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--grad-1), 0.3);
+  background:
+    radial-gradient(90% 70% at 50% 0%, rgba(var(--grad-1), 0.1), transparent 65%),
+    linear-gradient(160deg, rgba(10, 20, 40, 0.55), rgba(10, 20, 40, 0.25));
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 60px -20px rgba(var(--grad-2), 0.5);
   overflow: hidden;
+}
+
+.hubDock {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 30px;
+  background: linear-gradient(180deg, rgba(var(--grad-1), 0.12), rgba(var(--grad-1), 0.05));
+  border-right: 1px solid rgba(var(--grad-1), 0.25);
+}
+
+.hubDockIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: rgb(var(--grad-1));
+  background: rgba(var(--grad-1), 0.12);
+  border: 1px solid rgba(var(--grad-1), 0.3);
+}
+
+.hubRoad {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42px;
+  background: rgba(2, 6, 23, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hubRoad::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3) 0 18px,
+    transparent 18px 34px
+  );
+}
+
+.fleet {
+  position: absolute;
+  left: 40px;
+  right: 0;
+  bottom: 8px;
+  height: 74px;
+}
+
+.truckWrap {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  opacity: 0;
+  animation: truckCycle 7.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 2.4s);
+}
+
+.truck {
+  --row: var(--grad-1);
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  height: 44px;
+}
+
+.truck.hue-b {
+  --row: 59 130 246;
+}
+
+.truck.hue-c {
+  --row: 245 158 11;
+}
+
+.truckCab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  border-radius: 9px 5px 5px 9px;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgb(var(--row)), rgba(var(--row), 0.7));
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.5);
+}
+
+.truckBed {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  padding: 4px 5px;
+  width: 68px;
+  border-radius: 4px 9px 9px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.box {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgb(var(--row)), rgba(var(--row), 0.65));
+  box-shadow: 0 4px 8px -3px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: scale(0.4);
+  animation: boxLoad 0.5s ease-out both;
+  animation-delay: calc(1.7s + var(--b) * 0.35s);
+}
+
+.truckRoute {
+  position: absolute;
+  left: 0;
+  bottom: -16px;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.hubBeam {
+  position: absolute;
+  left: 34px;
+  right: 0;
+  top: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.7);
+  animation: hubScan 6s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hubPanel {
+  position: relative;
+  margin-top: var(--space-4);
   padding: 12px;
   border-radius: 16px;
   border: 1px solid rgba(var(--grad-1), 0.3);
@@ -325,131 +542,41 @@
     0 24px 60px -20px rgba(var(--grad-2), 0.5);
 }
 
-.rackHead {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(var(--grad-1), 0.2);
-}
-
-.rackTitle {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--color-text);
-}
-
-.rackTitle svg {
-  color: rgb(var(--grad-1));
-}
-
-.rackPill {
-  padding: 3px 9px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  background: rgba(var(--grad-1), 0.14);
-  border: 1px solid rgba(var(--grad-1), 0.3);
-  white-space: nowrap;
-}
-
-.rackGrid {
-  position: relative;
+.hubKpis {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  padding-top: 10px;
 }
 
-.rackCell {
-  --row: var(--grad-1);
+.hubKpi {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 8px;
+  gap: 2px;
+  padding: 8px 10px;
   border-radius: 10px;
-  border: 1px solid rgba(var(--row), 0.3);
-  background: rgba(var(--row), 0.07);
-  min-width: 0;
-}
-
-.rackCell.hue-b {
-  --row: 59 130 246;
-}
-
-.rackCell.hue-c {
-  --row: 245 158 11;
-}
-
-.rackCellId {
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.6px;
-  color: rgb(var(--row));
-}
-
-.rackCellName {
+  border: 1px solid rgba(var(--grad-1), 0.22);
+  background: rgba(var(--grad-1), 0.07);
   font-size: var(--font-size-3xs);
   color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.rackFill {
-  display: flex;
-  align-items: flex-end;
-  height: 44px;
-  border-radius: 6px;
-  background: rgba(var(--color-text), 0.08);
-  overflow: hidden;
-}
-
-.rackFill span {
-  display: block;
-  width: 100%;
-  border-radius: 6px 6px 0 0;
-  background: linear-gradient(180deg, rgb(var(--row)), rgba(var(--row), 0.45));
-  transform-origin: bottom;
-  animation: rackGrow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.rackCellLevel {
-  font-size: var(--font-size-3xs);
+.hubKpi strong {
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-bold);
-  color: rgb(var(--row));
+  color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
 
-.rackBeam {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 0;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, transparent, #22d3ee, transparent);
-  box-shadow: 0 0 10px rgba(34, 211, 238, 0.7);
-  animation: rackScan 5s linear infinite;
-  pointer-events: none;
-}
-
-.rackFooter {
+.hubFoot {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
   padding-top: 10px;
+  border-top: 1px solid rgba(var(--grad-1), 0.14);
 }
 
-.rackFooterItem {
+.hubFootItem {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -462,9 +589,11 @@
   border: 1px solid rgba(var(--grad-1), 0.2);
 }
 
-.rackFooterItem svg {
+.hubFootItem svg {
   color: rgb(var(--grad-1));
-}/* Floating chips */
+}
+
+/* Floating chips */
 
 .chip {
   position: absolute;
@@ -484,26 +613,25 @@
 }
 
 .chip1 {
-  top: -4%;
-  left: 6%;
+  top: -12px;
+  left: 0;
   background: linear-gradient(135deg, #06b6d4, #0e7490);
   animation: floatY 5.5s ease-in-out infinite;
 }
 
 .chip2 {
-  top: 8%;
-  right: -2%;
+  top: -12px;
+  right: 0;
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   animation: floatY 6.5s 0.8s ease-in-out infinite;
 }
 
 .chip3 {
-  bottom: -5%;
-  left: 18%;
+  bottom: -12px;
+  left: 18px;
   background: linear-gradient(135deg, #10b981, #047857);
   animation: floatY 6s 1.6s ease-in-out infinite;
 }
-
 /* ------------------------------------------------------------------ */
 /* Stats                                                               */
 /* ------------------------------------------------------------------ */
@@ -1171,24 +1299,54 @@
   }
 }
 
-@keyframes spinConic {
-  to {
-    transform: rotate(360deg);
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
   }
 }
 
-@keyframes rackGrow {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-
-@keyframes rackScan {
+@keyframes truckCycle {
   0% {
-    top: 0;
+    transform: translateX(-260px);
+    opacity: 0;
+  }
+  12% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  68% {
+    transform: translateX(330px);
+    opacity: 1;
+  }
+  85%,
+  100% {
+    transform: translateX(330px);
+    opacity: 0;
+  }
+}
+
+@keyframes boxLoad {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hubScan {
+  0% {
+    left: 34px;
     opacity: 0;
   }
   8% {
@@ -1198,7 +1356,7 @@
     opacity: 1;
   }
   100% {
-    top: calc(100% - 2px);
+    left: calc(100% - 2px);
     opacity: 0;
   }
 }
@@ -1208,9 +1366,21 @@
   .statBar span,
   .ctaStockLive,
   .heroBadgeDot,
-  .rackFill span,
-  .rackBeam {
+  .hubBeam,
+  .hubDot,
+  .truckWrap,
+  .box {
     animation: none;
+  }
+
+  .truckWrap {
+    left: 0;
+    opacity: 1;
+  }
+
+  .box {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -1239,7 +1409,7 @@
   }
 
   .rackVisual {
-    max-width: 520px;
+    max-width: 460px;
   }
 
   .statsGrid {

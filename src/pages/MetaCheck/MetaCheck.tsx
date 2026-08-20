@@ -1,5 +1,7 @@
 // MetaCheck.tsx — fully custom landing page for MetaCheck (Verification & Compliance)
-import { motion } from 'framer-motion';
+// Concept: verification command center with live check report.
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import {
   AlertTriangle,
@@ -28,6 +30,7 @@ import {
   Sparkles,
   TrendingUp,
   UserCheck,
+  Users,
   Webhook,
 } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
@@ -49,8 +52,99 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['blue', 'violet', 'pink', 'teal', 'green'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — document scan with live verification report           */
+/* Hero visual — verification command center                           */
 /* ------------------------------------------------------------------ */
+
+type CheckRow = {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+};
+
+const SUBJECTS: {
+  short: string;
+  name: string;
+  type: string;
+  color: string;
+  status: string;
+  checks: CheckRow[];
+  passed: string;
+  time: string;
+  confidence: string;
+}[] = [
+  {
+    short: 'Hire',
+    name: 'Sofia Lindqvist',
+    type: 'Candidate · Senior Analyst',
+    color: '#60a5fa',
+    status: 'Verified',
+    checks: [
+      { icon: Fingerprint, label: 'Identity', value: '99.2% match' },
+      { icon: Briefcase, label: 'Employment', value: '2/2 confirmed' },
+      { icon: GraduationCap, label: 'Education', value: 'Degree verified' },
+      { icon: Home, label: 'Address', value: 'Confirmed' },
+      { icon: ShieldCheck, label: 'Criminal', value: 'Cleared' },
+      { icon: Landmark, label: 'AML / sanctions', value: 'PEP screened' },
+    ],
+    passed: '6/6',
+    time: '2m 14s',
+    confidence: '99.2%',
+  },
+  {
+    short: 'Vendor',
+    name: 'Atlas Logistics Ltd',
+    type: 'Vendor · KYB review',
+    color: '#22d3ee',
+    status: 'Verified',
+    checks: [
+      { icon: Building2, label: 'Business reg.', value: 'Verified' },
+      { icon: Users, label: 'UBO ownership', value: '3 identified' },
+      { icon: Landmark, label: 'AML / sanctions', value: 'PEP screened' },
+      { icon: FileText, label: 'Financials', value: 'Audited' },
+      { icon: CreditCard, label: 'Tax status', value: 'Compliant' },
+      { icon: TrendingUp, label: 'Credit risk', value: 'B+ rated' },
+    ],
+    passed: '6/6',
+    time: '3m 40s',
+    confidence: '97.8%',
+  },
+  {
+    short: 'Customer',
+    name: 'Digital Banking KYC',
+    type: 'Customer · KYC onboarding',
+    color: '#a855f7',
+    status: 'In review',
+    checks: [
+      { icon: Fingerprint, label: 'Identity', value: '98.9% match' },
+      { icon: ScanLine, label: 'Liveness', value: 'Passed' },
+      { icon: Radar, label: 'Sanctions', value: 'Cleared' },
+      { icon: ShieldCheck, label: 'Watchlist', value: 'Cleared' },
+      { icon: Landmark, label: 'PEP', value: 'Screened' },
+      { icon: Lock, label: 'Device risk', value: 'Low' },
+    ],
+    passed: '5/6',
+    time: '1m 52s',
+    confidence: '98.9%',
+  },
+  {
+    short: 'Tenant',
+    name: 'Rental Application',
+    type: 'Property · Tenant screening',
+    color: '#34d399',
+    status: 'Verified',
+    checks: [
+      { icon: Fingerprint, label: 'Identity', value: '96.4% match' },
+      { icon: CreditCard, label: 'Income', value: '3.1x rent' },
+      { icon: Briefcase, label: 'Employment', value: 'Confirmed' },
+      { icon: TrendingUp, label: 'Credit', value: '720 score' },
+      { icon: FileCheck2, label: 'Eviction', value: 'None found' },
+      { icon: UserCheck, label: 'References', value: '2 verified' },
+    ],
+    passed: '6/6',
+    time: '2m 01s',
+    confidence: '96.4%',
+  },
+];
 
 const HERO_CHECKS = [
   { icon: Fingerprint, label: 'Identity', value: '99.2% match' },
@@ -62,75 +156,137 @@ const HERO_CHECKS = [
 ] as const;
 
 function ScanVisual() {
+  const [subject, setSubject] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setSubject((s) => (s + 1) % SUBJECTS.length), 3200);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [SUBJECTS.length]);
+
+  const current = SUBJECTS[subject];
+
   return (
-    <div className={styles.scanVisual} aria-hidden="true">
-      <div className={styles.scanGrid} />
+    <div className={styles.checkVisual} aria-hidden="true">
+      <div className={styles.checkGlow} />
+      <div className={styles.checkGrid} />
+      <div className={styles.checkOrbit} />
 
-      <div className={styles.docCard}>
-        <span className={styles.docCorner} />
-        <span className={styles.docCorner} />
-        <span className={styles.docCorner} />
-        <span className={styles.docCorner} />
-
-        <div className={styles.docHeader}>
-          <span className={styles.docHeaderIcon}>
-            <ScanLine size={16} />
+      <div className={styles.consoleCard}>
+        <div className={styles.consoleHeader}>
+          <span className={styles.consoleHeaderTitle}>
+            <BadgeCheck size={14} aria-hidden="true" />
+            Verification Command Center
           </span>
-          <span className={styles.docHeaderText}>
-            <span className={styles.docHeaderName}>Identity Document</span>
-            <span className={styles.docHeaderMeta}>Encrypted scan · NFC + liveness</span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · 1,284 checks
           </span>
         </div>
 
-        <div className={styles.docBody}>
-          <div className={styles.docLine} />
-          <div className={styles.docLine} />
-          <div className={styles.docLineShort} />
-          <div className={styles.docLine} />
-          <div className={styles.docLineShort} />
+        <div className={styles.subjectTabs}>
+          {SUBJECTS.map((s, i) => (
+            <button
+              key={s.name}
+              type="button"
+              className={cn(styles.subjectTab, subject === i && styles.subjectTabActive)}
+              onClick={() => setSubject(i)}
+              aria-label={`View ${s.name}`}
+            >
+              <span className={styles.subjectTabDot} style={{ background: s.color }} />
+              <span>{s.short}</span>
+            </button>
+          ))}
         </div>
 
-        <div className={styles.scanBeamWrap}>
-          <div className={styles.scanBeam} />
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={subject}
+            className={styles.consoleBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.subjectHeader}>
+              <div>
+                <span className={styles.subjectName}>{current.name}</span>
+                <span className={styles.subjectType}>{current.type}</span>
+              </div>
+              <span
+                className={styles.subjectStatus}
+                style={{
+                  color: current.color,
+                  borderColor: `${current.color}55`,
+                  background: `${current.color}14`,
+                }}
+              >
+                <span className={styles.subjectStatusDot} style={{ background: current.color }} />
+                {current.status}
+              </span>
+            </div>
 
-        <div className={styles.docFooter}>
-          <span className={styles.docFooterItem}>
-            <ShieldCheck size={12} /> Secure channel
+            <div className={styles.checkList}>
+              {current.checks.map((check) => (
+                <div key={check.label} className={styles.checkRow}>
+                  <check.icon size={13} className={styles.checkIcon} aria-hidden="true" />
+                  <span className={styles.checkName}>{check.label}</span>
+                  <span className={styles.checkValue}>{check.value}</span>
+                  <CheckCircle2 size={14} className={styles.checkDone} aria-hidden="true" />
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.kpiRow}>
+              <div className={styles.kpiCell}>
+                <CheckCircle2 size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Checks passed</span>
+                  <span className={styles.kpiValue}>{current.passed}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <ScanSearch size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Avg time</span>
+                  <span className={styles.kpiValue}>{current.time}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <TrendingUp size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Confidence</span>
+                  <span className={styles.kpiValue}>{current.confidence}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className={styles.consoleFooter}>
+          <span className={styles.consoleFooterItem}>
+            <ShieldCheck size={12} aria-hidden="true" /> GDPR-ready
           </span>
-          <span className={styles.docFooterItem}>
-            <Lock size={12} /> AES-256
+          <span className={styles.consoleFooterItem}>
+            <Lock size={12} aria-hidden="true" /> SOC 2 Type II
+          </span>
+          <span className={styles.consoleFooterItem}>
+            <FileCheck2 size={12} aria-hidden="true" /> Audit trail
           </span>
         </div>
-      </div>
-
-      <div className={styles.liveReportCard}>
-        <span className={styles.reportCardLabel}>
-          <ScanSearch size={13} />
-          Live verification report
-        </span>
-        <div className={styles.reportRow}>
-          <span className={styles.reportRowName}>Identity</span>
-          <span className={styles.reportRowValue}>99.2%</span>
-        </div>
-        <div className={styles.reportTrack}>
-          <motion.span
-            className={styles.reportFill}
-            initial={{ width: '30%' }}
-            animate={{ width: '99.2%' }}
-            transition={{ duration: 1.6, ease: 'easeOut', delay: 0.4 }}
-          />
-        </div>
-        <span className={styles.reportCardMeta}>6/6 checks passed · 2m 14s</span>
       </div>
 
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <CheckCircle2 size={14} />
+        <CheckCircle2 size={13} aria-hidden="true" />
         Passport · Verified
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <CheckCircle2 size={14} />
+        <CheckCircle2 size={13} aria-hidden="true" />
         PAN · Verified
+      </div>
+      <div className={`${styles.chip} ${styles.chip3}`}>
+        <ScanLine size={13} aria-hidden="true" />
+        Deepfake · Cleared
       </div>
     </div>
   );
@@ -324,6 +480,8 @@ export function MetaCheckPage() {
               viewport={VIEWPORT}
             >
               <SectionHeader
+                spacing="md"
+                className={styles.sectionHeader}
                 eyebrow={<span className={styles.eyebrow}>The verification gap</span>}
                 title={
                   <>
@@ -405,6 +563,8 @@ export function MetaCheckPage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>What we check</span>}
             title={
               <>
@@ -491,6 +651,8 @@ export function MetaCheckPage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>How it works</span>}
             title={
               <>
@@ -590,6 +752,8 @@ export function MetaCheckPage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>Compliance first</span>}
             title={
               <>

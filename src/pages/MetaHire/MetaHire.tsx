@@ -1,10 +1,12 @@
 // MetaHire.tsx — custom landing page for MetaHire (Hiring & Talent Platform)
-// Concept: a live recruiting kanban board.
-import { motion } from 'framer-motion';
+// Concept: live recruiting funnel with requisition switcher.
+import { Fragment, useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
   BarChart3,
   CalendarDays,
+  Check,
   CheckCircle2,
   FileSearch,
   HeartHandshake,
@@ -13,6 +15,7 @@ import {
   Rocket,
   Search,
   Sparkles,
+  Timer,
   UserCheck,
   UserPlus,
 } from 'lucide-react';
@@ -34,102 +37,219 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['blue', 'violet', 'pink', 'amber', 'teal', 'green'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — live recruiting kanban                                */
+/* Hero visual — candidate spotlight                                   */
 /* ------------------------------------------------------------------ */
 
-type CandidateCard = {
-  name: string;
-  role: string;
-  match: string;
-  hot?: boolean;
-  accepted?: boolean;
-};
+const STAGES = ['Applied', 'Screened', 'Interview', 'Offer'] as const;
 
-const BOARD_COLUMNS: { title: string; count: number; cards: CandidateCard[] }[] = [
+const CANDIDATES = [
   {
-    title: 'Applied',
-    count: 128,
-    cards: [
-      { name: 'A. Patel', role: 'Frontend', match: '84%' },
-      { name: 'M. Rossi', role: 'Product', match: '79%' },
-    ],
+    name: 'Sofia Reyes',
+    role: 'Senior Frontend Engineer',
+    team: 'Product Engineering',
+    color: '#60a5fa',
+    match: 96,
+    skills: ['React', 'TypeScript', 'GraphQL', 'A11y'],
+    stage: 2,
+    status: 'Final interview',
+    time: '14 days',
   },
   {
-    title: 'Screened',
-    count: 32,
-    cards: [
-      { name: 'S. Kim', role: 'Frontend', match: '96%', hot: true },
-      { name: 'J. Doe', role: 'Design', match: '91%' },
-    ],
+    name: 'David Okafor',
+    role: 'Backend Engineer',
+    team: 'Core Platform',
+    color: '#22d3ee',
+    match: 91,
+    skills: ['Go', 'Postgres', 'Kafka', 'Docker'],
+    stage: 1,
+    status: 'Screening',
+    time: '6 days',
   },
   {
-    title: 'Interview',
-    count: 9,
-    cards: [
-      { name: 'L. Chen', role: 'Backend', match: '94%' },
-      { name: 'N. Ali', role: 'PM', match: '88%' },
-    ],
+    name: 'Mei Tanaka',
+    role: 'Product Designer',
+    team: 'Design Studio',
+    color: '#a78bfa',
+    match: 93,
+    skills: ['Figma', 'Design systems', 'Prototyping'],
+    stage: 3,
+    status: 'Offer sent',
+    time: '11 days',
   },
   {
-    title: 'Offer',
-    count: 3,
-    cards: [{ name: 'R. Silva', role: 'Fullstack', match: '98%', accepted: true }],
+    name: 'Lucas Weber',
+    role: 'Account Executive',
+    team: 'Growth Sales',
+    color: '#f472b6',
+    match: 88,
+    skills: ['Outbound', 'CRM', 'Negotiation'],
+    stage: 0,
+    status: 'Applied',
+    time: '2 days',
   },
-];
+] as const;
 
-function KanbanVisual() {
+function HireVisual() {
+  const [candIndex, setCandIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setCandIndex((c) => (c + 1) % CANDIDATES.length), 3200);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [CANDIDATES.length]);
+
+  const current = CANDIDATES[candIndex];
+  const CIRC = 2 * Math.PI * 44;
+
   return (
-    <div className={styles.kanbanVisual} aria-hidden="true">
-      <div className={styles.kanbanGlow} />
-      <div className={styles.kanbanBoard}>
-        {BOARD_COLUMNS.map((column) => (
-          <div key={column.title} className={styles.kanbanColumn}>
-            <div className={styles.kanbanColumnHeader}>
-              <span className={styles.kanbanColumnTitle}>{column.title}</span>
-              <span className={styles.kanbanColumnCount}>{column.count}</span>
-            </div>
-            <div className={styles.kanbanColumnBody}>
-              {column.cards.map((card) => (
-                <div
-                  key={card.name}
-                  className={cn(
-                    styles.candidateCard,
-                    card.hot && styles.candidateCardHot,
-                    card.accepted && styles.candidateCardAccepted,
-                  )}
+    <div className={styles.hireVisual} aria-hidden="true">
+      <div className={styles.hireGlow} />
+      <div className={styles.hireGrid} />
+      <div className={styles.hireOrbit} />
+
+      <div className={styles.consoleCard}>
+        <div className={styles.consoleHeader}>
+          <span className={styles.consoleHeaderTitle}>
+            <UserPlus size={14} aria-hidden="true" />
+            Talent Spotlight
+          </span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · 18 roles
+          </span>
+        </div>
+
+        <div className={styles.avatarRow}>
+          {CANDIDATES.map((c, i) => (
+            <button
+              key={c.name}
+              type="button"
+              className={cn(styles.avatarBtn, candIndex === i && styles.avatarBtnActive)}
+              style={
+                candIndex === i
+                  ? { borderColor: c.color, boxShadow: `0 0 0 3px ${c.color}33` }
+                  : undefined
+              }
+              onClick={() => setCandIndex(i)}
+              aria-label={`View ${c.name}`}
+            >
+              {c.name
+                .split(' ')
+                .map((w) => w[0])
+                .join('')}
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={candIndex}
+            className={styles.spotlightBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.spotlightTop}>
+              <div className={styles.donutWrap}>
+                <svg className={styles.donutSvg} viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="44" className={styles.donutTrack} />
+                  <motion.circle
+                    cx="50"
+                    cy="50"
+                    r="44"
+                    className={styles.donutFill}
+                    stroke={current.color}
+                    strokeDasharray={CIRC}
+                    initial={{ strokeDashoffset: CIRC }}
+                    animate={{ strokeDashoffset: CIRC * (1 - current.match / 100) }}
+                    transition={{ duration: 1, ease: 'easeOut' }}
+                  />
+                </svg>
+                <span className={styles.donutInitial}>{current.name.charAt(0)}</span>
+                <span className={styles.donutPct}>{current.match}%</span>
+              </div>
+
+              <div className={styles.candInfo}>
+                <span className={styles.candName}>{current.name}</span>
+                <span className={styles.candRole}>{current.role}</span>
+                <span className={styles.candTeam}>{current.team}</span>
+                <span
+                  className={styles.candStatus}
+                  style={{
+                    color: current.color,
+                    borderColor: `${current.color}55`,
+                    background: `${current.color}14`,
+                  }}
                 >
-                  <span className={styles.candidateAvatar}>
-                    {card.name.charAt(0)}
-                  </span>
-                  <span className={styles.candidateInfo}>
-                    <span className={styles.candidateName}>{card.name}</span>
-                    <span className={styles.candidateRole}>{card.role}</span>
-                  </span>
-                  <span className={styles.candidateMatch}>
-                    {card.accepted ? (
-                      <CheckCircle2 size={13} />
-                    ) : (
-                      <>
-                        {card.match}
-                      </>
-                    )}
-                  </span>
-                </div>
+                  <span className={styles.candStatusDot} style={{ background: current.color }} />
+                  {current.status}
+                </span>
+              </div>
+            </div>
+
+            <div className={styles.skillChips}>
+              {current.skills.map((skill) => (
+                <span key={skill} className={styles.skillChip}>
+                  {skill}
+                </span>
               ))}
             </div>
-          </div>
-        ))}
+
+            <div className={styles.stageTrack}>
+              {STAGES.map((label, i) => (
+                <Fragment key={label}>
+                  <span
+                    className={cn(
+                      styles.stagePill,
+                      i < current.stage && styles.stagePillDone,
+                      i === current.stage && styles.stagePillActive,
+                    )}
+                  >
+                    {i < current.stage ? (
+                      <Check size={11} aria-hidden="true" />
+                    ) : (
+                      <span className={styles.stageDot} />
+                    )}
+                    {label}
+                  </span>
+                  {i < STAGES.length - 1 && (
+                    <span
+                      className={cn(
+                        styles.stageConnector,
+                        i < current.stage && styles.stageConnectorDone,
+                      )}
+                    />
+                  )}
+                </Fragment>
+              ))}
+            </div>
+
+            <div className={styles.metaRow}>
+              <span className={styles.metaItem}>
+                <Timer size={12} aria-hidden="true" /> In pipeline · {current.time}
+              </span>
+              <span className={styles.metaItem}>
+                <BarChart3 size={12} aria-hidden="true" /> Offer rate 23%
+              </span>
+              <span className={styles.metaItem}>
+                <UserCheck size={12} aria-hidden="true" /> Source · Referral
+              </span>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
+
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <Sparkles size={13} />
-        AI Match · 96%
+        <Sparkles size={13} aria-hidden="true" />
+        AI Match · {current.match}%
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <CalendarDays size={13} />
+        <CalendarDays size={13} aria-hidden="true" />
         Interview · 24h
       </div>
       <div className={`${styles.chip} ${styles.chip3}`}>
-        <Rocket size={13} />
+        <Rocket size={13} aria-hidden="true" />
         Offer accepted
       </div>
     </div>
@@ -317,7 +437,7 @@ export function MetaHirePage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              <KanbanVisual />
+              <HireVisual />
             </motion.div>
           </div>
         </Container>
@@ -327,6 +447,18 @@ export function MetaHirePage() {
       <Section size="md" bordered className={styles.funnelSection}>
         <div className={styles.funnelGlow} aria-hidden="true" />
         <Container maxWidth="wide">
+          <SectionHeader
+            align="center"
+            spacing="md"
+            className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>By the numbers</span>}
+            title={
+              <>
+                Hiring runs on <GradientText>data, not gut feeling</GradientText>
+              </>
+            }
+            subtitle="The market has already spoken — AI-assisted hiring is the new baseline for speed and quality."
+          />
           <motion.div
             className={styles.funnelGrid}
             variants={defaultContainerVariants}
@@ -362,6 +494,8 @@ export function MetaHirePage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>Capabilities</span>}
             title={
               <>
@@ -407,6 +541,8 @@ export function MetaHirePage() {
         <Container maxWidth="wide">
           <SectionHeader
             align="center"
+            spacing="md"
+            className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>How it works</span>}
             title={
               <>

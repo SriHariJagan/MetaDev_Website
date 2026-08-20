@@ -403,7 +403,7 @@
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  animation: watermarkShimmer 16s ease-in-out infinite alternate;
+  animation: watermarkShimmer 6s linear infinite alternate;
 }
 
 :global([data-theme="light"]) .watermark {
@@ -446,8 +446,8 @@
   z-index: 1;
   display: flex;
   align-items: flex-start;
-  gap: var(--space-10);
-  /* max-width: 88rem; */
+  gap: var(--space-8);
+  max-width: 88rem;
   margin-inline: auto;
   padding-inline: var(--container-padding-x);
 }
@@ -455,7 +455,7 @@
 /* ---------- Brand column ---------- */
 
 .brandCol {
-  flex: 0 1 13.5rem;
+  flex: 0 1 15rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -504,10 +504,11 @@
 .socialList {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 0.375rem;
   list-style: none;
   margin: var(--space-1) 0 0;
   padding: 0;
+  flex-wrap: nowrap;
 }
 
 .socialLink {
@@ -516,6 +517,7 @@
   justify-content: center;
   width: 36px;
   height: 36px;
+  flex-shrink: 0;
   border-radius: 50%;
   color: var(--social);
   background: color-mix(in srgb, var(--social) 10%, transparent);
@@ -589,8 +591,8 @@
 /* ---------- Link columns ---------- */
 
 .linkColsGroup {
-  /* flex: 1 1 0;
-  display: flex; */
+  flex: 1 1 0%;
+  display: flex;
   flex-direction: column;
   min-width: 0;
 }
@@ -599,98 +601,47 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: var(--space-6) var(--space-5);
+  justify-content: space-between;
+  gap: var(--space-6) var(--space-3);
   min-width: 0;
-}
-
-.linkCols.linkColsRow2 {
-  margin-top: var(--space-6);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--color-border);
 }
 
 .linkCol {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2-5, 0.625rem);
   min-width: 0;
 }
 
-/* Every row stays on one line while there's room — split columns (more
-   content) claim proportionally more of any leftover space than a short
-   plain list, and each keeps a safe minimum so text never crowds together. */
+/* Columns keep their natural content width and wrap instead of
+   shrinking below it, which would otherwise overlap neighbours. */
 .linkCols .linkCol {
-  flex: 1 1 7.5rem;
-  min-width: 7rem;
+  flex: 0 0 auto;
 }
 
 .linkCols .linkColSplit {
-  flex: 1.6 1 13.5rem;
-  min-width: auto;
+  flex: 0 0 auto;
 }
 
-.linkCols .linkColWide {
-  flex: 2.2 1 20rem;
-  min-width: auto;
-}
-
-/* Solutions / Industries / Resources / Developers: centered heading + links, like Products */
+/* Solutions / Industries / Resources / Developers / Products: centered heading + links */
 .linkColSplit {
   align-items: center;
   text-align: center;
 }
 
-/* Products: wider, centered, split into two sub-columns */
-.linkColWide {
-  position: relative;
-  align-items: center;
-  text-align: center;
-  padding-inline: var(--space-6);
-}
-
-.linkColWide::before,
-.linkColWide::after {
-  content: "";
-  position: absolute;
-  top: 8%;
-  bottom: 8%;
-  width: 1px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--color-border) 25%,
-    var(--color-border) 75%,
-    transparent
-  );
-}
-
-.linkColWide::before {
-  left: 0;
-}
-
-.linkColWide::after {
-  right: 0;
-}
-
 .linkList.linkListSplit {
   display: grid;
   grid-template-columns: repeat(2, minmax(max-content, auto));
-  column-gap: var(--space-5);
-  row-gap: var(--space-2-5, 0.625rem);
+  column-gap: var(--space-4);
+  row-gap: 0.5rem;
   grid-auto-flow: column;
   grid-template-rows: repeat(var(--split-rows, 6), auto);
 }
 
-.linkColWide .linkListSplit {
-  column-gap: var(--space-8);
+.linkColSplit .linkListSplit {
+  column-gap: var(--space-5);
 }
 
-.linkList.linkListSplit {
-  justify-content: center;
-}
-
-.linkColWide .colHeading,
-.linkColWide .link,
 .linkColSplit .colHeading,
 .linkColSplit .link {
   justify-content: center;
@@ -700,12 +651,13 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: var(--font-weight-bold);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--color-text) 88%, var(--navbar-accent) 12%);
   margin: 0 0 var(--space-2);
+  white-space: nowrap;
 }
 
 .colHeading::before {
@@ -736,8 +688,9 @@
   align-items: baseline;
   flex-wrap: nowrap;
   max-width: 100%;
-  gap: 7px;
-  font-size: 0.79rem;
+  white-space: nowrap;
+  gap: 6px;
+  font-size: 0.74rem;
   font-weight: var(--font-weight-medium);
   color: color-mix(in srgb, var(--color-text) 68%, var(--color-text-muted) 32%);
   text-decoration: none;
@@ -770,7 +723,7 @@
 
 .linkDisabled {
   color: var(--color-text-muted);
-  opacity: 0.55;
+  opacity: 0.85;
   cursor: not-allowed;
 }
 
@@ -795,162 +748,6 @@
   transition:
     background-color var(--transition-fast),
     transform var(--transition-fast);
-}
-
-/* ---------- Newsletter column ---------- */
-
-.newsletterCol {
-  flex: 0 1 16rem;
-  min-width: 0;
-}
-
-.newsletterCard {
-  position: relative;
-  overflow: hidden;
-  padding: var(--space-6);
-  border-radius: var(--radius-lg);
-  background: var(--glass-navy);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 20px 45px -28px rgba(2, 10, 30, 0.6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  transition: border-color var(--transition-medium), box-shadow var(--transition-medium);
-}
-
-:global([data-theme="light"]) .newsletterCard {
-  background: var(--glass-navy-light-soft);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 20px 45px -32px rgba(15, 23, 42, 0.2);
-}
-
-/* Soft gradient ring, always faintly present */
-.newsletterCard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    150deg,
-    color-mix(in srgb, var(--navbar-accent-start) 55%, transparent),
-    transparent 40%,
-    transparent 60%,
-    color-mix(in srgb, var(--navbar-accent-end) 45%, transparent)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.newsletterCard:focus-within {
-  border-color: var(--blue-soft-border);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 0 0 3px var(--color-focus-ring);
-}
-
-.newsletterIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-md);
-  color: #fff;
-  background: linear-gradient(
-    135deg,
-    var(--navbar-accent-start),
-    var(--navbar-accent-end)
-  );
-  box-shadow: 0 6px 16px -4px rgba(47, 91, 255, 0.45);
-  margin-bottom: var(--space-1);
-}
-
-.newsletterHeading {
-  font-size: 0.9rem;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  margin: 0;
-}
-
-.newsletterDesc {
-  font-size: 0.75rem;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
-.newsletterForm {
-  position: relative;
-  margin-top: var(--space-1);
-  width: 100%;
-}
-
-.newsletterInput {
-  width: 100%;
-  min-width: 0;
-  padding: 0.7rem 3rem 0.7rem 0.9rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-size: 0.8rem;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.newsletterInput::placeholder {
-  color: var(--color-text-muted);
-}
-
-.newsletterInput:focus-visible {
-  outline: none;
-  border-color: var(--navbar-accent);
-  box-shadow: 0 0 0 3px var(--color-focus-ring);
-}
-
-.newsletterSubmit {
-  position: absolute;
-  top: 50%;
-  right: 4px;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(
-    135deg,
-    var(--navbar-accent-start),
-    var(--navbar-accent-end)
-  );
-  color: #ffffff;
-  cursor: pointer;
-  transition:
-    transform var(--transition-fast),
-    opacity var(--transition-fast);
-}
-
-.newsletterSubmit:hover {
-  opacity: 0.9;
-  transform: translateY(-50%) scale(1.06);
-}
-
-.newsletterNote {
-  font-size: 0.68rem;
-  color: var(--color-text-muted);
-  margin: 0;
 }
 
 /* ---------- Bottom bar ---------- */
@@ -1082,6 +879,7 @@
 
   .mainInner {
     flex-direction: column;
+    align-items: stretch;
     gap: var(--space-8);
   }
 
@@ -1133,6 +931,8 @@
     margin-top: var(--space-2);
     padding-top: var(--space-4);
     border-top: 1px solid var(--color-border);
+    flex-wrap: nowrap;
+    gap: 0.375rem;
   }
 
   .socialLink {
@@ -1141,13 +941,27 @@
   }
 
   .linkCols {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
+    gap: var(--space-8) var(--space-4);
+    padding-top: var(--space-6);
   }
 
-  .newsletterCol {
-    width: 100%;
-    max-width: 30rem;
-    margin-inline: auto;
+  .linkCols .linkCol,
+  .linkCols .linkColSplit {
+    align-items: center;
+    text-align: center;
+    min-width: 0;
+  }
+
+  .linkCols .colHeading,
+  .linkCols .link {
+    justify-content: center;
+  }
+
+  .linkList.linkListSplit {
+    column-gap: var(--space-6);
   }
 }
 
@@ -1160,31 +974,12 @@
     gap: var(--space-7);
   }
 
-  .linkColWide {
-    padding-inline: 0;
-  }
-
-  .linkColWide::before,
-  .linkColWide::after {
-    display: none;
-  }
-
   .colHeading {
     font-size: 0.68rem;
   }
 
   .link {
     font-size: 0.82rem;
-  }
-
-  .newsletterInput {
-    padding: 0.8rem 3.5rem 0.8rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .newsletterSubmit {
-    width: 38px;
-    height: 38px;
   }
 
   .bottomInner {
@@ -1217,12 +1012,8 @@
   }
 
   .linkCols {
-    gap: var(--space-5);
-  }
-
-  .linkCol {
-    align-items: center;
-    text-align: center;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 
   .linkList.linkListSplit {
@@ -1231,22 +1022,11 @@
     grid-template-rows: none;
   }
 
-  .linkCols .linkCol,
-  .linkCols .linkColSplit,
-  .linkCols .linkColWide {
-    flex-basis: 100%;
-    min-width: 0;
-  }
-
   .colHeading {
     justify-content: center;
   }
 
   .link {
     font-size: 0.85rem;
-  }
-
-  .newsletterCard {
-    padding: var(--space-5);
   }
 }

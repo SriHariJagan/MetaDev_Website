@@ -1,11 +1,11 @@
 // MetaNav.tsx — custom landing page for MetaNav (Fleet & Logistics Management)
 // Concept: a fleet operations control center with fuel analytics,
 // a maintenance board and a driver leaderboard.
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Activity,
   ArrowRight,
-  CheckCircle2,
   Cog,
   Fuel,
   Gauge,
@@ -46,13 +46,68 @@ const HUD_BLIPS = [
   { left: '27%', top: '25%', delay: '2.1s' },
 ] as const;
 
-const HUD_READOUTS = [
-  { icon: Truck, label: 'Vehicles live', value: '128' },
-  { icon: Gauge, label: 'Cost / km', value: '₹23.4' },
-  { icon: Activity, label: 'Fleet uptime', value: '98.2%' },
+const VEHICLES = [
+  {
+    id: 'TR-042',
+    truck: 'Volvo FH16',
+    route: 'KTM → BLR',
+    eta: '2h 14m',
+    fuel: 62,
+    speed: '74 km/h',
+    uptime: '98.2%',
+    status: 'On trip',
+    driver: 'R. Kumar',
+    color: '#fb923c',
+  },
+  {
+    id: 'TR-118',
+    truck: 'Tata Prima',
+    route: 'DEL → LKO',
+    eta: '4h 05m',
+    fuel: 48,
+    speed: '68 km/h',
+    uptime: '97.5%',
+    status: 'On trip',
+    driver: 'S. Mehta',
+    color: '#38bdf8',
+  },
+  {
+    id: 'TR-073',
+    truck: 'Ashok Leyland',
+    route: 'BLR → MAA',
+    eta: '1h 32m',
+    fuel: 81,
+    speed: '61 km/h',
+    uptime: '99.1%',
+    status: 'On trip',
+    driver: 'A. Nair',
+    color: '#34d399',
+  },
+  {
+    id: 'TR-021',
+    truck: 'Eicher Pro',
+    route: 'MUM → PUN',
+    eta: '5h 48m',
+    fuel: 35,
+    speed: '59 km/h',
+    uptime: '96.8%',
+    status: 'Idle',
+    driver: 'V. Patel',
+    color: '#fbbf24',
+  },
 ] as const;
 
 function HudVisual() {
+  const [vehIndex, setVehIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setVehIndex((v) => (v + 1) % VEHICLES.length), 3600);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [VEHICLES.length]);
+
+  const current = VEHICLES[vehIndex];
+
   return (
     <motion.div
       className={styles.hudVisual}
@@ -68,54 +123,161 @@ function HudVisual() {
         <span className={styles.hudCorner} aria-hidden="true" />
         <span className={styles.hudCorner} aria-hidden="true" />
 
-        <div className={styles.hudRadar}>
-          <div className={styles.hudRings} />
-          <div className={styles.hudSweep} />
-          <div className={styles.hudCross} />
-          {HUD_BLIPS.map((blip, index) => (
-            <span
-              key={index}
-              className={styles.hudBlip}
-              style={{ left: blip.left, top: blip.top, animationDelay: blip.delay }}
-            >
-              <span className={styles.hudPing} />
-            </span>
-          ))}
-          <span className={styles.hudCenter}>
-            <Navigation size={20} />
+        <div className={styles.hudHeader}>
+          <span className={styles.hudHeaderTitle}>
+            <Truck size={14} aria-hidden="true" />
+            Fleet Command
+          </span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · 128 vehicles
           </span>
         </div>
 
-        <div className={styles.hudRoute}>
-          <span className={styles.hudRouteLine} />
-          <span className={styles.hudRouteDot} />
-          <span className={styles.hudRouteMeta}>KTM → BLR · ETA 2h 14m</span>
-        </div>
-
-        <div className={styles.hudReadouts}>
-          {HUD_READOUTS.map((readout) => (
-            <div key={readout.label} className={styles.hudReadout}>
-              <readout.icon size={14} />
-              <span className={styles.hudReadoutBody}>
-                <strong>{readout.value}</strong>
-                <em>{readout.label}</em>
-              </span>
-            </div>
+        <div className={styles.vehicleRow}>
+          {VEHICLES.map((v, i) => (
+            <button
+              key={v.id}
+              type="button"
+              className={cn(styles.vehicleChip, vehIndex === i && styles.vehicleChipActive)}
+              style={
+                vehIndex === i
+                  ? {
+                      borderColor: v.color,
+                      background: v.color,
+                      color: '#fff',
+                      boxShadow: `0 4px 14px -4px ${v.color}99`,
+                    }
+                  : undefined
+              }
+              onClick={() => setVehIndex(i)}
+              aria-label={`View ${v.id}`}
+            >
+              <span className={styles.vehicleDot} style={{ background: v.color }} />
+              {v.id}
+            </button>
           ))}
         </div>
-      </div>
 
-      <div className={`${styles.chip} ${styles.chip1}`}>
-        <Gauge size={13} />
-        Cost/km · −8.2%
-      </div>
-      <div className={`${styles.chip} ${styles.chip2}`}>
-        <Activity size={13} />
-        Utilization · 91%
-      </div>
-      <div className={`${styles.chip} ${styles.chip3}`}>
-        <CheckCircle2 size={13} />
-        Trip completed
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={vehIndex}
+            className={styles.hudBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.tripRow}>
+              <div className={styles.tripInfo}>
+                <span className={styles.tripName}>{current.truck}</span>
+                <span className={styles.tripId}>
+                  {current.id} · {current.driver}
+                </span>
+              </div>
+              <span
+                className={styles.tripStatus}
+                style={{
+                  color: current.color,
+                  borderColor: `${current.color}55`,
+                  background: `${current.color}14`,
+                }}
+              >
+                <span className={styles.tripStatusDot} style={{ background: current.color }} />
+                {current.status}
+              </span>
+            </div>
+
+            <div className={styles.hudRadar} style={{ borderColor: `${current.color}77` }}>
+              <div className={styles.hudRings} />
+              <div className={styles.hudSweep} />
+              <div className={styles.hudCross} />
+              <span className={styles.hudHeading} style={{ color: current.color }}>
+                <Navigation size={10} aria-hidden="true" /> 214°
+              </span>
+              <span className={styles.hudCoords}>12.97°N · 77.59°E</span>
+              {HUD_BLIPS.map((blip, index) => (
+                <span
+                  key={index}
+                  className={styles.hudBlip}
+                  style={{ left: blip.left, top: blip.top, animationDelay: blip.delay }}
+                >
+                  <span className={styles.hudPing} />
+                </span>
+              ))}
+              <span className={styles.hudCenter}>
+                <span className={styles.hudCenterPing} style={{ borderColor: current.color }} />
+                <span
+                  className={styles.hudCenterPing}
+                  style={{ borderColor: current.color, animationDelay: '0.9s' }}
+                />
+                <span
+                  className={styles.hudCenterPin}
+                  style={{ background: `linear-gradient(135deg, ${current.color}, ${current.color}99)` }}
+                >
+                  <span className={styles.hudCenterIcon}>
+                    <Truck size={15} aria-hidden="true" />
+                  </span>
+                </span>
+              </span>
+            </div>
+
+            <div className={styles.hudRoute}>
+              <span className={styles.hudRouteLine} />
+              <span
+                className={styles.hudRouteDot}
+                style={{
+                  background: current.color,
+                  boxShadow: `0 0 12px ${current.color}e6`,
+                }}
+              />
+              <span className={styles.hudRouteMeta}>
+                {current.route} · ETA {current.eta}
+              </span>
+            </div>
+
+            <div className={styles.telemetry}>
+              <div className={styles.telemetryItem}>
+                <span className={styles.telemetryLabel}>
+                  <Fuel size={12} aria-hidden="true" /> Fuel
+                </span>
+                <span className={styles.telemetryBar}>
+                  <motion.span
+                    className={styles.telemetryFill}
+                    initial={{ width: '0%' }}
+                    animate={{ width: `${current.fuel}%` }}
+                    transition={{ duration: 0.9, ease: 'easeOut' }}
+                  />
+                </span>
+                <span className={styles.telemetryValue}>{current.fuel}%</span>
+              </div>
+              <div className={styles.telemetryItem}>
+                <span className={styles.telemetryLabel}>
+                  <Gauge size={12} aria-hidden="true" /> Speed
+                </span>
+                <span className={styles.telemetryValue}>{current.speed}</span>
+              </div>
+              <div className={styles.telemetryItem}>
+                <span className={styles.telemetryLabel}>
+                  <Activity size={12} aria-hidden="true" /> Uptime
+                </span>
+                <span className={styles.telemetryValue}>{current.uptime}</span>
+              </div>
+            </div>
+
+            <div className={styles.fleetMeta}>
+              <span className={styles.fleetMetaItem}>
+                <Map size={12} aria-hidden="true" /> 4 depots
+              </span>
+              <span className={styles.fleetMetaItem}>
+                <Truck size={12} aria-hidden="true" /> 128 vehicles
+              </span>
+              <span className={styles.fleetMetaItem}>
+                <TrendingDown size={12} aria-hidden="true" /> 20% fuel saved
+              </span>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </motion.div>
   );

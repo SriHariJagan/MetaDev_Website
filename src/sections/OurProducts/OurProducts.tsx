@@ -38,13 +38,18 @@ import { BackgroundDecor } from "@/components/common/BackgroundDecor";
 import { CornerDots } from "@/components/common/CornerDots";
 import { Button } from "@/components/common/Button";
 import { fadeUp, staggerContainer } from "@/constants/motion";
-import { ProductMockup } from "./ProductMockup";
+import { ProductNeuralNetwork } from "./ProductNeuralNetwork";
+import { ProductOrbitRings } from "./ProductOrbitRings";
+import { ProductStackedLayers } from "./ProductStackedLayers";
+import { ProductTimeline } from "./ProductTimeline";
+import { ProductHexGrid } from "./ProductHexGrid";
 import styles from "./OurProducts.module.css";
 
 import metaAddsImage from "@/assets/images/ourProducts/metaAdds.png";
 import metaHireImage from "@/assets/images/ourProducts/metaHire.png";
 
 type Accent = "teal" | "blue" | "violet" | "amber";
+type Visual = "network" | "orbit" | "stack" | "timeline" | "hex";
 
 /* ------------------------------------------------------------------ */
 /* Data (dummy — swap screenshotUrl / copy later)                      */
@@ -60,6 +65,7 @@ interface Product {
   id: string;
   icon: LucideIcon;
   accent: Accent;
+  visual: Visual;
   name: string;
   subtitle: string;
   badge: string;
@@ -75,6 +81,7 @@ const PRODUCTS: Product[] = [
     id: "metahealth",
     icon: HeartPulse,
     accent: "teal",
+    visual: "network",
     name: "MetaHealth",
     subtitle: "Healthcare Platform",
     badge: "Healthcare",
@@ -98,6 +105,7 @@ const PRODUCTS: Product[] = [
     id: "metaedu",
     icon: GraduationCap,
     accent: "blue",
+    visual: "timeline",
     name: "MetaEdu",
     subtitle: "EdTech Platform",
     badge: "Education",
@@ -121,6 +129,7 @@ const PRODUCTS: Product[] = [
     id: "metaflow",
     icon: Boxes,
     accent: "violet",
+    visual: "hex",
     name: "MetaFlow",
     subtitle: "Enterprise Platform",
     badge: "Enterprise",
@@ -144,6 +153,7 @@ const PRODUCTS: Product[] = [
     id: "metasecure",
     icon: ShieldCheck,
     accent: "amber",
+    visual: "orbit",
     name: "MetaSecure",
     subtitle: "Security & Compliance",
     badge: "Security",
@@ -167,6 +177,7 @@ const PRODUCTS: Product[] = [
     id: "metahire",
     icon: UserPlus,
     accent: "blue",
+    visual: "timeline",
     name: "MetaHire",
     subtitle: "Hiring & Talent Platform",
     badge: "HR & Recruitment",
@@ -191,6 +202,7 @@ const PRODUCTS: Product[] = [
     id: "metacheck",
     icon: BadgeCheck,
     accent: "amber",
+    visual: "stack",
     name: "MetaCheck",
     subtitle: "Verification & Compliance",
     badge: "Verification",
@@ -214,6 +226,7 @@ const PRODUCTS: Product[] = [
     id: "metaadds",
     icon: Megaphone,
     accent: "violet",
+    visual: "network",
     name: "MetaAdds",
     subtitle: "AdTech & Marketing Platform",
     badge: "AdTech",
@@ -238,6 +251,7 @@ const PRODUCTS: Product[] = [
     id: "metagreen",
     icon: Leaf,
     accent: "teal",
+    visual: "orbit",
     name: "MetaGreen",
     subtitle: "Sustainability Platform",
     badge: "Green Tech",
@@ -261,6 +275,7 @@ const PRODUCTS: Product[] = [
     id: "metanav",
     icon: Navigation,
     accent: "teal",
+    visual: "stack",
     name: "MetaNav",
     subtitle: "Fleet & Logistics Management",
     badge: "Logistics",
@@ -284,6 +299,7 @@ const PRODUCTS: Product[] = [
     id: "metaledger",
     icon: Receipt,
     accent: "blue",
+    visual: "hex",
     name: "MetaLedger",
     subtitle: "Billing & Invoicing",
     badge: "Finance",
@@ -307,6 +323,7 @@ const PRODUCTS: Product[] = [
     id: "metacard",
     icon: CreditCard,
     accent: "violet",
+    visual: "timeline",
     name: "MetaCard",
     subtitle: "Digital ID Cards",
     badge: "Identity",
@@ -330,6 +347,7 @@ const PRODUCTS: Product[] = [
     id: "metaim",
     icon: Package,
     accent: "amber",
+    visual: "network",
     name: "MetaIM",
     subtitle: "Inventory Management",
     badge: "Inventory",
@@ -364,6 +382,58 @@ const HERO_STATS: HeroStat[] = [
   { icon: Workflow, value: "500+", label: "Integrations", accent: "amber" },
   { icon: Globe2, value: "100%", label: "Global Ready", accent: "teal" },
 ];
+
+/* ------------------------------------------------------------------ */
+/* Per-product visual — each product gets a distinct diagram style     */
+/* ------------------------------------------------------------------ */
+
+function renderProductVisual(product: Product) {
+  switch (product.visual) {
+    case "orbit":
+      return (
+        <ProductOrbitRings
+          id={product.id}
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "stack":
+      return (
+        <ProductStackedLayers
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "timeline":
+      return (
+        <ProductTimeline
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "hex":
+      return (
+        <ProductHexGrid
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "network":
+    default:
+      return (
+        <ProductNeuralNetwork
+          id={product.id}
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /* Animation variants                                                  */
@@ -472,12 +542,7 @@ export function OurProducts() {
               transition={{ duration: 0.35, ease: "easeOut" }}
             >
               <div className={styles.explorerImage}>
-                <ProductMockup
-                  id={activeProduct.id}
-                  name={activeProduct.name}
-                  icon={activeProduct.icon}
-                  screenshotUrl={activeProduct.screenshotUrl}
-                />
+                {renderProductVisual(activeProduct)}
               </div>
 
               <div className={styles.explorerContent}>

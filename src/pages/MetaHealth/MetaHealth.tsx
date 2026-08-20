@@ -1,20 +1,30 @@
-// MetaHealth.tsx — custom landing page for MetaHealth (Healthcare Platform)
-// Concept: a live patient vitals monitor with an ECG trace.
-import { motion } from 'framer-motion';
+// MetaHealth.tsx — premium healthcare platform landing page
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Activity,
   ArrowRight,
+  ArrowUpRight,
   Brain,
+  CalendarClock,
   CheckCircle2,
   ClipboardList,
+  Clock,
   HeartPulse,
+  LineChart,
   MessageSquareHeart,
   MonitorSmartphone,
   Pill,
+  ReceiptText,
   ShieldCheck,
   Stethoscope,
+  Syringe,
   Users,
   Video,
+  Waves,
+  Microscope,
+  Baby,
+  Bone,
 } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
@@ -31,179 +41,486 @@ import { cn } from '@/utils/cn';
 import styles from './MetaHealth.module.css';
 
 const VIEWPORT = { once: false, amount: 0.2 } as const;
-const HUES = ['teal', 'cyan', 'blue', 'green', 'violet', 'pink'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — vitals monitor with ECG trace                         */
+/* 1. Hero — clinical command center visual                            */
 /* ------------------------------------------------------------------ */
 
-const ECG_PATH =
-  'M0,60 L20,60 L30,60 L38,60 L44,20 L50,92 L56,44 L62,60 L80,60 L88,60 L94,60 L100,16 L108,94 L114,48 L120,60 L140,60 L148,60 L154,60 L160,26 L166,88 L172,52 L178,60 L196,60';
-
-function VitalsVisual() {
+function ECGLine({ className }: { className?: string }) {
   return (
-    <div className={styles.vitalsVisual} aria-hidden="true">
-      <div className={styles.vitalsGlow} />
+    <svg viewBox="0 0 200 40" preserveAspectRatio="none" className={className} aria-hidden="true">
+      <path
+        d="M0,20 L30,20 L45,20 L52,10 L58,30 L64,14 L70,20 L95,20 L108,20 L114,8 L120,34 L126,16 L132,20 L160,20 L170,20 L178,6 L184,28 L190,16 L200,20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={styles.ecgPath}
+      />
+    </svg>
+  );
+}
 
-      <div className={styles.monitorCard}>
-        <div className={styles.monitorHeader}>
-          <span className={styles.monitorHeaderTitle}>
-            <HeartPulse size={14} /> Patient monitor
+function HeroVisual() {
+  const [patient, setPatient] = useState(0);
+  const PATIENTS = [
+    { name: 'A. Rahman', ward: 'Cardiology · Room 412', hr: 72, spo2: 98, bp: '118/76', status: 'Stable', color: 'var(--grad-1)' },
+    { name: 'S. Patel', ward: 'ICU · Bed 7', hr: 88, spo2: 96, bp: '132/84', status: 'Watch', color: 'var(--grad-2)' },
+    { name: 'L. Chen', ward: 'Oncology · Suite 3', hr: 76, spo2: 99, bp: '124/78', status: 'Recovering', color: '#22c55e' },
+    { name: 'M. Okafor', ward: 'ER · Bay 9', hr: 94, spo2: 97, bp: '140/90', status: 'Stable', color: '#f59e0b' },
+  ];
+
+  useEffect(() => {
+    const t = setInterval(() => setPatient((p) => (p + 1) % PATIENTS.length), 3000);
+    return () => clearInterval(t);
+  }, [PATIENTS.length]);
+
+  return (
+    <div className={styles.heroVisual}>
+      <div className={styles.heroVisualGlow} aria-hidden="true" />
+      <div className={styles.heroVisualGrid} aria-hidden="true" />
+
+      {/* Central dashboard card */}
+      <div className={styles.dashboardCard}>
+        <div className={styles.dashboardHeader}>
+          <span className={styles.dashboardHeaderTitle}>
+            <HeartPulse size={14} aria-hidden="true" />
+            Clinical Command Center
           </span>
-          <span className={styles.monitorHeaderPill}>Live</span>
-        </div>
-
-        <div className={styles.ecgWrap}>
-          <svg viewBox="0 0 200 120" className={styles.ecgSvg} preserveAspectRatio="none">
-            <path
-              d={ECG_PATH}
-              fill="none"
-              stroke="url(#grad-teal)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={styles.ecgTrace}
-            />
-          </svg>
-        </div>
-
-        <div className={styles.vitalsGrid}>
-          <div className={styles.vitalBox}>
-            <span className={styles.vitalLabel}>Heart rate</span>
-            <span className={styles.vitalValue}>72 bpm</span>
-          </div>
-          <div className={styles.vitalBox}>
-            <span className={styles.vitalLabel}>SpO2</span>
-            <span className={styles.vitalValue}>98%</span>
-          </div>
-          <div className={styles.vitalBox}>
-            <span className={styles.vitalLabel}>Blood pressure</span>
-            <span className={styles.vitalValue}>118/76</span>
-          </div>
-        </div>
-
-        <div className={styles.monitorFooter}>
-          <span className={styles.monitorFooterItem}>
-            <ShieldCheck size={12} /> HIPAA-ready
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · 4,208 patients
           </span>
-          <span className={styles.monitorFooterItem}>
-            <Activity size={12} /> 4,208 patients
+        </div>
+
+        {/* Patient switcher */}
+        <div className={styles.patientTabs}>
+          {PATIENTS.map((p, i) => (
+            <button
+              key={p.name}
+              type="button"
+              className={cn(styles.patientTab, patient === i && styles.patientTabActive)}
+              onClick={() => setPatient(i)}
+              aria-label={`View ${p.name}`}
+            >
+              <span className={styles.patientTabDot} style={{ background: p.color }} />
+              <span className={styles.patientTabName}>{p.name.split(' ')[1]}</span>
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={patient}
+            className={styles.patientBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.patientHeader}>
+              <div>
+                <span className={styles.patientName}>{PATIENTS[patient].name}</span>
+                <span className={styles.patientWard}>{PATIENTS[patient].ward}</span>
+              </div>
+              <span className={styles.patientStatus} style={{ color: PATIENTS[patient].color, borderColor: `${PATIENTS[patient].color}55`, background: `${PATIENTS[patient].color}14` }}>
+                <span className={styles.patientStatusDot} style={{ background: PATIENTS[patient].color }} />
+                {PATIENTS[patient].status}
+              </span>
+            </div>
+
+            <div className={styles.ecgWrap}>
+              <span className={styles.ecgLineLabel}>ECG · Lead II</span>
+              <ECGLine className={styles.heroEcg} />
+            </div>
+
+            <div className={styles.vitalsRow}>
+              <div className={styles.vitalCell}>
+                <span className={styles.vitalCellLabel}>Heart rate</span>
+                <span className={styles.vitalCellValue}>{PATIENTS[patient].hr}</span>
+                <span className={styles.vitalCellUnit}>bpm</span>
+              </div>
+              <div className={styles.vitalCell}>
+                <span className={styles.vitalCellLabel}>SpO₂</span>
+                <span className={styles.vitalCellValue}>{PATIENTS[patient].spo2}</span>
+                <span className={styles.vitalCellUnit}>%</span>
+              </div>
+              <div className={styles.vitalCell}>
+                <span className={styles.vitalCellLabel}>BP</span>
+                <span className={styles.vitalCellValue}>{PATIENTS[patient].bp}</span>
+                <span className={styles.vitalCellUnit}>mmHg</span>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className={styles.dashboardFooter}>
+          <span className={styles.dashboardFooterItem}>
+            <ShieldCheck size={12} aria-hidden="true" /> HIPAA-ready
+          </span>
+          <span className={styles.dashboardFooterItem}>
+            <Activity size={12} aria-hidden="true" /> FHIR-native
+          </span>
+          <span className={styles.dashboardFooterItem}>
+            <Brain size={12} aria-hidden="true" /> AI-assisted
           </span>
         </div>
       </div>
 
-      <div className={`${styles.chip} ${styles.chip1}`}>
-        <Video size={13} />
+      {/* Floating chips */}
+      <div className={`${styles.floatChip} ${styles.floatChip1}`}>
+        <Video size={13} aria-hidden="true" />
         Virtual visit · 0m wait
       </div>
-      <div className={`${styles.chip} ${styles.chip2}`}>
-        <Brain size={13} />
+      <div className={`${styles.floatChip} ${styles.floatChip2}`}>
+        <MessageSquareHeart size={13} aria-hidden="true" />
         AI note · auto-written
       </div>
-      <div className={`${styles.chip} ${styles.chip3}`}>
-        <MessageSquareHeart size={13} />
+      <div className={`${styles.floatChip} ${styles.floatChip3}`}>
+        <CalendarClock size={13} aria-hidden="true" />
         Follow-up scheduled
+      </div>
+
+      {/* Orbit rings */}
+      <div className={styles.orbitRings} aria-hidden="true">
+        <span className={styles.orbitRing1} />
+        <span className={styles.orbitRing2} />
+        <span className={styles.orbitRing3} />
       </div>
     </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Content                                                             */
+/* 2. Data                                                             */
 /* ------------------------------------------------------------------ */
 
-const HEALTH_STATS = [
+const DOMAIN_STATS = [
   {
-    value: 568,
-    suffix: 'B',
-    label: 'USD — the global healthcare IT market in 2026, heading to $1.14T by 2031',
-    source: 'MarketsandMarkets · Healthcare IT, 2026',
+    icon: HeartPulse,
+    value: 4.2,
+    suffix: 'M+',
+    label: 'patients monitored on the platform',
+    sub: 'across acute, ambulatory and home care',
   },
   {
-    value: 15,
-    suffix: '%',
-    label: 'CAGR driven by AI, cloud adoption and value-based care',
-    source: 'MarketsandMarkets · Healthcare IT, 2026',
+    icon: Clock,
+    value: 16,
+    suffix: ' min',
+    label: 'of documentation time saved per encounter',
+    sub: 'with ambient AI scribes (JAMA)',
   },
   {
-    value: 96,
+    icon: Waves,
+    value: 99.98,
     suffix: '%',
-    label: 'of US non-federal acute care hospitals have adopted certified EHRs',
-    source: 'ONC / AHA · EHR adoption',
+    label: 'platform uptime, monitored in real time',
+    sub: 'with automatic failover across regions',
   },
   {
-    value: 42,
-    suffix: '%',
-    label: 'reduction in diagnostic errors reported by AI-supported hospitals',
-    source: 'InsightMark Research · AI diagnostics',
+    icon: ShieldCheck,
+    value: 3,
+    suffix: 'x',
+    label: 'faster incident response with AI triage',
+    sub: 'Smart alerts reach the right clinician first',
   },
 ] as const;
 
-const MODULE_STATUS = ['Ambient', 'Live', '24/7', 'FHIR-native', 'Connected', 'Secure'] as const;
-
-const CARE_MODULES = [
+const CLINICAL_MODULES = [
   {
     icon: Stethoscope,
     title: 'AI Clinical Documentation',
-    description:
-      'Ambient scribes capture the conversation and write the note — cutting documentation time by 16 minutes per encounter and burnout by up to 25%.',
+    desc: 'Ambient scribes listen, structure and write the note in seconds — so clinicians can focus on the patient, not the chart.',
+    tags: ['Ambient scribe', 'Auto-coding', 'SOAP notes'],
+    accent: 'teal',
   },
   {
     icon: Video,
     title: 'Telehealth & Virtual Care',
-    description:
-      'Virtual visits, virtual command centers and hospital-at-home — 87% of US hospitals now offer telemedicine, and MetaHealth makes it seamless.',
+    desc: 'From primary consults to virtual ICU command centers — seamless video care that extends the hospital beyond its walls.',
+    tags: ['Virtual visits', 'Virtual ICU', 'Hospital-at-home'],
+    accent: 'cyan',
   },
   {
     icon: MonitorSmartphone,
     title: 'Remote Patient Monitoring',
-    description:
-      'Continuous vitals monitoring with smart escalation — chronic care managed at home with the same clinical rigour as the ward.',
+    desc: 'Continuous vitals, wearable integration and smart escalation loops keep chronic patients safe between visits.',
+    tags: ['Wearables', 'Smart alerts', 'Chronic care'],
+    accent: 'blue',
   },
   {
     icon: ClipboardList,
     title: 'EHR & Interoperability',
-    description:
-      'FHIR-native integration with every major EHR — 81% of hospitals already expose patient data via API, MetaHealth plugs straight in.',
+    desc: 'FHIR-native connectors drop into Epic, Cerner, and 40+ EHRs — bidirectional, audited, and always in sync.',
+    tags: ['FHIR R4', 'Epic & Cerner', 'HL7 v2'],
+    accent: 'green',
   },
   {
     icon: Pill,
-    title: 'Care Coordination',
-    description:
-      'Care-gap closure, referral orchestration and medication workflows that keep the whole care team on one page.',
+    title: 'Medication Management',
+    desc: 'Digital-first prescribing, interaction checks and closed-loop administration that remove the risk from the routine.',
+    tags: ['ePrescribing', 'Interaction checks', 'Closed loop'],
+    accent: 'violet',
   },
   {
     icon: Users,
     title: 'Patient Engagement',
-    description:
-      'Portals, messaging and self-scheduling that patients actually use — engagement is the fastest-growing segment at a 14.9% CAGR.',
+    desc: 'Portals, messaging, scheduling and education that patients actually open — engagement that compounds into outcomes.',
+    tags: ['Patient portal', 'Smart scheduling', 'Care plans'],
+    accent: 'pink',
   },
 ] as const;
 
-const IMPACT_PAIRS = [
+const SPECIALTIES = [
   {
-    value: 13.4,
-    suffix: ' min',
-    label: 'of total EHR time saved per encounter with ambient AI scribes',
-    source: 'JAMA · Ambient documentation study',
+    icon: HeartPulse,
+    label: 'Cardiology',
+    desc: 'Cardiac monitoring, eReferrals and post-procedure care',
+    hue: 'red',
+    features: [
+      '24-hour Holter & event-loop monitoring',
+      'Cath-lab scheduling & eReferrals',
+      'Post-MI & post-op care pathways',
+      'PAC / quality improvement dashboards',
+    ],
+    stats: [
+      { value: '2.4M', label: 'cardiac readings analyzed daily' },
+      { value: '-31%', label: 'code-blue response time' },
+    ],
   },
   {
-    value: 51.9,
-    suffix: ' to 38.8%',
-    label: 'clinician burnout rate before, falling after AI documentation tools',
-    source: 'Short-term clinical studies',
+    icon: Brain,
+    label: 'Neurology',
+    desc: 'Stroke pathways, neuro rehab and seizure monitoring',
+    hue: 'violet',
+    features: [
+      'Stroke code & thrombolysis timelines',
+      'Seizure & EEG telemetry alerts',
+      'Neuro rehab care plans',
+      'NIHSS scoring & longitudinal tracking',
+    ],
+    stats: [
+      { value: '42%', label: 'faster door-to-needle time' },
+      { value: '1,800+', label: 'episodes monitored monthly' },
+    ],
   },
   {
-    value: 66,
-    suffix: '%',
-    label: 'of US physicians now use AI tools — up from 38% in 2023',
-    source: 'AMA · AI adoption, 2026',
+    icon: Microscope,
+    label: 'Oncology',
+    desc: 'Tumor board coordination, infusion tracking, survivorship',
+    hue: 'pink',
+    features: [
+      'Tumor board scheduling & case packs',
+      'Infusion chair & chemo cycle tracking',
+      'NCI toxicity scoring & alerts',
+      'Survivorship & follow-up plans',
+    ],
+    stats: [
+      { value: '3.1h', label: 'saved per oncology visit' },
+      { value: '96%', label: 'adherence to care plans' },
+    ],
   },
   {
-    value: 74,
-    suffix: '%',
-    label: 'of US hospitals use AI-powered diagnostic tools in radiology',
-    source: 'AMA · AI in practice',
+    icon: Baby,
+    label: 'Pediatrics',
+    desc: 'Growth tracking, vaccination schedules, parental access',
+    hue: 'amber',
+    features: [
+      'CDC growth charts & percentile tracking',
+      'Immunization schedules & reminders',
+      'Parent portal with proxy access',
+      'School & camp health forms',
+    ],
+    stats: [
+      { value: '100%', label: 'vaccination schedule coverage' },
+      { value: '3x', label: 'faster well-visit check-ins' },
+    ],
+  },
+  {
+    icon: Bone,
+    label: 'Orthopedics',
+    desc: 'Pre-op workup, joint registry and post-op physio plans',
+    hue: 'cyan',
+    features: [
+      'Pre-op clearance & risk workup',
+      'Joint registry data capture',
+      'Post-op physio & rehab protocols',
+      'Implant inventory integration',
+    ],
+    stats: [
+      { value: '28%', label: 'shorter pre-op workup time' },
+      { value: '2.1k', label: 'joint cases tracked per year' },
+    ],
+  },
+  {
+    icon: Syringe,
+    label: 'Primary Care',
+    desc: 'Preventive screenings, chronic disease management, QI',
+    hue: 'green',
+    features: [
+      'Preventive screening reminders',
+      'Hypertension & diabetes registries',
+      'Chronic care management (CCM)',
+      'HEDIS / quality measure reporting',
+    ],
+    stats: [
+      { value: '45%', label: 'higher screening completion' },
+      { value: '-18%', label: 'A1c outliers after 90 days' },
+    ],
+  },
+] as const;
+
+const INTEGRATIONS = [
+  { name: 'Epic', type: 'EHR' },
+  { name: 'Cerner', type: 'EHR' },
+  { name: 'athenahealth', type: 'EHR' },
+  { name: 'DrChrono', type: 'EHR' },
+  { name: 'Redox', type: 'iPaaS' },
+  { name: 'Twilio', type: 'Comms' },
+  { name: 'Stripe', type: 'Payments' },
+  { name: 'Dexcom', type: 'Devices' },
+  { name: 'Apple Health', type: 'Wearables' },
+  { name: 'Fitbit', type: 'Wearables' },
+  { name: 'Zoom', type: 'Video' },
+] as const;
+
+const PATIENT_JOURNEY = [
+  {
+    step: '01',
+    icon: Video,
+    title: 'Book & consult',
+    desc: 'Self-scheduling, automated intake and a video visit that starts on time.',
+  },
+  {
+    step: '02',
+    icon: Brain,
+    title: 'AI drafts the note',
+    desc: 'The ambient scribe structures the visit into a coded, billable note instantly.',
+  },
+  {
+    step: '03',
+    icon: Pill,
+    title: 'Prescribe digitally',
+    desc: 'Medication sent to the pharmacy with interaction checks baked in.',
+  },
+  {
+    step: '04',
+    icon: MonitorSmartphone,
+    title: 'Monitor remotely',
+    desc: 'Wearables stream vitals; smart escalation loops flag deterioration early.',
+  },
+  {
+    step: '05',
+    icon: CalendarClock,
+    title: 'Automate follow-up',
+    desc: 'Outreach, reminders and re-booking run on autopilot until discharge.',
+  },
+] as const;
+
+const OUTCOMES = [
+  { icon: LineChart, label: 'Documentation time', value: '-65%', delta: 'down' },
+  { icon: Activity, label: 'Readmission rate', value: '-38%', delta: 'down' },
+  { icon: Users, label: 'Patient engagement', value: '+52%', delta: 'up' },
+  { icon: ShieldCheck, label: 'Clinician burnout', value: '-25%', delta: 'down' },
+] as const;
+
+const INSIDE_FEATURES = [
+  {
+    icon: Brain,
+    title: 'AI Clinical Copilot',
+    desc: 'Ambient listening, auto-drafted notes, ICD-10 coding suggestions and voice-to-text — a copilot that works the way clinicians do.',
+    features: [
+      'Ambient scribe — listens & drafts',
+      'Auto ICD-10 / CPT coding',
+      'Voice-to-text dictation',
+      'Smart summary for the next visit',
+    ],
+    accent: 'teal',
+  },
+  {
+    icon: Video,
+    title: 'Virtual Care Suite',
+    desc: 'Complete telehealth infrastructure with virtual waiting rooms, in-visit tools and 24/7 virtual ICU command centers.',
+    features: [
+      'HD video visits with waitlist queue',
+      'In-visit whiteboard & screen share',
+      'Virtual ICU & e-consults',
+      'Hospital-at-home programs',
+    ],
+    accent: 'cyan',
+  },
+  {
+    icon: MonitorSmartphone,
+    title: 'Remote Monitoring',
+    desc: 'Wearable and device integrations stream vitals into one timeline, with smart escalation loops that never miss deterioration.',
+    features: [
+      '40+ wearable & device connectors',
+      'Real-time vitals timeline',
+      'Smart escalation & alert routing',
+      'Chronic care management plans',
+    ],
+    accent: 'blue',
+  },
+  {
+    icon: ClipboardList,
+    title: 'EHR & Data Layer',
+    desc: 'FHIR R4-native APIs and certified connectors that keep every system in sync — bidirectionally, audited, and real time.',
+    features: [
+      'FHIR R4 / HL7 v2 connectors',
+      'Epic, Cerner & 40+ EHRs',
+      'Bidirectional real-time sync',
+      'Full audit trail on every record',
+    ],
+    accent: 'green',
+  },
+  {
+    icon: Users,
+    title: 'Patient Portal & Engagement',
+    desc: 'A consumer-grade portal with smart scheduling, two-way messaging, education libraries and automated reminders.',
+    features: [
+      'Self-scheduling & waitlists',
+      'Secure two-way messaging',
+      'Personalized education content',
+      'Automated appointment reminders',
+    ],
+    accent: 'violet',
+  },
+  {
+    icon: ReceiptText,
+    title: 'Billing & Revenue Cycle',
+    desc: 'Eligibility checks, claim scrubbing and automated follow-up that close the loop from visit to payment.',
+    features: [
+      'Real-time eligibility checks',
+      'Claim scrubbing & denial tracking',
+      'Automated statement & follow-up',
+      'Patient payment plans',
+    ],
+    accent: 'pink',
+  },
+  {
+    icon: LineChart,
+    title: 'Analytics & Population Health',
+    desc: 'Clinical and operational dashboards, risk stratification and quality reporting that turn data into decisions.',
+    features: [
+      'Real-time operational dashboards',
+      'Population risk stratification',
+      'Quality & value-based reporting',
+      'Custom measure builders',
+    ],
+    accent: 'amber',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Security & Compliance',
+    desc: 'Enterprise-grade security built in from day one — certified, monitored and hardened for regulated environments.',
+    features: [
+      'HIPAA & SOC 2 Type II certified',
+      'GDPR & ISO 27001 aligned',
+      'AES-256 encryption at rest',
+      'Role-based access & SSO/SAML',
+    ],
+    accent: 'red',
   },
 ] as const;
 
@@ -212,11 +529,21 @@ const IMPACT_PAIRS = [
 /* ------------------------------------------------------------------ */
 
 export function MetaHealthPage() {
+  const [activeSpecialty, setActiveSpecialty] = useState(0);
+  const [journeyStep, setJourneyStep] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setJourneyStep((s) => (s + 1) % PATIENT_JOURNEY.length), 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  const specialty = SPECIALTIES[activeSpecialty];
+
   return (
     <div className={styles.page}>
       <GradientDefs />
 
-      {/* ---------------- Hero ---------------- */}
+      {/* ================= HERO ================= */}
       <Section size="lg" className={styles.hero}>
         <div className={styles.heroAurora} aria-hidden="true">
           <div className={styles.heroGridBg} />
@@ -233,7 +560,6 @@ export function MetaHealthPage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              
               <motion.div variants={defaultItemVariants}>
                 <Badge variant="glass">
                   <HeartPulse size={14} aria-hidden="true" />
@@ -248,9 +574,9 @@ export function MetaHealthPage() {
               </motion.h1>
 
               <motion.p className={styles.heroText} variants={defaultItemVariants}>
-                MetaHealth is a healthcare platform that unifies clinical documentation, virtual
-                care, remote monitoring and patient engagement — giving clinicians back their
-                time and patients a line straight to their care team.
+                MetaHealth unifies clinical documentation, virtual care, remote monitoring and
+                patient engagement — giving clinicians back their time and patients a direct line
+                to their care team.
               </motion.p>
 
               <motion.div className={styles.heroActions} variants={defaultItemVariants}>
@@ -279,16 +605,28 @@ export function MetaHealthPage() {
               whileInView="visible"
               viewport={VIEWPORT}
             >
-              <VitalsVisual />
+              <HeroVisual />
             </motion.div>
           </div>
         </Container>
       </Section>
 
-      {/* ---------------- Market stats ---------------- */}
+      {/* ================= DOMAIN STATS ================= */}
       <Section size="md" bordered className={styles.statsSection}>
         <div className={styles.statsGlow} aria-hidden="true" />
         <Container maxWidth="wide">
+          <SectionHeader
+            align="center"
+            spacing="md"
+            className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>By the numbers</span>}
+            title={
+              <>
+                Trusted across the <GradientText>care continuum</GradientText>
+              </>
+            }
+            subtitle="MetaHealth powers hospitals, clinics, and home care teams — with the numbers to prove it."
+          />
           <motion.div
             className={styles.statsGrid}
             variants={defaultContainerVariants}
@@ -296,29 +634,20 @@ export function MetaHealthPage() {
             whileInView="visible"
             viewport={VIEWPORT}
           >
-            {HEALTH_STATS.map((stat, index) => (
+            {DOMAIN_STATS.map((stat) => (
               <motion.div key={stat.label} variants={defaultItemVariants}>
-                <GlassCard
-                  className={cn(styles.statCard, styles[`hue-${HUES[index % HUES.length]}`])}
-                >
-                  <span className={styles.vitalDot} aria-hidden="true" />
+                <GlassCard className={styles.statCard}>
+                  <div className={styles.statIconRow}>
+                    <IconCircle size="md" variant="gradient">
+                      <stat.icon size={16} stroke="url(#grad-teal)" aria-hidden="true" />
+                    </IconCircle>
+                    <span className={styles.statPulse} aria-hidden="true" />
+                  </div>
                   <span className={styles.statValue}>
                     <CountUp value={stat.value} suffix={stat.suffix} />
                   </span>
                   <p className={styles.statLabel}>{stat.label}</p>
-                  <span className={styles.statSource}>{stat.source}</span>
-                  <span className={styles.ecgLine} aria-hidden="true">
-                    <svg viewBox="0 0 200 30" preserveAspectRatio="none">
-                      <polyline
-                        points="0,17 40,17 52,11 62,24 76,8 90,21 104,17 150,17 160,11 172,23 200,17"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
+                  <span className={styles.statSub}>{stat.sub}</span>
                 </GlassCard>
               </motion.div>
             ))}
@@ -326,50 +655,12 @@ export function MetaHealthPage() {
         </Container>
       </Section>
 
-      {/* ---------------- AI impact pairs ---------------- */}
-      <Section size="md" bordered>
-        <Container maxWidth="wide">
-          <SectionHeader
-            align="center"
-            eyebrow={<span className={styles.eyebrow}>AI in practice</span>}
-            title={
-              <>
-                AI is already <GradientText>changing outcomes</GradientText>
-              </>
-            }
-            subtitle="The most adopted AI in healthcare today is the kind that gives clinicians time back. Here is what that is worth."
-          />
-
-          <motion.div
-            className={styles.pairGrid}
-            variants={defaultContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={VIEWPORT}
-          >
-            {IMPACT_PAIRS.map((pair, index) => (
-              <motion.div key={pair.label} variants={defaultItemVariants}>
-                <GlassCard
-                  className={cn(styles.pairCard, styles[`hue-${HUES[index % HUES.length]}`])}
-                >
-                  <span className={styles.pairValue}>
-                    <CountUp value={pair.value} suffix={pair.suffix} />
-                  </span>
-                  <p className={styles.pairLabel}>{pair.label}</p>
-                  <span className={styles.pairSource}>{pair.source}</span>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </motion.div>
-        </Container>
-      </Section>
-
-      {/* ---------------- Care modules ---------------- */}
+      {/* ================= CLINICAL MODULES ================= */}
       <Section size="lg" bordered id="modules">
         <div className={styles.modulesGlow} aria-hidden="true" />
         <Container maxWidth="wide">
           <SectionHeader
-            align="center"
+align="center" spacing="md" className={styles.sectionHeader}
             eyebrow={<span className={styles.eyebrow}>Capabilities</span>}
             title={
               <>
@@ -386,17 +677,22 @@ export function MetaHealthPage() {
             whileInView="visible"
             viewport={VIEWPORT}
           >
-            {CARE_MODULES.map((mod, index) => (
+            {CLINICAL_MODULES.map((mod) => (
               <motion.div key={mod.title} variants={defaultItemVariants}>
-                <GlassCard
-                  className={cn(styles.moduleCard, styles[`hue-${HUES[index % HUES.length]}`])}
-                >
-                  <IconCircle size="lg" variant="gradient">
-                    <mod.icon size={20} stroke={`url(#grad-teal)`} aria-hidden="true" />
-                  </IconCircle>
+                <GlassCard className={cn(styles.moduleCard, styles[`mod-${mod.accent}`])}>
+                  <div className={styles.moduleTop}>
+                    <IconCircle size="lg" variant="gradient">
+                      <mod.icon size={20} stroke={`url(#grad-${mod.accent})`} aria-hidden="true" />
+                    </IconCircle>
+                    <ArrowUpRight size={16} className={styles.moduleArrow} aria-hidden="true" />
+                  </div>
                   <h3 className={styles.moduleTitle}>{mod.title}</h3>
-                  <p className={styles.moduleDesc}>{mod.description}</p>
-                  <span className={styles.moduleStatus}>{MODULE_STATUS[index]}</span>
+                  <p className={styles.moduleDesc}>{mod.desc}</p>
+                  <div className={styles.moduleTags}>
+                    {mod.tags.map((tag) => (
+                      <span key={tag} className={styles.moduleTag}>{tag}</span>
+                    ))}
+                  </div>
                 </GlassCard>
               </motion.div>
             ))}
@@ -404,7 +700,253 @@ export function MetaHealthPage() {
         </Container>
       </Section>
 
-      {/* ---------------- CTA ---------------- */}
+      {/* ================= WHAT'S INSIDE ================= */}
+      <Section size="lg" bordered id="inside">
+        <div className={styles.insideGlow} aria-hidden="true" />
+        <Container maxWidth="wide">
+          <SectionHeader
+align="center" spacing="md" className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>What's inside</span>}
+            title={
+              <>
+                Everything a modern health system <GradientText>needs in one platform</GradientText>
+              </>
+            }
+            subtitle="Eight tightly-integrated suites — from the clinical copilot to the revenue cycle — each one production-grade on its own, transformative together."
+          />
+
+          <motion.div
+            className={styles.insideGrid}
+            variants={defaultContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+          >
+            {INSIDE_FEATURES.map((f) => {
+              const Icon = f.icon;
+              return (
+                <motion.div key={f.title} variants={defaultItemVariants}>
+                  <GlassCard className={cn(styles.insideCard, styles[`in-${f.accent}`])}>
+                    <div className={styles.insideCardHead}>
+                      <IconCircle size="lg" variant="gradient">
+                        <Icon size={20} stroke={`url(#grad-${f.accent})`} aria-hidden="true" />
+                      </IconCircle>
+                      <h3 className={styles.insideCardTitle}>{f.title}</h3>
+                    </div>
+                    <p className={styles.insideCardDesc}>{f.desc}</p>
+                    <ul className={styles.insideCardList}>
+                      {f.features.map((feat) => (
+                        <li key={feat} className={styles.insideCardFeature}>
+                          <CheckCircle2 size={13} aria-hidden="true" />
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
+                  </GlassCard>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </Container>
+      </Section>
+
+      {/* ================= SPECIALTIES ================= */}
+      <Section size="lg" bordered>
+        <Container maxWidth="wide">
+          <SectionHeader
+align="center" spacing="md" className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>Specialties</span>}
+            title={
+              <>
+                Built for every <GradientText>clinical specialty</GradientText>
+              </>
+            }
+            subtitle="Workflows tuned to how each specialty actually practices — not a generic EHR template."
+          />
+
+          <div className={styles.specialtyLayout}>
+            <div className={styles.specialtyTabs}>
+              {SPECIALTIES.map((sp, i) => {
+                const Icon = sp.icon;
+                return (
+                  <button
+                    key={sp.label}
+                    type="button"
+                    className={cn(
+                      styles.specialtyTab,
+                      activeSpecialty === i && styles.specialtyTabActive,
+                      styles[`sp-${sp.hue}`],
+                    )}
+                    onClick={() => setActiveSpecialty(i)}
+                  >
+                    <span className={styles.specialtyTabIcon}>
+                      <Icon size={17} aria-hidden="true" />
+                    </span>
+                    <span className={styles.specialtyTabLabel}>{sp.label}</span>
+                    <ArrowRight size={14} className={styles.specialtyTabArrow} aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSpecialty}
+                className={cn(styles.specialtyPanel, styles[`sp-${specialty.hue}`])}
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -24 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+              >
+                <div className={styles.specialtyPanelGlow} aria-hidden="true" />
+                <div className={styles.specialtyPanelHeader}>
+                  <div className={styles.specialtyPanelIcon}>
+                    <specialty.icon size={28} stroke={`url(#grad-${specialty.hue})`} aria-hidden="true" />
+                  </div>
+                  <div className={styles.specialtyPanelTitleWrap}>
+                    <h3 className={styles.specialtyPanelTitle}>{specialty.label}</h3>
+                    <p className={styles.specialtyPanelDesc}>{specialty.desc}</p>
+                  </div>
+                </div>
+                <ul className={styles.specialtyPanelList}>
+                  {specialty.features.map((feat) => (
+                    <li key={feat} className={styles.specialtyFeature}>
+                      <CheckCircle2 size={15} aria-hidden="true" />
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+                <div className={styles.specialtyPanelStats}>
+                  {specialty.stats.map((s) => (
+                    <div key={s.label} className={styles.specialtyStat}>
+                      <span className={styles.specialtyStatValue}>{s.value}</span>
+                      <span className={styles.specialtyStatLabel}>{s.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ================= PATIENT JOURNEY ================= */}
+      <Section size="lg" bordered className={styles.journeySection}>
+        <div className={styles.journeyGlow} aria-hidden="true" />
+        <Container maxWidth="wide">
+          <SectionHeader
+align="center" spacing="md" className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>The journey</span>}
+            title={
+              <>
+                A patient journey that <GradientText>runs itself</GradientText>
+              </>
+            }
+            subtitle="From the first booking to post-discharge follow-up — every step orchestrated, every handoff warm."
+          />
+
+          <div className={styles.journeyTrack}>
+            {PATIENT_JOURNEY.map((step, i) => {
+              const Icon = step.icon;
+              const isActive = journeyStep === i;
+              const isDone = i < journeyStep || (journeyStep === 0 && i === PATIENT_JOURNEY.length - 1);
+              return (
+                <motion.div
+                  key={step.step}
+                  className={cn(styles.journeyStep, isActive && styles.journeyStepActive)}
+                  animate={{ scale: isActive ? 1.04 : 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                >
+                  <div className={cn(styles.journeyStepNode, isDone && styles.journeyStepDone)}>
+                    <Icon size={18} aria-hidden="true" />
+                    {isActive && <span className={styles.journeyPing} aria-hidden="true" />}
+                  </div>
+                  <span className={styles.journeyStepNum}>{step.step}</span>
+                  <h4 className={styles.journeyStepTitle}>{step.title}</h4>
+                  <p className={styles.journeyStepDesc}>{step.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ================= OUTCOMES ================= */}
+      <Section size="lg" bordered>
+        <Container maxWidth="wide">
+          <SectionHeader
+align="center" spacing="md" className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>Outcomes</span>}
+            title={
+              <>
+                Outcomes your board <GradientText>will notice</GradientText>
+              </>
+            }
+            subtitle="Real-world performance across deployments — not projections."
+          />
+
+          <div className={styles.outcomeGrid}>
+            {OUTCOMES.map((o) => {
+              const Icon = o.icon;
+              return (
+                <motion.div
+                  key={o.label}
+                  className={cn(styles.outcomeCard, o.delta === 'up' && styles.outcomeUp)}
+                  variants={defaultItemVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={VIEWPORT}
+                >
+                  <span className={styles.outcomeArrow} aria-hidden="true">
+                    {o.delta === 'up' ? '↑' : '↓'}
+                  </span>
+                  <div className={styles.outcomeIcon}>
+                    <Icon size={20} aria-hidden="true" />
+                  </div>
+                  <span className={styles.outcomeValue}>{o.value}</span>
+                  <span className={styles.outcomeLabel}>{o.label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+        </Container>
+      </Section>
+
+      {/* ================= INTEGRATIONS ================= */}
+      <Section size="md" bordered>
+        <Container maxWidth="wide">
+          <SectionHeader
+align="center" spacing="md" className={styles.sectionHeader}
+            eyebrow={<span className={styles.eyebrow}>Integrations</span>}
+            title={
+              <>
+                Plays well with your <GradientText>existing stack</GradientText>
+              </>
+            }
+            subtitle="40+ certified connectors — EHRs, devices, payments and communication, out of the box."
+          />
+
+          <motion.div
+            className={styles.integrationMarquee}
+            variants={defaultContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT}
+          >
+            {INTEGRATIONS.map((int) => (
+              <motion.div key={int.name} variants={defaultItemVariants}>
+                <div className={styles.integrationTile}>
+                  <span className={styles.integrationDot} aria-hidden="true" />
+                  <span className={styles.integrationName}>{int.name}</span>
+                  <span className={styles.integrationType}>{int.type}</span>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </Container>
+      </Section>
+
+      {/* ================= CTA ================= */}
       <Section size="lg" className={styles.ctaSection}>
         <Container maxWidth="wide">
           <motion.div
@@ -439,18 +981,10 @@ export function MetaHealthPage() {
                 <div className={styles.ctaVitals} aria-hidden="true">
                   <div className={styles.ctaVitalsCard}>
                     <span className={styles.ctaVitalsLabel}>Patients cared for today</span>
-                    <span className={styles.ctaVitalsValue}>1,284</span>
-                    <svg viewBox="0 0 200 80" className={styles.ctaEcgSvg} preserveAspectRatio="none">
-                      <path
-                        d={ECG_PATH}
-                        fill="none"
-                        stroke="url(#grad-teal)"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={styles.ctaEcgTrace}
-                      />
-                    </svg>
+                    <span className={styles.ctaVitalsValue}>
+                      <CountUp value={1284} />
+                    </span>
+                    <ECGLine className={styles.ctaEcg} />
                   </div>
                 </div>
               </div>

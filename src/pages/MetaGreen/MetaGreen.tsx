@@ -1,19 +1,25 @@
 // MetaGreen.tsx — custom landing page for MetaGreen (Sustainability Platform)
-// Concept: concentric emissions rings with scope coverage gauges.
-import { motion } from 'framer-motion';
+// Concept: sustainability command center with emissions gauge and scope bars.
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
+  CalendarClock,
   CheckCircle2,
   CloudSun,
+  Droplets,
   Factory,
   FileCheck2,
   Leaf,
   LineChart,
-  Recycle,
   Scale,
+  ShieldCheck,
+  Sparkles,
   Sprout,
   TrendingUp,
+  Trash2,
   Users,
+  Zap,
 } from 'lucide-react';
 import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
@@ -33,8 +39,65 @@ const VIEWPORT = { once: false, amount: 0.2 } as const;
 const HUES = ['teal', 'green', 'blue', 'amber', 'violet', 'cyan'] as const;
 
 /* ------------------------------------------------------------------ */
-/* Hero visual — emission scope rings                                  */
+/* Hero visual — sustainability command center                         */
 /* ------------------------------------------------------------------ */
+
+const FACILITIES = [
+  {
+    name: 'Plant A',
+    region: 'Manufacturing · Austin',
+    score: 78,
+    gauge: 74,
+    scopes: { s1: 74, s2: 66, s3: 48 },
+    energy: '-12%',
+    water: '-8%',
+    waste: '+6%',
+    status: 'On track',
+    color: '#34d399',
+  },
+  {
+    name: 'HQ Berlin',
+    region: 'Office · Berlin',
+    score: 92,
+    gauge: 34,
+    scopes: { s1: 21, s2: 52, s3: 61 },
+    energy: '-24%',
+    water: '-15%',
+    waste: '-4%',
+    status: 'A−',
+    color: '#2dd4bf',
+  },
+  {
+    name: 'DC Amsterdam',
+    region: 'Logistics · Amsterdam',
+    score: 85,
+    gauge: 52,
+    scopes: { s1: 46, s2: 38, s3: 57 },
+    energy: '-17%',
+    water: '-11%',
+    waste: '-9%',
+    status: 'On track',
+    color: '#a3e635',
+  },
+  {
+    name: 'Retail West',
+    region: 'Retail · 42 stores',
+    score: 64,
+    gauge: 81,
+    scopes: { s1: 79, s2: 71, s3: 53 },
+    energy: '+3%',
+    water: '-2%',
+    waste: '+1%',
+    status: 'Watch',
+    color: '#f59e0b',
+  },
+] as const;
+
+const SCOPE_BARS = [
+  { key: 's1', label: 'Scope 1', detail: 'Direct emissions' },
+  { key: 's2', label: 'Scope 2', detail: 'Purchased energy' },
+  { key: 's3', label: 'Scope 3', detail: 'Value chain' },
+] as const;
 
 const SCOPES = [
   { name: 'Scope 1', value: 74, detail: 'Direct emissions' },
@@ -43,37 +106,185 @@ const SCOPES = [
 ] as const;
 
 function RingVisual() {
+  const [facility, setFacility] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setFacility((f) => (f + 1) % FACILITIES.length), 3200);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable module constant
+  }, [FACILITIES.length]);
+
+  const current = FACILITIES[facility];
+  const ARC = Math.PI * 50;
+
   return (
     <div className={styles.ringVisual} aria-hidden="true">
       <div className={styles.ringGlow} />
+      <div className={styles.ringGrid} />
       <div className={styles.ringOrbit} />
-      <div className={styles.ringOuter} />
-      <div className={styles.ringCore}>
-        <span className={styles.ringCoreIcon}>
-          <Leaf size={30} />
-        </span>
-        <span className={styles.ringCoreValue}>−42%</span>
-        <span className={styles.ringCoreLabel}>t CO₂e tracked</span>
+
+      {/* Central console card */}
+      <div className={styles.consoleCard}>
+        <div className={styles.consoleHeader}>
+          <span className={styles.consoleHeaderTitle}>
+            <Leaf size={14} aria-hidden="true" />
+            Sustainability Command Center
+          </span>
+          <span className={styles.liveBadge}>
+            <span className={styles.liveDot} />
+            Live · 128 facilities
+          </span>
+        </div>
+
+        {/* Facility switcher */}
+        <div className={styles.facilityTabs}>
+          {FACILITIES.map((f, i) => (
+            <button
+              key={f.name}
+              type="button"
+              className={cn(styles.facilityTab, facility === i && styles.facilityTabActive)}
+              onClick={() => setFacility(i)}
+              aria-label={`View ${f.name}`}
+            >
+              <span className={styles.facilityTabDot} style={{ background: f.color }} />
+              <span>{f.name}</span>
+            </button>
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={facility}
+            className={styles.consoleBody}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <div className={styles.facilityHeader}>
+              <div>
+                <span className={styles.facilityName}>{current.name}</span>
+                <span className={styles.facilityRegion}>{current.region}</span>
+              </div>
+              <span
+                className={styles.facilityStatus}
+                style={{
+                  color: current.color,
+                  borderColor: `${current.color}55`,
+                  background: `${current.color}14`,
+                }}
+              >
+                <span className={styles.facilityStatusDot} style={{ background: current.color }} />
+                {current.status}
+              </span>
+            </div>
+
+            <div className={styles.consoleRow}>
+              {/* Emissions arc gauge */}
+              <div className={styles.gaugeWrap}>
+                <svg viewBox="0 0 120 72" className={styles.gaugeSvg}>
+                  <defs>
+                    <linearGradient id="green-gauge" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="rgb(var(--grad-1))" />
+                      <stop offset="100%" stopColor="#22d3ee" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M10 62 A 50 50 0 0 1 110 62"
+                    fill="none"
+                    className={styles.gaugeTrack}
+                  />
+                  <motion.path
+                    d="M10 62 A 50 50 0 0 1 110 62"
+                    fill="none"
+                    stroke="url(#green-gauge)"
+                    strokeWidth="9"
+                    strokeLinecap="round"
+                    strokeDasharray={ARC}
+                    initial={{ strokeDashoffset: ARC }}
+                    animate={{ strokeDashoffset: ARC * (1 - current.gauge / 100) }}
+                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                    className={styles.gaugeFill}
+                  />
+                </svg>
+                <span className={styles.gaugeValue}>{current.score}</span>
+                <span className={styles.gaugeLabel}>ESG score</span>
+              </div>
+
+              {/* Scope bars */}
+              <div className={styles.scopeBars}>
+                {SCOPE_BARS.map((scope) => (
+                  <div key={scope.key} className={styles.scopeBarRow}>
+                    <div className={styles.scopeBarInfo}>
+                      <span className={styles.scopeBarLabel}>{scope.label}</span>
+                      <span className={styles.scopeBarDetail}>{scope.detail}</span>
+                    </div>
+                    <div className={styles.scopeBarTrack}>
+                      <motion.span
+                        className={styles.scopeBarFill}
+                        initial={{ width: '0%' }}
+                        animate={{ width: `${current.scopes[scope.key]}%` }}
+                        transition={{ duration: 0.9, ease: 'easeOut', delay: 0.2 }}
+                      />
+                    </div>
+                    <span className={styles.scopeBarValue}>{current.scopes[scope.key]}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* KPI row */}
+            <div className={styles.kpiRow}>
+              <div className={styles.kpiCell}>
+                <Zap size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Energy</span>
+                  <span className={styles.kpiValue}>{current.energy}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <Droplets size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Water</span>
+                  <span className={styles.kpiValue}>{current.water}</span>
+                </div>
+              </div>
+              <div className={styles.kpiCell}>
+                <Trash2 size={13} aria-hidden="true" />
+                <div>
+                  <span className={styles.kpiLabel}>Waste</span>
+                  <span className={styles.kpiValue}>{current.waste}</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className={styles.consoleFooter}>
+          <span className={styles.consoleFooterItem}>
+            <ShieldCheck size={12} aria-hidden="true" /> CSRD-ready
+          </span>
+          <span className={styles.consoleFooterItem}>
+            <FileCheck2 size={12} aria-hidden="true" /> Audit trail
+          </span>
+          <span className={styles.consoleFooterItem}>
+            <Sparkles size={12} aria-hidden="true" /> AI validation
+          </span>
+        </div>
       </div>
 
-      {SCOPES.map((scope, index) => (
-        <div
-          key={scope.name}
-          className={cn(styles.scopeCard, styles[`scopeCard${index + 1}`])}
-        >
-          <span className={styles.scopeValue}>{scope.value}%</span>
-          <span className={styles.scopeName}>{scope.name}</span>
-          <span className={styles.scopeDetail}>{scope.detail}</span>
-        </div>
-      ))}
-
+      {/* Floating chips */}
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <Factory size={13} />
-        CSRD ready
+        <TrendingUp size={13} aria-hidden="true" />
+        Score · A−
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <Recycle size={13} />
-        Audit trail
+        <CalendarClock size={13} aria-hidden="true" />
+        Report due · 12d
+      </div>
+      <div className={`${styles.chip} ${styles.chip3}`}>
+        <Sprout size={13} aria-hidden="true" />
+        Net-zero 2030
       </div>
     </div>
   );

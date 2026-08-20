@@ -13,6 +13,7 @@ import {
   RefreshCcw,
   ScanLine,
   Star,
+  Truck,
   Warehouse,
 } from 'lucide-react';
 import { Button } from '@/components/common/Button';
@@ -35,13 +36,10 @@ const HUES = ['cyan', 'blue', 'teal', 'green', 'indigo', 'violet'] as const;
 /* Hero visual — live warehouse stock board                            */
 /* ------------------------------------------------------------------ */
 
-const RACK_CELLS = [
-  { id: 'A-01', name: 'Wireless Router X1', level: 82, hue: 'hue-a' },
-  { id: 'B-03', name: 'Smart Sensor Kit', level: 55, hue: 'hue-b' },
-  { id: 'A-07', name: 'USB-C Charger 65W', level: 30, hue: 'hue-c' },
-  { id: 'B-11', name: 'Smart Bulb RGB', level: 9, hue: 'hue-a' },
-  { id: 'C-02', name: 'Network Switch 8P', level: 68, hue: 'hue-b' },
-  { id: 'C-09', name: 'Indoor Cam 2K', level: 44, hue: 'hue-c' },
+const FLEET_TRUCKS = [
+  { id: 'TRK-01', route: 'Chennai → Coimbatore', boxes: 3, level: 82, hue: 'hue-a' },
+  { id: 'TRK-02', route: 'Chennai → Bangalore', boxes: 2, level: 55, hue: 'hue-b' },
+  { id: 'TRK-03', route: 'Chennai → Hyderabad', boxes: 1, level: 9, hue: 'hue-c' },
 ] as const;
 
 const IM_ALERTS = ['Reorder · USB-C Charger', 'PO-1184 inbound · 2 days', 'Cycle count · 96% OK'] as const;
@@ -56,49 +54,83 @@ function RackVisual() {
       transition={{ type: 'spring', stiffness: 160, damping: 22 }}
     >
       <div className={styles.rackGlow} />
-      <div className={styles.rackUnit}>
-        <div className={styles.rackHead}>
-          <span className={styles.rackTitle}>
-            <Warehouse size={13} /> Warehouse · Chennai Hub
-          </span>
-          <span className={styles.rackPill}>14,208 SKUs</span>
-        </div>
+      <div className={styles.hubGrid} />
 
-        <div className={styles.rackGrid}>
-          {RACK_CELLS.map((cell) => (
-            <div key={cell.id} className={cn(styles.rackCell, styles[cell.hue])}>
-              <span className={styles.rackCellId}>{cell.id}</span>
-              <span className={styles.rackCellName}>{cell.name}</span>
-              <div className={styles.rackFill}>
-                <span style={{ height: `${cell.level}%` }} />
+      <div className={styles.hubHeader}>
+        <span className={styles.hubTitle}>
+          <Warehouse size={13} aria-hidden="true" /> Chennai Hub
+        </span>
+        <span className={styles.hubBadge}>
+          <span className={styles.hubDot} /> 3 dispatches live
+        </span>
+      </div>
+
+      <div className={styles.hubScene}>
+        <div className={styles.hubDock}>
+          <span className={styles.hubDockIcon}>
+            <Warehouse size={14} aria-hidden="true" />
+          </span>
+        </div>
+        <div className={styles.hubRoad} />
+        <div className={styles.fleet}>
+          {FLEET_TRUCKS.map((truck, i) => (
+            <div
+              key={truck.id}
+              className={styles.truckWrap}
+              style={{ '--i': i } as React.CSSProperties}
+            >
+              <div className={cn(styles.truck, styles[truck.hue])}>
+                <div className={styles.truckCab}>
+                  <Truck size={16} aria-hidden="true" />
+                </div>
+                <div className={styles.truckBed}>
+                  {Array.from({ length: truck.boxes }).map((_, b) => (
+                    <span
+                      key={b}
+                      className={cn(styles.box, styles[truck.hue])}
+                      style={{ '--b': b } as React.CSSProperties}
+                    />
+                  ))}
+                </div>
               </div>
-              <span className={styles.rackCellLevel}>{cell.level}%</span>
+              <span className={styles.truckRoute}>{truck.route}</span>
             </div>
           ))}
         </div>
+        <span className={styles.hubBeam} />
+      </div>
 
-        <div className={styles.rackFooter}>
+      <div className={styles.hubPanel}>
+        <div className={styles.hubKpis}>
+          <span className={styles.hubKpi}>
+            <strong>3</strong> in transit
+          </span>
+          <span className={styles.hubKpi}>
+            <strong>98.4%</strong> on-time
+          </span>
+          <span className={styles.hubKpi}>
+            <strong>1,204</strong> boxes today
+          </span>
+        </div>
+        <div className={styles.hubFoot}>
           {IM_ALERTS.map((alert) => (
-            <span key={alert} className={styles.rackFooterItem}>
-              <AlertTriangle size={11} />
-              {alert}
+            <span key={alert} className={styles.hubFootItem}>
+              <AlertTriangle size={11} aria-hidden="true" /> {alert}
             </span>
           ))}
         </div>
-
-        <div className={styles.rackBeam} />
       </div>
 
       <div className={`${styles.chip} ${styles.chip1}`}>
-        <Barcode size={13} />
+        <Barcode size={13} aria-hidden="true" />
         Barcode sync
       </div>
       <div className={`${styles.chip} ${styles.chip2}`}>
-        <ScanLine size={13} />
+        <ScanLine size={13} aria-hidden="true" />
         Scanned · in 0.4s
       </div>
       <div className={`${styles.chip} ${styles.chip3}`}>
-        <CheckCircle2 size={13} />
+        <CheckCircle2 size={13} aria-hidden="true" />
         Stock matched
       </div>
     </motion.div>

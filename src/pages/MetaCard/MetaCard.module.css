@@ -296,9 +296,9 @@
 
 .cardVisual {
   position: relative;
-  width: min(520px, 100%);
+  width: min(480px, 100%);
   margin-inline: auto;
-  padding: 0.5rem;
+  padding: var(--space-5) 0;
 }
 
 .cardGlow {
@@ -310,228 +310,204 @@
   pointer-events: none;
 }
 
-/* Card stack */
-
-.cardStack {
-  position: relative;
-  width: min(100%, 470px);
-  margin-inline: auto;
-  padding-top: 30px;
-}
-
-.stackCard {
-  position: absolute;
-  top: 30px;
-  left: 0;
-  width: 100%;
-  aspect-ratio: 1.586 / 1;
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  pointer-events: none;
-}
-
-.stackCard1 {
-  transform: rotate(-7deg) translateX(-18px) translateY(12px);
-  background: linear-gradient(135deg, #3730a3, #6d28d9);
-  opacity: 0.35;
-  box-shadow: 0 20px 44px -18px rgba(67, 56, 202, 0.55);
-}
-
-.stackCard2 {
-  transform: rotate(-3deg) translateX(-8px) translateY(5px);
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  opacity: 0.6;
-  box-shadow: 0 20px 44px -18px rgba(79, 70, 229, 0.55);
-}
-
-.idCardHolo {
-  position: absolute;
-  inset: -30%;
-  background: conic-gradient(
-    from 0deg,
-    rgba(99, 102, 241, 0.8) 0deg,
-    rgba(168, 85, 247, 0.8) 90deg,
-    rgba(236, 72, 153, 0.8) 180deg,
-    rgba(6, 182, 212, 0.8) 270deg,
-    rgba(99, 102, 241, 0.8) 360deg
-  );
-  opacity: 0.14;
-  mix-blend-mode: screen;
-  animation: holoSpin 9s linear infinite;
-  pointer-events: none;
-}
-
-[data-theme="light"] .idCardHolo {
-  opacity: 0.24;
-  mix-blend-mode: multiply;
-}
-
-.idCard {
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  aspect-ratio: 1.586 / 1;
-  border-radius: 20px;
-  border: 1px solid rgba(var(--grad-1), 0.32);
-  background:
-    radial-gradient(120% 90% at 12% 0%, rgba(var(--grad-1), 0.28) 0%, transparent 52%),
-    radial-gradient(110% 80% at 92% 108%, rgba(168, 85, 247, 0.18) 0%, transparent 55%),
-    linear-gradient(160deg, rgba(var(--grad-1), 0.16), rgba(var(--grad-2), 0.05));
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 24px 60px -20px rgba(var(--grad-2), 0.55);
-  display: flex;
-  flex-direction: column;
-}
-
-.idCardShine {
+.cardGrid {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.12) 42%,
-    transparent 54%
-  );
-  transform: translateX(-110%);
-  animation: cardShine 5.5s ease-in-out infinite;
+  background-image:
+    linear-gradient(rgba(var(--grad-1), 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--grad-1), 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 85%);
   pointer-events: none;
 }
 
-.idCardHeader {
+.cardOrbit {
+  position: absolute;
+  inset: 0;
+  width: 104%;
+  height: 104%;
+  left: -2%;
+  top: -2%;
+  border-radius: 50%;
+  border: 1px dashed rgba(var(--grad-1), 0.14);
+  animation: spin 30s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.walletHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2-5);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.idCardBrand {
+.walletHeaderTitle {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text);
 }
 
-.idCardChip {
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #34d399;
+  background: rgba(52 211 153 / 0.12);
+  border: 1px solid rgba(52 211 153 / 0.35);
+  white-space: nowrap;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* 3D flip stage */
+.flipStage {
+  position: relative;
+  width: min(250px, 100%);
+  height: 176px;
+  margin-inline: auto;
+}
+
+.flipWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 158px;
+}
+
+.flipFace {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 24px 48px -18px rgba(0, 0, 0, 0.55);
+  padding: 14px 16px;
+  overflow: hidden;
+}
+
+.flipTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.flipBrand {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.flipChip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 26px;
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.85);
+  gap: 3px;
+  width: 32px;
+  height: 22px;
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 0.9);
   background: linear-gradient(135deg, #d4a017, #8a6a12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
-.idCardBody {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 4px 16px 10px;
+.flipGov {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.9;
 }
 
-.idCardAvatar {
-  display: inline-flex;
+.flipNumber {
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.flipBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.flipName {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flipValid {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.flipTag {
+  margin-top: 6px;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.walletMeta {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  flex-shrink: 0;
-  border-radius: var(--radius-full);
-  font-size: 1.05rem;
-  font-weight: var(--font-weight-bold);
-  color: #ffffff;
-  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 10px 22px -8px rgba(var(--grad-2), 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  gap: 6px 14px;
+  margin-top: var(--space-3);
 }
 
-.idCardInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.idCardName {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: -0.01em;
-  color: var(--color-text);
-}
-
-.idCardRole {
-  font-size: var(--font-size-3xs);
-  color: var(--color-text-muted);
-}
-
-.idCardOrg {
-  font-size: var(--font-size-3xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: rgb(var(--grad-1));
-}
-
-.idCardFooter {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: auto;
-  padding: 10px 16px 12px;
-  border-top: 1px dashed rgba(var(--grad-1), 0.3);
-}
-
-.idCardMeta {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.idCardMetaItem {
+.walletMetaItem {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-text-muted);
-  white-space: nowrap;
 }
 
-.idCardMetaItem svg {
+.walletMetaItem svg {
   color: rgb(var(--grad-1));
-}
-
-.idCardQr {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
-  border-radius: 10px;
-  color: var(--color-text);
-  background: #ffffff;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 10px 24px -10px rgba(2, 6, 23, 0.5);
-}
-
-.qrSvg {
-  width: 40px;
-  height: 40px;
-  display: block;
 }
 
 /* Floating chips */
@@ -554,22 +530,22 @@
 }
 
 .chip1 {
-  top: -4%;
-  left: 8%;
+  top: -12px;
+  left: 0;
   background: linear-gradient(135deg, #6366f1, #4338ca);
   animation: floatY 5.5s ease-in-out infinite;
 }
 
 .chip2 {
-  top: 6%;
-  right: -2%;
+  top: -12px;
+  right: 0;
   background: linear-gradient(135deg, #a855f7, #6d28d9);
   animation: floatY 6.5s 0.8s ease-in-out infinite;
 }
 
 .chip3 {
-  bottom: -5%;
-  left: 22%;
+  bottom: -12px;
+  left: 18px;
   background: linear-gradient(135deg, #10b981, #047857);
   animation: floatY 6s 1.6s ease-in-out infinite;
 }
@@ -1218,17 +1194,6 @@
   }
 }
 
-@keyframes cardShine {
-  0%,
-  55% {
-    transform: translateX(-110%);
-  }
-  80%,
-  100% {
-    transform: translateX(110%);
-  }
-}
-
 @keyframes stampGrow {
   from {
     transform: scaleX(0);
@@ -1250,25 +1215,23 @@
   }
 }
 
-@keyframes spinConic {
-  to {
-    transform: rotate(360deg);
+@keyframes pulseDot {
+  0%,
+  100% {
+    opacity: 1;
   }
-}
-
-@keyframes holoSpin {
-  to {
-    transform: rotate(360deg);
+  50% {
+    opacity: 0.4;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .chip,
   .statScan span,
-  .idCardShine,
   .ctaCardMiniVerified::before,
   .heroBadgeDot,
-  .idCardHolo {
+  .cardOrbit,
+  .liveDot {
     animation: none;
   }
 }
@@ -1298,7 +1261,7 @@
   }
 
   .cardVisual {
-    max-width: 520px;
+    max-width: 460px;
   }
 
   .statsGrid {
@@ -1348,7 +1311,8 @@
     display: none;
   }
 
-  .idCardMetaItem {
-    white-space: normal;
+  .flipStage {
+    width: min(230px, 100%);
+    height: 145px;
   }
 }

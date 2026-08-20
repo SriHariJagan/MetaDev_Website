@@ -1,5 +1,5 @@
 // Footer.tsx
-import { useRef, useState, type CSSProperties, type FormEvent, type ReactElement } from "react";
+import { useRef, type CSSProperties, type ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, type Variants } from "framer-motion";
 import {
@@ -12,7 +12,6 @@ import {
   BadgeCheck,
   Lock,
   FileCheck2,
-  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/common/Button";
@@ -228,7 +227,7 @@ interface FooterColumn {
 const FOOTER_COLUMNS: FooterColumn[] = [
   {
     heading: "Products",
-    wide: true,
+    split: true,
     links: [
       { label: "MetaHealth", href: "/products/metahealth" },
       { label: "MetaEdu", href: "/products/metaedu" },
@@ -245,7 +244,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   },
   {
     heading: "Solutions",
-    split: true,
     links: [
       { label: "Digital Health", href: "/solutions/digital-health", disabled: true },
       { label: "Education", href: "/solutions/education", disabled: true },
@@ -257,7 +255,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   },
   {
     heading: "Industries",
-    split: true,
     links: [
       { label: "Healthcare", href: "/industries/healthcare", disabled: true },
       { label: "Education", href: "/industries/education", disabled: true },
@@ -269,7 +266,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   },
   {
     heading: "Resources",
-    split: true,
     links: [
       { label: "Documentation", href: "/resources/documentation", disabled: true },
       { label: "Blogs", href: "/resources/blogs", disabled: true },
@@ -281,7 +277,6 @@ const FOOTER_COLUMNS: FooterColumn[] = [
   },
   {
     heading: "Developers",
-    split: true,
     links: [
       { label: "API Reference", href: "/developers/api-reference", disabled: true },
       { label: "SDKs & Libraries", href: "/developers/sdks", disabled: true },
@@ -356,12 +351,6 @@ function FooterLinkColumn({ column }: { column: FooterColumn }) {
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const [email, setEmail] = useState("");
-
-  const handleSubscribe = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setEmail("");
-  };
 
   return (
     <footer className={styles.footer}>
@@ -408,50 +397,9 @@ export function Footer() {
 
           <div className={styles.linkColsGroup}>
             <div className={styles.linkCols}>
-              {FOOTER_COLUMNS.slice(0, 3).map((column) => (
+              {FOOTER_COLUMNS.map((column) => (
                 <FooterLinkColumn key={column.heading} column={column} />
               ))}
-            </div>
-            <div className={cn(styles.linkCols, styles.linkColsRow2)}>
-              {FOOTER_COLUMNS.slice(3).map((column) => (
-                <FooterLinkColumn key={column.heading} column={column} />
-              ))}
-            </div>
-          </div>
-
-          <div className={styles.newsletterCol}>
-            <div className={styles.newsletterCard}>
-              <span className={styles.newsletterIcon} aria-hidden="true">
-                <Mail size={18} />
-              </span>
-              <h3 className={styles.newsletterHeading}>Stay Updated</h3>
-              <p className={styles.newsletterDesc}>
-                Product news and engineering insights, straight to your inbox.
-              </p>
-              <form
-                className={styles.newsletterForm}
-                onSubmit={handleSubscribe}
-              >
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="Enter your email"
-                  aria-label="Email address"
-                  className={styles.newsletterInput}
-                />
-                <button
-                  type="submit"
-                  className={styles.newsletterSubmit}
-                  aria-label="Subscribe"
-                >
-                  <ArrowRight size={15} aria-hidden="true" />
-                </button>
-              </form>
-              <span className={styles.newsletterNote}>
-                We respect your privacy. Unsubscribe anytime.
-              </span>
             </div>
           </div>
         </div>
