@@ -1,0 +1,253 @@
+/* ProductHiringFunnel.module.css — hiring funnel/kanban visual */
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse at 50% 0%, rgb(var(--accent) / 0.12), transparent 60%);
+  border: 1px solid rgb(var(--accent) / 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+  color: #fff;
+  box-shadow: 0 4px 16px -4px rgb(var(--accent) / 0.6);
+}
+
+.headerLabel {
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+
+.funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  width: 100%;
+  max-width: 220px;
+}
+
+.funnelStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  opacity: 0;
+  animation: hfStageIn 0.5s ease-out forwards;
+}
+
+.funnelTop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: linear-gradient(135deg, var(--stage-color), color-mix(in srgb, var(--stage-color) 70%, transparent));
+  color: #fff;
+}
+
+.stageIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+}
+
+.stageLabel {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.funnelBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-surface) 92%, var(--stage-color) 8%),
+    color-mix(in srgb, var(--color-surface) 98%, var(--stage-color) 2%)
+  );
+  border-left: 1px solid rgb(var(--accent) / 0.15);
+  border-right: 1px solid rgb(var(--accent) / 0.15);
+}
+
+.stageCount {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--stage-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.funnelBar {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgb(var(--accent) / 0.1);
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  width: var(--fill-width, 50%);
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--stage-color), color-mix(in srgb, var(--stage-color) 60%, transparent));
+  animation: hfBarFill 1s ease-out forwards;
+  transform-origin: left;
+}
+
+@keyframes hfBarFill {
+  from { width: 0%; }
+  to { width: var(--fill-width, 50%); }
+}
+
+.funnelBottom {
+  width: 100%;
+  padding: 0.35rem 0.75rem;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: rgb(var(--accent) / 0.05);
+  text-align: right;
+}
+
+.conversionRate {
+  font-size: 0.6rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+  padding-top: 0.5rem;
+}
+
+.metricCard {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-surface) 94%, rgb(var(--accent)) 6%),
+    color-mix(in srgb, var(--color-surface) 99%, rgb(var(--accent)) 1%)
+  );
+  border: 1px solid rgb(var(--accent) / 0.15);
+  box-shadow:
+    0 4px 12px -6px rgb(var(--accent) / 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  animation: hfMetricIn 0.4s ease-out forwards;
+}
+
+.metricDot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(var(--grad-1)), rgb(var(--grad-2)));
+  box-shadow: 0 0 8px rgb(var(--accent) / 0.5);
+}
+
+@keyframes hfStageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hfMetricIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 40rem) {
+  .wrap {
+    padding: 1rem 0.75rem;
+  }
+
+  .funnel {
+    max-width: 180px;
+    gap: 0.4rem;
+  }
+
+  .funnelTop {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .stageLabel {
+    font-size: 0.62rem;
+  }
+
+  .stageCount {
+    font-size: 1.25rem;
+  }
+
+  .funnelBody {
+    padding: 0.6rem;
+  }
+
+  .metrics {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .metricCard {
+    font-size: 0.58rem;
+    padding: 0.4rem 0.6rem;
+  }
+}

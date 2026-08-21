@@ -12,6 +12,7 @@ import {
   BadgeCheck,
   Lock,
   FileCheck2,
+  CreditCard,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/common/Button";
@@ -304,13 +305,16 @@ const LEGAL_LINKS = [
   { label: "Sitemap", href: "/sitemap" },
 ];
 
-type BadgeAccent = "iso" | "soc2" | "hipaa" | "gdpr";
+type BadgeAccent = "iso" | "soc2" | "hipaa" | "gdpr" | "iso9001" | "pci";
 
 const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent }[] = [
   { icon: ShieldCheck, label: "ISO 27001", accent: "iso" },
+  { icon: ShieldCheck, label: "ISO 9001", accent: "iso9001" },
+  { icon: ShieldCheck, label: "ISO 9001", accent: "iso9001" },
   { icon: BadgeCheck, label: "SOC 2", accent: "soc2" },
   { icon: FileCheck2, label: "HIPAA", accent: "hipaa" },
   { icon: Lock, label: "GDPR", accent: "gdpr" },
+  { icon: CreditCard, label: "PCI DSS", accent: "pci" },
 ];
 
 function FooterLinkColumn({ column }: { column: FooterColumn }) {

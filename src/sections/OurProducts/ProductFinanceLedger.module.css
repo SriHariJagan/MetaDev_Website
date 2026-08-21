@@ -1,0 +1,638 @@
+/* ProductFinanceLedger.module.css — double-entry ledger visualization */
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse at 10% 0%, rgb(99, 102, 241) / 0.08, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgb(16, 185, 129) / 0.06, transparent 50%);
+  border: 1px solid rgb(99, 102, 241) / 0.18;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  overflow: hidden;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(99, 102, 241) / 0.1;
+  color: var(--color-text);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(16, 185, 129));
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgb(99, 102, 241) / 0.6;
+}
+
+.headerLabel {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+
+.headerSubtitle {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.btnIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(99, 102, 241, 0.1);
+  color: rgb(99, 102, 241);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.btnIcon:hover {
+  background: rgb(99, 102, 241);
+  color: #fff;
+}
+
+.kpiBar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.kpiBar::-webkit-scrollbar {
+  display: none;
+}
+
+.kpiCard {
+  flex: 0 0 150px;
+  min-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgb(99, 102, 241) / 0.15;
+  box-shadow:
+    0 3px 10px -4px rgb(99, 102, 241) / 0.2,
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  animation: flKpiIn 0.4s ease-out forwards;
+}
+
+@keyframes flKpiIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.kpiIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--kpi-color), color-mix(in srgb, var(--kpi-color) 70%, transparent));
+  color: #fff;
+}
+
+.kpiContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.kpiValue {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.kpiLabel {
+  font-size: 0.45rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.kpiTrend {
+  flex-shrink: 0;
+  font-size: 0.5rem;
+  font-weight: var(--font-weight-bold);
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.mainGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.ledgerPanel,
+.chartPanel,
+.accountsPanel {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.95),
+    rgba(10, 15, 30, 0.98)
+  );
+  border: 1px solid rgb(99, 102, 241) / 0.15;
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(12px);
+}
+
+.ledgerPanel {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+
+.chartPanel {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.accountsPanel {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(99, 102, 241) / 0.1;
+}
+
+.panelTitle {
+  font-size: 0.55rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trialBalance {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.55rem;
+  font-weight: 600;
+}
+
+.balanceItem {
+  font-variant-numeric: tabular-nums;
+}
+
+.balanceItem.debit {
+  color: rgb(239, 68, 68);
+}
+
+.balanceItem.credit {
+  color: rgb(16, 185, 129);
+}
+
+.balanceItem.balanced {
+  color: rgb(16, 185, 129);
+  font-weight: 700;
+}
+
+.ledgerTable {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 55px 1fr 70px 70px 60px;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgb(99, 102, 241) / 0.15;
+  position: sticky;
+  top: 0;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 1;
+}
+
+.debitHeader {
+  text-align: right;
+  color: rgb(239, 68, 68);
+}
+
+.creditHeader {
+  text-align: right;
+  color: rgb(16, 185, 129);
+}
+
+.tableBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 55px 1fr 70px 70px 60px;
+  gap: 0.5rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    150deg,
+    rgba(99, 102, 241, 0.03),
+    transparent
+  );
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  opacity: 0;
+  animation: flRowIn 0.3s ease-out forwards;
+}
+
+@keyframes flRowIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.cellDate {
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cellAccount {
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cellAmount {
+  font-size: 0.55rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.cellAmount.debit {
+  color: rgb(239, 68, 68);
+}
+
+.cellAmount.credit {
+  color: rgb(16, 185, 129);
+}
+
+.cellStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.5rem;
+  font-weight: 600;
+}
+
+.cellStatus[data-status="posted"] {
+  color: rgb(16, 185, 129);
+}
+
+.cellStatus[data-status="pending"] {
+  color: rgb(245, 158, 11);
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.chartHeader span {
+  font-size: 0.55rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.chartLegend {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.legendItem::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--legend-color);
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+.gridLine {
+  stroke: rgba(99, 102, 241, 0.08);
+  stroke-width: 0.5;
+  stroke-dasharray: 3 3;
+}
+
+.revenueArea {
+  fill: url(#revenue-gradient);
+}
+
+.expenseArea {
+  fill: url(#expense-gradient);
+}
+
+.cashflowLine {
+  fill: none;
+  stroke: rgb(34, 197, 94);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgb(34, 197, 94));
+  animation: flLineDraw 1.5s ease-out forwards;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+}
+
+@keyframes flLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+.dataPoint {
+  opacity: 0;
+  animation: flPointIn 0.3s ease-out forwards;
+}
+
+@keyframes flPointIn {
+  from { opacity: 0; transform: scale(0); transform-origin: center; }
+  to { opacity: 1; transform: scale(1); transform-origin: center; }
+}
+
+.monthLabel {
+  font-size: 0.5rem;
+  fill: var(--color-text-muted);
+}
+
+.accountList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.accountRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    150deg,
+    rgba(99, 102, 241, 0.03),
+    transparent
+  );
+  border: 1px solid rgba(99, 102, 241, 0.08);
+  opacity: 0;
+  animation: flAccIn 0.3s ease-out forwards;
+}
+
+@keyframes flAccIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.accountInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.accountType {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.15);
+  color: rgb(99, 102, 241);
+  flex-shrink: 0;
+}
+
+.accountType[data-type="asset"] {
+  background: rgba(16, 185, 129, 0.15);
+  color: rgb(16, 185, 129);
+}
+
+.accountType[data-type="liability"] {
+  background: rgba(239, 68, 68, 0.15);
+  color: rgb(239, 68, 68);
+}
+
+.accountType[data-type="revenue"] {
+  background: rgba(34, 197, 94, 0.15);
+  color: rgb(34, 197, 94);
+}
+
+.accountType[data-type="expense"] {
+  background: rgba(245, 158, 11, 0.15);
+  color: rgb(245, 158, 11);
+}
+
+.accountName {
+  font-size: 0.55rem;
+  font-weight: 500;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accountBalance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.balanceAmount {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.balanceChange {
+  font-size: 0.48rem;
+  font-weight: 600;
+}
+
+.balanceChange.positive {
+  color: rgb(16, 185, 129);
+}
+
+.balanceChange.negative {
+  color: rgb(239, 68, 68);
+}
+
+.featuresStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(99, 102, 241) / 0.1;
+}
+
+.featureChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-surface) 95%, rgb(99, 102, 241) 5%),
+    var(--color-surface)
+  );
+  border: 1px solid rgb(99, 102, 241) / 0.15;
+  font-size: 0.52rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  opacity: 0;
+  animation: flChipIn 0.35s ease-out forwards;
+}
+
+.chipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(99, 102, 241), rgb(16, 185, 129));
+}
+
+@keyframes flChipIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 40rem) {
+  .wrap {
+    padding: 0.5rem;
+  }
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr;
+  }
+
+  .ledgerPanel {
+    grid-column: 1;
+    grid-row: 1;
+    max-height: 280px;
+  }
+
+  .rightPanel {
+    flex-direction: column;
+  }
+
+  .kpiBar {
+    flex-wrap: wrap;
+  }
+
+  .kpiCard {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 50px 1fr 60px 60px 55px;
+    gap: 0.3rem;
+  }
+
+  .cellDate {
+    font-size: 0.5rem;
+  }
+
+  .cellAccount {
+    font-size: 0.5rem;
+  }
+
+  .cellAmount {
+    font-size: 0.5rem;
+  }
+}

@@ -1,0 +1,335 @@
+/* ProductIdentityTree.module.css — radial identity tree for Digital ID */
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgb(139, 92, 246) / 0.08, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgb(236, 72, 153) / 0.06, transparent 50%);
+  border: 1px solid rgb(139, 92, 246) / 0.18;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(139, 92, 246) / 0.1;
+  color: var(--color-text);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(139, 92, 246), rgb(236, 72, 153));
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgb(139, 92, 246) / 0.6;
+}
+
+.headerLabel {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+
+.statsBar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.statsBar::-webkit-scrollbar {
+  display: none;
+}
+
+.statCard {
+  flex: 0 0 110px;
+  min-width: 110px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    150deg,
+    rgba(139, 92, 246, 0.05),
+    transparent
+  );
+  border: 1px solid rgb(139, 92, 246) / 0.15;
+  opacity: 0;
+  animation: itStatIn 0.4s ease-out forwards;
+}
+
+@keyframes itStatIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.statIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(139, 92, 246), rgb(236, 72, 153));
+  color: #fff;
+}
+
+.statContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.statValue {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.statLabel {
+  font-size: 0.45rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.treeContainer {
+  flex: 1;
+  position: relative;
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(ellipse at 50% 50%, rgb(139, 92, 246) / 0.03, transparent 70%),
+    linear-gradient(180deg, rgba(10, 15, 30, 0.95), rgba(6, 15, 30, 0.98));
+  border: 1px solid rgb(139, 92, 246) / 0.15;
+  overflow: hidden;
+}
+
+.treeSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.branch {
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.4;
+  stroke-dasharray: 8 4;
+  animation: itBranchFlow 6s linear infinite;
+}
+
+@keyframes itBranchFlow {
+  to { stroke-dashoffset: -24; }
+}
+
+.twig {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  opacity: 0.3;
+  stroke-dasharray: 4 3;
+}
+
+.node {
+  opacity: 0;
+  animation: itNodeIn 0.5s ease-out forwards;
+}
+
+@keyframes itNodeIn {
+  from { opacity: 0; transform: translate(var(--x, 0), var(--y, 0)) scale(0.5); }
+  to { opacity: 1; transform: translate(var(--x, 0), var(--y, 0)) scale(1); }
+}
+
+.nodeCircle {
+  r: 28;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 1;
+  filter: url(#nodeGlow);
+}
+
+.nodeInner {
+  r: 18;
+}
+
+.nodeIcon {
+  color: #fff;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.3));
+}
+
+.nodeLabel {
+  font-size: 5.5px;
+  font-weight: 600;
+  fill: #fff;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+  text-anchor: middle;
+}
+
+.childNode {
+  opacity: 0;
+  animation: itChildIn 0.4s ease-out forwards;
+}
+
+@keyframes itChildIn {
+  from { opacity: 0; transform: translate(var(--x, 0), var(--y, 0)) scale(0.4); }
+  to { opacity: 1; transform: translate(var(--x, 0), var(--y, 0)) scale(1); }
+}
+
+.childCircle {
+  r: 16;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 0.8;
+}
+
+.childIcon {
+  color: #fff;
+  filter: drop-shadow(0 0 3px rgba(0,0,0,0.4));
+}
+
+.childLabel {
+  font-size: 4.8px;
+  font-weight: 600;
+  fill: #fff;
+  text-shadow: 0 0 3px rgba(0,0,0,0.8);
+  text-anchor: middle;
+}
+
+.coreNode {
+  opacity: 0;
+  animation: itCoreIn 0.8s ease-out 0.2s forwards;
+}
+
+@keyframes itCoreIn {
+  from { opacity: 0; transform: translate(var(--x, 0), var(--y, 0)) scale(0.6); }
+  to { opacity: 1; transform: translate(var(--x, 0), var(--y, 0)) scale(1); }
+}
+
+.coreCircle {
+  r: 40;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 1.5;
+  animation: itCorePulse 3s ease-in-out infinite;
+}
+
+@keyframes itCorePulse {
+  0%, 100% { r: 40; opacity: 0.6; }
+  50% { r: 44; opacity: 0.3; }
+}
+
+.coreInner {
+  r: 30;
+  fill: url(#coreGradient);
+}
+
+.coreIcon {
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.8));
+}
+
+.coreLabel {
+  font-size: 7px;
+  font-weight: 800;
+  fill: #fff;
+  text-anchor: middle;
+  text-shadow: 0 0 6px rgba(139, 92, 246, 0.8);
+}
+
+.coreSubtitle {
+  font-size: 4.5px;
+  font-weight: 500;
+  fill: rgba(255, 255, 255, 0.7);
+  text-anchor: middle;
+}
+
+.featuresStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgb(139, 92, 246) / 0.1;
+}
+
+.featureChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--color-surface) 95%, rgb(139, 92, 246) 5%),
+    var(--color-surface)
+  );
+  border: 1px solid rgb(139, 92, 246) / 0.15;
+  font-size: 0.52rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  opacity: 0;
+  animation: itChipIn 0.35s ease-out forwards;
+}
+
+.chipDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(139, 92, 246), rgb(236, 72, 153));
+}
+
+@keyframes itChipIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 40rem) {
+  .wrap {
+    padding: 0.5rem;
+  }
+
+  .treeContainer {
+    min-height: 280px;
+  }
+
+  .statsBar {
+    flex-wrap: wrap;
+  }
+
+  .statCard {
+    flex: 1;
+    min-width: 90px;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .statValue {
+    font-size: 0.65rem;
+  }
+
+  .statLabel {
+    font-size: 0.42rem;
+  }
+
+  .coreCircle {
+    r: 32;
+  }
+
+  .coreInner {
+    r: 24;
+  }
+}

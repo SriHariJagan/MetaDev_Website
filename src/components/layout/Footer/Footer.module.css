@@ -817,9 +817,10 @@
 .badgeList {
   display: flex;
   align-items: center;
+  
   gap: var(--space-3);
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   flex-wrap: wrap;
 }
@@ -856,6 +857,10 @@
   --badge-icon: #5b8def;
 }
 
+.badge-iso9001 {
+  --badge-icon: #1e40af;
+}
+
 .badge-soc2 {
   --badge-icon: #22c55e;
 }
@@ -866,6 +871,10 @@
 
 .badge-gdpr {
   --badge-icon: #5b8def;
+}
+
+.badge-pci {
+  --badge-icon: #eab308;
 }
 
 /* ==================================================================== */

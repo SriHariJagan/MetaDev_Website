@@ -43,13 +43,20 @@ import { ProductOrbitRings } from "./ProductOrbitRings";
 import { ProductStackedLayers } from "./ProductStackedLayers";
 import { ProductTimeline } from "./ProductTimeline";
 import { ProductHexGrid } from "./ProductHexGrid";
+import { ProductTalentBoard } from "./ProductTalentBoard";
+import { ProductCampaignPerformance } from "./ProductCampaignPerformance";
+import { ProductEcoImpact } from "./ProductEcoImpact";
+import { ProductFleetMap } from "./ProductFleetMap";
+import { ProductFinanceLedger } from "./ProductFinanceLedger";
+import { ProductIdentityTree } from "./ProductIdentityTree";
+import { ProductWarehouseGrid } from "./ProductWarehouseGrid";
 import styles from "./OurProducts.module.css";
 
 import metaAddsImage from "@/assets/images/ourProducts/metaAdds.png";
 import metaHireImage from "@/assets/images/ourProducts/metaHire.png";
 
 type Accent = "teal" | "blue" | "violet" | "amber";
-type Visual = "network" | "orbit" | "stack" | "timeline" | "hex";
+type Visual = "network" | "orbit" | "stack" | "timeline" | "hex" | "talentBoard" | "campaignPerformance" | "ecoImpact" | "fleetMap" | "financeLedger" | "identityTree" | "cardCarousel" | "warehouseGrid";
 
 /* ------------------------------------------------------------------ */
 /* Data (dummy — swap screenshotUrl / copy later)                      */
@@ -177,7 +184,7 @@ const PRODUCTS: Product[] = [
     id: "metahire",
     icon: UserPlus,
     accent: "blue",
-    visual: "timeline",
+    visual: "talentBoard",
     name: "MetaHire",
     subtitle: "Hiring & Talent Platform",
     badge: "HR & Recruitment",
@@ -226,7 +233,7 @@ const PRODUCTS: Product[] = [
     id: "metaadds",
     icon: Megaphone,
     accent: "violet",
-    visual: "network",
+    visual: "campaignPerformance",
     name: "MetaAdds",
     subtitle: "AdTech & Marketing Platform",
     badge: "AdTech",
@@ -251,7 +258,7 @@ const PRODUCTS: Product[] = [
     id: "metagreen",
     icon: Leaf,
     accent: "teal",
-    visual: "orbit",
+    visual: "ecoImpact",
     name: "MetaGreen",
     subtitle: "Sustainability Platform",
     badge: "Green Tech",
@@ -275,7 +282,7 @@ const PRODUCTS: Product[] = [
     id: "metanav",
     icon: Navigation,
     accent: "teal",
-    visual: "stack",
+    visual: "fleetMap",
     name: "MetaNav",
     subtitle: "Fleet & Logistics Management",
     badge: "Logistics",
@@ -299,7 +306,7 @@ const PRODUCTS: Product[] = [
     id: "metaledger",
     icon: Receipt,
     accent: "blue",
-    visual: "hex",
+    visual: "financeLedger",
     name: "MetaLedger",
     subtitle: "Billing & Invoicing",
     badge: "Finance",
@@ -323,7 +330,7 @@ const PRODUCTS: Product[] = [
     id: "metacard",
     icon: CreditCard,
     accent: "violet",
-    visual: "timeline",
+    visual: "identityTree",
     name: "MetaCard",
     subtitle: "Digital ID Cards",
     badge: "Identity",
@@ -347,7 +354,7 @@ const PRODUCTS: Product[] = [
     id: "metaim",
     icon: Package,
     accent: "amber",
-    visual: "network",
+    visual: "warehouseGrid",
     name: "MetaIM",
     subtitle: "Inventory Management",
     badge: "Inventory",
@@ -417,6 +424,62 @@ function renderProductVisual(product: Product) {
     case "hex":
       return (
         <ProductHexGrid
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "talentBoard":
+      return (
+        <ProductTalentBoard
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "campaignPerformance":
+      return (
+        <ProductCampaignPerformance
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "ecoImpact":
+      return (
+        <ProductEcoImpact
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "fleetMap":
+      return (
+        <ProductFleetMap
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "financeLedger":
+      return (
+        <ProductFinanceLedger
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "identityTree":
+      return (
+        <ProductIdentityTree
+          name={product.name}
+          icon={product.icon}
+          features={product.features}
+        />
+      );
+    case "warehouseGrid":
+      return (
+        <ProductWarehouseGrid
           name={product.name}
           icon={product.icon}
           features={product.features}

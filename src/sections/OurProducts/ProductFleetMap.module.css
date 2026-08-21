@@ -1,0 +1,487 @@
+/* ProductFleetMap.module.css — real-time fleet map visualization */
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse at 10% 0%, rgb(6, 182, 212) / 0.1, transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgb(16, 185, 129) / 0.06, transparent 50%);
+  border: 1px solid rgb(6, 182, 212) / 0.18;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  overflow: hidden;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgb(6, 182, 212) / 0.1;
+  color: var(--color-text);
+}
+
+.headerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgb(6, 182, 212), rgb(16, 185, 129));
+  color: #fff;
+  box-shadow: 0 4px 14px -4px rgb(6, 182, 212) / 0.6;
+}
+
+.headerLabel {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
+}
+
+.liveIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.15);
+  color: rgb(16, 185, 129);
+  font-size: 0.5rem;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(16, 185, 129);
+  animation: fmLivePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fmLivePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.mapContainer {
+  flex: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 0.5rem;
+  min-height: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #0a1628;
+}
+
+.mapBg {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  background:
+    linear-gradient(180deg, #0d1b3a 0%, #0a1628 100%),
+    radial-gradient(ellipse at 20% 20%, rgb(6, 182, 212) / 0.08, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgb(16, 185, 129) / 0.06, transparent 50%);
+}
+
+.mapSvg {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.routeLine {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 8 6;
+  animation: fmRouteFlow 8s linear infinite;
+}
+
+@keyframes fmRouteFlow {
+  to { stroke-dashoffset: -28; }
+}
+
+.vehicleMarker {
+  opacity: 0;
+  animation: fmMarkerIn 0.5s ease-out forwards;
+}
+
+@keyframes fmMarkerIn {
+  from { opacity: 0; transform: translate(var(--x, 0), var(--y, 0)) scale(0.5); }
+  to { opacity: 1; transform: translate(var(--x, 0), var(--y, 0)) scale(1); }
+}
+
+.markerPulse {
+  r: 14;
+  opacity: 0.3;
+  animation: fmPulse 2s ease-in-out infinite;
+}
+
+@keyframes fmPulse {
+  0%, 100% { r: 14; opacity: 0.3; }
+  50% { r: 20; opacity: 0.1; }
+}
+
+.markerCore {
+  r: 8;
+}
+
+.markerLabel {
+  font-size: 5px;
+  font-weight: 700;
+  fill: #fff;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+}
+
+.markerSpeed {
+  font-size: 4.5px;
+  fill: rgba(255,255,255,0.7);
+}
+
+.cityLabel {
+  font-size: 5.5px;
+  font-weight: 600;
+  fill: rgba(255,255,255,0.5);
+  text-anchor: middle;
+}
+
+.vehiclePanel {
+  grid-column: 2;
+  grid-row: 1;
+  background: linear-gradient(180deg, rgba(10, 22, 40, 0.95), rgba(6, 15, 30, 0.98));
+  border-left: 1px solid rgb(6, 182, 212) / 0.15;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgb(6, 182, 212) / 0.1;
+  font-size: 0.55rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.panelCount {
+  color: rgb(6, 182, 212);
+  font-variant-numeric: tabular-nums;
+}
+
+.vehicleList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.vehicleCard {
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    150deg,
+    rgba(6, 182, 212, 0.05),
+    transparent
+  );
+  border: 1px solid rgb(6, 182, 212) / 0.1;
+  opacity: 0;
+  animation: fmCardIn 0.35s ease-out forwards;
+}
+
+@keyframes fmCardIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.vehicleTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.vehicleId {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+.vehicleStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-full);
+}
+
+.vehicleStatus[data-status="active"] {
+  color: rgb(16, 185, 129);
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.vehicleStatus[data-status="idle"] {
+  color: rgb(245, 158, 11);
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.vehicleStatus[data-status="warning"] {
+  color: rgb(239, 68, 68);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.statusDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: fmStatusPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fmStatusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.vehicleDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.35rem;
+}
+
+.vehicleDriver {
+  font-size: 0.55rem;
+  color: var(--color-text-muted);
+}
+
+.vehicleRoute {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vehicleMeta {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid rgb(6, 182, 212) / 0.08;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+}
+
+.statsBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid rgb(6, 182, 212) / 0.1;
+  border-bottom: 1px solid rgb(6, 182, 212) / 0.1;
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    150deg,
+    rgba(6, 182, 212, 0.05),
+    transparent
+  );
+  border: 1px solid rgb(6, 182, 212) / 0.1;
+  opacity: 0;
+  animation: fmStatIn 0.4s ease-out forwards;
+}
+
+@keyframes fmStatIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.statIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.statContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.statValue {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.statLabel {
+  font-size: 0.45rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.alertsPanel {
+  background: linear-gradient(
+    180deg,
+    rgba(239, 68, 68, 0.03),
+    transparent
+  );
+  border: 1px solid rgb(239, 68, 68) / 0.1;
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+}
+
+.alertsHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.55rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.alertsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.alertItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  opacity: 0;
+  animation: fmAlertIn 0.35s ease-out forwards;
+}
+
+@keyframes fmAlertIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.alertBadge {
+  flex-shrink: 0;
+  font-size: 0.42rem;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--alert-color, rgb(6, 182, 212)) 15%, transparent);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.alertContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.alertVehicle {
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.alertMessage {
+  font-size: 0.5rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alertTime {
+  flex-shrink: 0;
+  font-size: 0.48rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 40rem) {
+  .wrap {
+    padding: 0.5rem;
+  }
+
+  .mapContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .vehiclePanel {
+    grid-column: 1;
+    grid-row: 2;
+    border-left: none;
+    border-top: 1px solid rgb(6, 182, 212) / 0.15;
+    max-height: 200px;
+  }
+
+  .statsBar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .statCard {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .statValue {
+    font-size: 0.7rem;
+  }
+
+  .statLabel {
+    font-size: 0.42rem;
+  }
+}
