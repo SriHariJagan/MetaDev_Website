@@ -19,6 +19,13 @@
   --color-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
   --color-focus-ring: rgba(79, 70, 229, 0.35);
 
+  /* Dashboard (aliases for consistency with @theme) */
+  --color-page-bg: #f1f5f9;
+  --color-card-bg: #ffffff;
+  --color-card-border: #e2e8f0;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+
   /* Typography */
   --font-family-base:
     "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial,
@@ -97,19 +104,19 @@
   --glass-bg: rgba(255, 255, 255, 0.55);
   --glass-border: rgba(15, 23, 42, 0.08);
 
-  /* Shared section accents (values kept identical to existing usage) */
+  /* Shared section accents */
   --color-white: #ffffff;
   --accent-blue: #2f8aff;
   --accent-blue-rgb: 47 138 255;
   --accent-violet: #a78bfa;
 
-  /* Product accent RGB triplets — deeper shades for contrast on light bg */
+  /* Product accent RGB triplets */
   --product-accent-teal: 13 148 136;
   --product-accent-blue: 37 99 235;
   --product-accent-violet: 124 58 237;
   --product-accent-amber: 217 119 6;
 
-  /* Product icon gradient pairs — light theme (deeper for contrast on light bg) */
+  /* Product icon gradient pairs */
   --product-grad-teal-1: 20 184 166;
   --product-grad-teal-2: 4 120 87;
   --product-grad-blue-1: 59 130 246;
@@ -137,7 +144,7 @@
   --product-grad-rose-1: 244 63 94;
   --product-grad-rose-2: 190 18 60;
 
-  /* Navy glass gradients (capability strips, marquee cards, orbit nodes) */
+  /* Navy glass gradients */
   --glass-navy: linear-gradient(
     180deg,
     rgba(17, 28, 55, 0.96) 0%,
@@ -154,11 +161,11 @@
     rgba(232, 241, 255, 0.94) 100%
   );
 
-  /* Blue soft frame (capability strips) */
+  /* Blue soft frame */
   --blue-soft-border: rgba(49, 118, 255, 0.28);
   --blue-soft-bg: rgba(49, 118, 255, 0.18);
 
-  /* Chart track (hero ring chart background circle) */
+  /* Chart track */
   --ring-track: #2554967e;
 }
 
@@ -182,6 +189,13 @@
   --color-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   --color-focus-ring: rgba(129, 140, 248, 0.4);
 
+  /* Dashboard (dark overrides) */
+  --color-page-bg: #0f172a;
+  --color-card-bg: #1e293b;
+  --color-card-border: #334155;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+
   /* Navbar */
   --navbar-text: #ffffff;
   --navbar-text-muted: rgba(255, 255, 255, 0.75);
@@ -198,13 +212,13 @@
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.12);
 
-  /* Product accent RGB triplets — brighter shades for contrast on dark bg */
+  /* Product accent RGB triplets */
   --product-accent-teal: 20 184 166;
   --product-accent-blue: 59 130 246;
   --product-accent-violet: 155 107 255;
   --product-accent-amber: 234 158 46;
 
-  /* Product icon gradient pairs — dark theme (brighter for contrast on dark bg) */
+  /* Product icon gradient pairs */
   --product-grad-teal-1: 94 234 212;
   --product-grad-teal-2: 45 212 191;
   --product-grad-blue-1: 147 197 253;
@@ -232,6 +246,6 @@
   --product-grad-rose-1: 253 164 175;
   --product-grad-rose-2: 244 63 94;
 
-  /* Chart track (hero ring chart background circle) */
+  /* Chart track */
   --ring-track: #334155;
 }

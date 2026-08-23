@@ -1,6 +1,7 @@
 // Login.tsx — MetaDev admin portal sign in page
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import {
   BarChart3,
   Brain,
@@ -280,18 +281,26 @@ export function BrandPanel() {
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    setIsLoading(false);
-    navigate('/dashboard');
+    setError('');
+    try {
+      await login(email, password);
+      navigate('/dashboard');
+    } catch (err: any) {
+      setError(err?.response?.data?.message || 'Invalid credentials');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -371,6 +380,8 @@ export function LoginPage() {
                 Forgot password?
               </Link>
             </div>
+
+            {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
             <button type="submit" className={styles.submit} disabled={isLoading}>
               {isLoading ? 'Signing in…' : 'Sign In'}

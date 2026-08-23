@@ -1,6 +1,8 @@
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@/layouts/MainLayout';
+import { DashboardLayout } from '@/layouts/DashboardLayout/DashboardLayout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const HomePage = lazy(() => import('@/pages/Home').then((module) => ({ default: module.HomePage })));
 const AboutPage = lazy(() => import('@/pages/About').then((module) => ({ default: module.AboutPage })));
@@ -26,6 +28,19 @@ const LoginPage = lazy(() => import('@/pages/Login').then((module) => ({ default
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword').then((module) => ({ default: module.ForgotPasswordPage })));
 const NotFoundPage = lazy(() => import('@/pages/NotFound').then((module) => ({ default: module.NotFoundPage })));
 const ErrorPage = lazy(() => import('@/pages/Error').then((module) => ({ default: module.ErrorPage })));
+
+const DashboardOverview = lazy(() => import('@/pages/Dashboard/Overview').then((m) => ({ default: m.DashboardOverview })));
+const UsersPage = lazy(() => import('@/pages/Dashboard/Users').then((m) => ({ default: m.UsersPage })));
+const OrganizationsPage = lazy(() => import('@/pages/Dashboard/Organizations').then((m) => ({ default: m.OrganizationsPage })));
+const ModulesPage = lazy(() => import('@/pages/Dashboard/Modules').then((m) => ({ default: m.ModulesPage })));
+const SubscriptionsPage = lazy(() => import('@/pages/Dashboard/Subscriptions').then((m) => ({ default: m.SubscriptionsPage })));
+const JobsPage = lazy(() => import('@/pages/Dashboard/Jobs').then((m) => ({ default: m.JobsPage })));
+const AuditPage = lazy(() => import('@/pages/Dashboard/Audit').then((m) => ({ default: m.AuditPage })));
+const ProductPage = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductPage })));
+const ProductOverview = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductOverview })));
+const ProductPlans = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductPlans })));
+const ProductSubscriptions = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductSubscriptions })));
+const ProductSettings = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductSettings })));
 
 export const routes: RouteObject[] = [
   {
@@ -68,4 +83,32 @@ export const routes: RouteObject[] = [
   },
   { path: '/login', element: <LoginPage />, errorElement: <ErrorPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage />, errorElement: <ErrorPage /> },
+  {
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <DashboardOverview /> },
+      { path: 'users', element: <UsersPage /> },
+      { path: 'organizations', element: <OrganizationsPage /> },
+      { path: 'modules', element: <ModulesPage /> },
+      { path: 'subscriptions', element: <SubscriptionsPage /> },
+      { path: 'jobs', element: <JobsPage /> },
+      { path: 'audit', element: <AuditPage /> },
+      {
+        path: 'product/:code',
+        element: <ProductPage />,
+        children: [
+          { index: true, element: <ProductOverview /> },
+          { path: 'plans', element: <ProductPlans /> },
+          { path: 'subscriptions', element: <ProductSubscriptions /> },
+          { path: 'settings', element: <ProductSettings /> },
+        ],
+      },
+    ],
+  },
 ];
