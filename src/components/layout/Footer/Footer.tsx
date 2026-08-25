@@ -1,5 +1,5 @@
 // Footer.tsx
-import { useRef, type CSSProperties, type ReactElement } from "react";
+import { useRef, type ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, type Variants } from "framer-motion";
 import {
@@ -218,17 +218,14 @@ const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: Soci
   { icon: InstagramIcon, label: "Instagram", href: "https://instagram.com", accent: "instagram" },
 ];
 
-interface FooterColumn {
+interface FooterSection {
   heading: string;
   links: { label: string; href: string; disabled?: boolean }[];
-  wide?: boolean;
-  split?: boolean;
 }
 
-const FOOTER_COLUMNS: FooterColumn[] = [
+const FOOTER_SECTIONS: FooterSection[] = [
   {
     heading: "Products",
-    split: true,
     links: [
       { label: "MetaHealth", href: "/products/metahealth" },
       { label: "MetaEdu", href: "/products/metaedu" },
@@ -255,40 +252,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     ],
   },
   {
-    heading: "Industries",
-    links: [
-      { label: "Healthcare", href: "/industries/healthcare", disabled: true },
-      { label: "Education", href: "/industries/education", disabled: true },
-      { label: "Government", href: "/industries/government", disabled: true },
-      { label: "Retail", href: "/industries/retail", disabled: true },
-      { label: "Manufacturing", href: "/industries/manufacturing", disabled: true },
-      { label: "NGO & NPO", href: "/industries/ngo-npo", disabled: true },
-    ],
-  },
-  {
-    heading: "Resources",
-    links: [
-      { label: "Documentation", href: "/resources/documentation", disabled: true },
-      { label: "Blogs", href: "/resources/blogs", disabled: true },
-      { label: "Case Studies", href: "/resources/case-studies", disabled: true },
-      { label: "Whitepapers", href: "/resources/whitepapers", disabled: true },
-      { label: "Webinars", href: "/resources/webinars", disabled: true },
-      { label: "Help Center", href: "/resources/help-center", disabled: true },
-    ],
-  },
-  {
-    heading: "Developers",
-    links: [
-      { label: "API Reference", href: "/developers/api-reference", disabled: true },
-      { label: "SDKs & Libraries", href: "/developers/sdks", disabled: true },
-      { label: "Changelog", href: "/developers/changelog", disabled: true },
-      { label: "Status", href: "/developers/status", disabled: true },
-      { label: "Community", href: "/developers/community", disabled: true },
-      { label: "Developer Console", href: "/developers/console", disabled: true },
-    ],
-  },
-  {
-    heading: "Company",
+    heading: "Contact",
     links: [
       { label: "About Us", href: "/about" },
       { label: "Careers", href: "/careers" },
@@ -317,24 +281,12 @@ const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent 
   { icon: CreditCard, label: "PCI DSS", accent: "pci" },
 ];
 
-function FooterLinkColumn({ column }: { column: FooterColumn }) {
-  const isSplit = column.wide || column.split;
-  const splitRows = isSplit ? Math.ceil(column.links.length / 2) : undefined;
-
+function FooterLinkSection({ section }: { section: FooterSection }) {
   return (
-    <div
-      className={cn(
-        styles.linkCol,
-        column.wide && styles.linkColWide,
-        column.split && styles.linkColSplit,
-      )}
-    >
-      <h3 className={styles.colHeading}>{column.heading}</h3>
-      <ul
-        className={cn(styles.linkList, isSplit && styles.linkListSplit)}
-        style={splitRows ? ({ "--split-rows": splitRows } as CSSProperties) : undefined}
-      >
-        {column.links.map((link) => (
+    <motion.div className={styles.linkRow} variants={itemVariants}>
+      <h3 className={styles.colHeading}>{section.heading}</h3>
+      <ul className={styles.linkRowList}>
+        {section.links.map((link) => (
           <li key={link.label}>
             {link.disabled ? (
               <span className={cn(styles.link, styles.linkDisabled)} title="Coming soon">
@@ -349,12 +301,14 @@ function FooterLinkColumn({ column }: { column: FooterColumn }) {
           </li>
         ))}
       </ul>
-    </div>
+    </motion.div>
   );
 }
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const mainRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(mainRef, { once: true, amount: 0.15 });
 
   return (
     <footer className={styles.footer}>
@@ -362,51 +316,57 @@ export function Footer() {
         <span className={styles.watermark} aria-hidden="true">
           MetaDev
         </span>
-        <div className={styles.mainInner}>
-          <div className={styles.brandCol}>
-            <Link to="/" className={styles.brand}>
-              <img
-                src="/logo-noBg.png"
-                alt="metadev"
-                className={`${styles.brandLogo} ${styles.brandLogoDark}`}
-                draggable={false}
-              />
-              <img
-                src="/logo-lightmode.png"
-                alt="metadev"
-                className={`${styles.brandLogo} ${styles.brandLogoLight}`}
-                draggable={false}
-              />
-            </Link>
-            <p className={styles.tagline}>
-              Building intelligent digital ecosystems that empower businesses,
-              institutions and communities for a better tomorrow.
-            </p>
-            <ul className={styles.socialList}>
-              {SOCIAL_LINKS.map(({ icon: Icon, label, href, accent }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={label}
-                    className={`${styles.socialLink} ${styles[`social-${accent}`]}`}
-                  >
-                    <Icon size={15} />
-                  </a>
-                </li>
-              ))}
-            </ul>
+        <motion.div
+          className={styles.mainInner}
+          ref={mainRef}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <div className={styles.linkRows}>
+            {FOOTER_SECTIONS.map((section) => (
+              <FooterLinkSection key={section.heading} section={section} />
+            ))}
           </div>
 
-          <div className={styles.linkColsGroup}>
-            <div className={styles.linkCols}>
-              {FOOTER_COLUMNS.map((column) => (
-                <FooterLinkColumn key={column.heading} column={column} />
-              ))}
-            </div>
+          <div className={styles.footerBrandRow}>
+            <motion.div className={styles.brandCol} variants={itemVariants}>
+              <Link to="/" className={styles.brand}>
+                <img
+                  src="/logo-noBg.png"
+                  alt="metadev"
+                  className={`${styles.brandLogo} ${styles.brandLogoDark}`}
+                  draggable={false}
+                />
+                <img
+                  src="/logo-lightmode.png"
+                  alt="metadev"
+                  className={`${styles.brandLogo} ${styles.brandLogoLight}`}
+                  draggable={false}
+                />
+              </Link>
+              <p className={styles.tagline}>
+                Building intelligent digital ecosystems that empower businesses,
+                institutions and communities for a better tomorrow.
+              </p>
+              <ul className={styles.socialList}>
+                {SOCIAL_LINKS.map(({ icon: Icon, label, href, accent }) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={label}
+                      className={`${styles.socialLink} ${styles[`social-${accent}`]}`}
+                    >
+                      <Icon size={15} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <div className={styles.bottom}>
