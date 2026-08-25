@@ -9,6 +9,13 @@
   background: linear-gradient(160deg, #f3f8ff 0%, #ffffff 42%, #eef3ff 100%);
 }
 
+:global([data-theme='dark']) .page {
+  background:
+    radial-gradient(ellipse 55% 45% at 18% 12%, rgba(var(--accent-blue-rgb), 0.14), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(139, 92, 246, 0.1), transparent 60%),
+    linear-gradient(160deg, #060b18 0%, #0a1226 50%, #071021 100%);
+}
+
 /* ---------- Left panel ---------- */
 
 .leftPanel {
@@ -17,9 +24,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: var(--space-10) var(--space-10) 0 clamp(2.5rem, 6vw, 5rem);
+  padding: var(--space-10) clamp(2rem, 5vw, 4rem) 8rem;
   min-width: 0;
 }
 
@@ -202,53 +209,71 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  max-width: 34rem;
-  align-self: flex-start;
-}
-
-.lockup {
-  display: flex;
   align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-6);
-  margin-left: -0.5rem;
-}
-
-.lockupHex {
-  flex: none;
-}
-
-.lockupLetters {
-  flex: none;
-  margin-left: -0.5rem;
-}
-
-.lockupDivider {
-  width: 1px;
-  height: 3.6rem;
-  background: color-mix(in srgb, var(--color-text) 16%, transparent);
-  flex: none;
+  text-align: center;
+  max-width: 36rem;
+  margin-inline: auto;
 }
 
 .lockupWord {
   display: flex;
   flex-direction: column;
-  font-size: 2.6rem;
+  align-items: center;
+  font-size: clamp(2.6rem, 4vw, 3.3rem);
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .lockupWord small {
-  font-size: 0.72rem;
+  position: relative;
+  font-size: 0.68rem;
   font-weight: var(--font-weight-bold);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
   text-transform: uppercase;
   color: #14b8a6;
-  margin-top: 0.3rem;
+  margin-top: 0.9rem;
+  line-height: 1.4;
+}
+
+.lockupWord small::before {
+  content: "";
+  position: absolute;
+  top: -0.45rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, transparent, #14b8a6, transparent);
+}
+
+.brandLogoWrap {
+  display: grid;
+  place-items: center;
+  margin-top: var(--space-4);
+}
+
+.brandLogo {
+  grid-area: 1 / 1;
+  height: clamp(96px, 12vw, 132px);
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 28px rgba(var(--accent-blue-rgb), 0.25));
+}
+
+.brandLogoLight {
+  display: none;
+}
+
+:global([data-theme='light']) .brandLogo {
+  display: none;
+}
+
+:global([data-theme='light']) .brandLogoLight {
+  display: block;
 }
 
 .leftTitle {
@@ -256,26 +281,28 @@
   font-weight: var(--font-weight-bold);
   color: var(--color-text);
   letter-spacing: -0.01em;
-  margin: 0 0 var(--space-3);
+  margin: var(--space-6) 0 var(--space-3);
 }
 
 .leftSub {
   font-size: 0.95rem;
   line-height: 1.6;
   color: var(--color-text-muted);
-  max-width: 28rem;
-  margin: 0 0 var(--space-10);
+  max-width: 30rem;
 }
 
 /* ---------- Skyline ---------- */
 
 .skyline {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 1;
   width: 100%;
   height: 14rem;
-  margin-top: auto;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .skylineSvg {
@@ -322,6 +349,16 @@
   box-shadow:
     0 30px 70px -30px rgba(15, 23, 42, 0.22),
     0 8px 20px -12px rgba(15, 23, 42, 0.1);
+}
+
+:global([data-theme='dark']) .card {
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 34px 80px -30px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
 
 .cardHeader {

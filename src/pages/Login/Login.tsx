@@ -198,51 +198,6 @@ function BrandOrbit() {
   );
 }
 
-/* logo-lightmode.png is 571x437; these boxes isolate the hex mark and the
-   "MD" letters from the raster asset so they can sit beside live HTML text. */
-const LOGO_SRC = '/logo-lightmode.png';
-const LOGO_W = 571;
-const LOGO_H = 437;
-
-function CroppedLogo({
-  box: [x0, y0, x1, y1],
-  height,
-  className,
-}: {
-  box: [number, number, number, number];
-  height: number;
-  className?: string;
-}) {
-  const scale = height / (y1 - y0);
-  const width = (x1 - x0) * scale;
-  return (
-    <span
-      className={className}
-      style={{
-        display: 'inline-block',
-        position: 'relative',
-        width,
-        height,
-        overflow: 'hidden',
-      }}
-    >
-      <img
-        src={LOGO_SRC}
-        alt=""
-        draggable={false}
-        style={{
-          position: 'absolute',
-          top: -y0 * scale,
-          left: -x0 * scale,
-          width: LOGO_W * scale,
-          height: LOGO_H * scale,
-          maxWidth: 'none',
-        }}
-      />
-    </span>
-  );
-}
-
 export function BrandPanel() {
   return (
     <aside className={styles.leftPanel}>
@@ -258,14 +213,25 @@ export function BrandPanel() {
       </div>
 
       <div className={styles.leftContent}>
-        <div className={styles.lockup}>
-          <CroppedLogo box={[0, 25, 195, 412]} height={92} className={styles.lockupHex} />
-          <CroppedLogo box={[195, 118, 512, 295]} height={64} className={styles.lockupLetters} />
-          <span className={styles.lockupDivider} aria-hidden="true" />
-          <span className={styles.lockupWord}>
-            metadev
-            <small>Building Digital Bharat</small>
-          </span>
+        <span className={styles.lockupWord}>
+          MetaDev
+          <small>Building Digital Bharat</small>
+        </span>
+
+        <div className={styles.brandLogoWrap}>
+          <img
+            src="/logo-noBg.png"
+            alt="MetaDev"
+            draggable={false}
+            className={styles.brandLogo}
+          />
+          <img
+            src="/logo-lightmode.png"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className={`${styles.brandLogo} ${styles.brandLogoLight}`}
+          />
         </div>
 
         <h1 className={styles.leftTitle}>Powering Digital Transformation</h1>
@@ -296,8 +262,12 @@ export function LoginPage() {
     try {
       await login(email, password);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err?.response?.data?.message || 'Invalid credentials');
+    } catch (err) {
+      const message =
+        typeof err === 'object' && err !== null && 'response' in err
+          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
+          : undefined;
+      setError(message || 'Invalid credentials');
     } finally {
       setIsLoading(false);
     }
