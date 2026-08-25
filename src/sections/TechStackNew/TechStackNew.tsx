@@ -242,7 +242,6 @@ export function TechStackNew() {
               ))}
             </div>
 
-            <span className={styles.hubRing} aria-hidden="true" />
             <span className={styles.hub}>
               <img
                 src="/favIocn.png"
