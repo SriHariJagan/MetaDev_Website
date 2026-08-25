@@ -95,6 +95,21 @@ const itemVariants: Variants = {
   },
 };
 
+/* Footer-only timing — whole entrance completes in under 1 second */
+const footerContainerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.03 } },
+};
+
+const footerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.22, ease: "easeOut" },
+  },
+};
+
 /* ==================================================================== */
 /* Function 1: LetsBuildFuture — the CTA banner above the footer        */
 /* ==================================================================== */
@@ -283,7 +298,7 @@ const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent 
 
 function FooterLinkSection({ section }: { section: FooterSection }) {
   return (
-    <motion.div className={styles.linkRow} variants={itemVariants}>
+    <motion.div className={styles.linkRow} variants={footerItemVariants}>
       <h3 className={styles.colHeading}>{section.heading}</h3>
       <ul className={styles.linkRowList}>
         {section.links.map((link) => (
@@ -308,7 +323,7 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
 export function Footer() {
   const year = new Date().getFullYear();
   const mainRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(mainRef, { once: true, amount: 0.15 });
+  const isInView = useInView(mainRef, { once: true, amount: 0.1 });
 
   return (
     <footer className={styles.footer}>
@@ -319,7 +334,7 @@ export function Footer() {
         <motion.div
           className={styles.mainInner}
           ref={mainRef}
-          variants={containerVariants}
+          variants={footerContainerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
@@ -330,7 +345,7 @@ export function Footer() {
           </div>
 
           <div className={styles.footerBrandRow}>
-            <motion.div className={styles.brandCol} variants={itemVariants}>
+            <motion.div className={styles.brandCol} variants={footerItemVariants}>
               <Link to="/" className={styles.brand}>
                 <img
                   src="/logo-noBg.png"

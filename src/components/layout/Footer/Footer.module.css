@@ -403,7 +403,7 @@
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
-  animation: watermarkShimmer 6s linear infinite alternate;
+  animation: watermarkShimmer 4s linear infinite alternate;
 }
 
 :global([data-theme="light"]) .watermark {
@@ -457,8 +457,8 @@
 .brandCol {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   gap: var(--space-4);
 }
 
