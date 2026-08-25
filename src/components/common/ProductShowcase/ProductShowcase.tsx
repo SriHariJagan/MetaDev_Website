@@ -47,6 +47,8 @@ export interface ShowcaseProduct {
   features: string[];
   stats: ShowcaseStat[];
   href: string;
+  logo?: string;
+  logoDark?: string;
 }
 
 export interface ProductShowcaseProps {
@@ -119,9 +121,35 @@ function Slide({ product }: SlideProps) {
       {/* ---------- Right: identity panel ---------- */}
       <div className={styles.identitySide}>
         <div className={styles.identityPanel}>
-          <div className={styles.logoChip}>
-            <Icon size={38} stroke={`url(#grad-${accent})`} aria-hidden="true" />
-          </div>
+          {product.logo ? (
+            <div className={styles.logoBadge}>
+              <img
+                src={product.logo}
+                alt=""
+                aria-hidden="true"
+                className={cn(
+                  styles.logoImg,
+                  product.logoDark && styles.logoImgLightOnly
+                )}
+                loading="lazy"
+                decoding="async"
+              />
+              {product.logoDark && (
+                <img
+                  src={product.logoDark}
+                  alt=""
+                  aria-hidden="true"
+                  className={`${styles.logoImg} ${styles.logoImgDark}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </div>
+          ) : (
+            <div className={styles.logoChip}>
+              <Icon size={38} stroke={`url(#grad-${accent})`} aria-hidden="true" />
+            </div>
+          )}
 
           <h3 className={styles.productName}>
             <GradientText>{product.name}</GradientText>
