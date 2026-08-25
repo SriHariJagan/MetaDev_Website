@@ -834,6 +834,10 @@
   --badge-icon: #1e40af;
 }
 
+.badge-iso42001 {
+  --badge-icon: #8b5cf6;
+}
+
 .badge-soc2 {
   --badge-icon: #22c55e;
 }

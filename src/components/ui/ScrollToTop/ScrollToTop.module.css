@@ -1,7 +1,7 @@
 .button {
   position: fixed;
   right: var(--space-6);
-  bottom: var(--space-12);
+  bottom: var(--space-6);
   z-index: var(--z-sticky);
   display: flex;
   align-items: center;

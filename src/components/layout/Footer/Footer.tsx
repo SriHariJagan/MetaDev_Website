@@ -284,12 +284,12 @@ const LEGAL_LINKS = [
   { label: "Sitemap", href: "/sitemap" },
 ];
 
-type BadgeAccent = "iso" | "soc2" | "hipaa" | "gdpr" | "iso9001" | "pci";
+type BadgeAccent = "iso" | "soc2" | "hipaa" | "gdpr" | "iso9001" | "iso42001" | "pci";
 
 const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent }[] = [
   { icon: ShieldCheck, label: "ISO 27001", accent: "iso" },
   { icon: ShieldCheck, label: "ISO 9001", accent: "iso9001" },
-  { icon: ShieldCheck, label: "ISO 9001", accent: "iso9001" },
+  { icon: ShieldCheck, label: "ISO 42001", accent: "iso42001" },
   { icon: BadgeCheck, label: "SOC 2", accent: "soc2" },
   { icon: FileCheck2, label: "HIPAA", accent: "hipaa" },
   { icon: Lock, label: "GDPR", accent: "gdpr" },
