@@ -226,11 +226,31 @@ export function LetsBuildFuture() {
 type SocialAccent = "linkedin" | "x" | "youtube" | "facebook" | "instagram";
 
 const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: SocialAccent }[] = [
-  { icon: LinkedInIcon, label: "LinkedIn", href: "https://linkedin.com", accent: "linkedin" },
-  { icon: XIcon, label: "X / Twitter", href: "https://x.com", accent: "x" },
-  { icon: YouTubeIcon, label: "YouTube", href: "https://youtube.com", accent: "youtube" },
-  { icon: FacebookIcon, label: "Facebook", href: "https://facebook.com", accent: "facebook" },
-  { icon: InstagramIcon, label: "Instagram", href: "https://instagram.com", accent: "instagram" },
+  {
+    icon: LinkedInIcon,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/metadev-innovations-privated-limited/",
+    accent: "linkedin",
+  },
+  { icon: XIcon, label: "X / Twitter", href: "https://x.com/metadev_pvt_ltd", accent: "x" },
+  {
+    icon: YouTubeIcon,
+    label: "YouTube",
+    href: "https://www.youtube.com/channel/UCpowzU8EBeOHiaoMnokOjNg",
+    accent: "youtube",
+  },
+  {
+    icon: FacebookIcon,
+    label: "Facebook",
+    href: "https://www.facebook.com/people/Metadev-Innovations/61587397852801/",
+    accent: "facebook",
+  },
+  {
+    icon: InstagramIcon,
+    label: "Instagram",
+    href: "https://www.instagram.com/metadev_pvt_ltd",
+    accent: "instagram",
+  },
 ];
 
 interface FooterSection {
