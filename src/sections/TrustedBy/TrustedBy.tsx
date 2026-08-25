@@ -8,6 +8,7 @@ import { SectionHeader } from "@/components/common/SectionHeader";
 import { Badge } from "@/components/common/Badge";
 import { GradientText } from "@/components/common/GradientText";
 import { fadeUp, staggerContainer } from "@/constants/motion";
+import { cn } from "@/utils/cn";
 import styles from "./TrustedBy.module.css";
 
 import metaHireLogo from "@/assets/images/trustedBy/metaHire.png";
@@ -21,6 +22,11 @@ import solarHutLogo from "@/assets/images/trustedBy/solarHut.png";
 import theClearHireLogo from "@/assets/images/trustedBy/theclearhire.png";
 import gameatLogo from "@/assets/images/trustedBy/gameat.png";
 import metaPeLogo from "@/assets/images/trustedBy/metape.png";
+import metaHireLogoDark from "@/assets/images/trustedBy/metahire-dark.png";
+import metaCheckLogoDark from "@/assets/images/trustedBy/metacheck-dark.png";
+import metaAdsLogoDark from "@/assets/images/trustedBy/metaAds-dark.png";
+import metaGreenLogoDark from "@/assets/images/trustedBy/metagreen-dark.png";
+import metaEduLogoDark from "@/assets/images/trustedBy/metaedu-dark.png";
 
 /* ------------------------------------------------------------------ */
 /* Real partner logos                                                  */
@@ -30,15 +36,16 @@ interface PartnerLogo {
   id: string;
   name: string;
   src: string;
+  darkSrc?: string;
 }
 
 const PARTNER_LOGOS: PartnerLogo[] = [
-  { id: "metahire", name: "MetaHire", src: metaHireLogo },
+  { id: "metahire", name: "MetaHire", src: metaHireLogo, darkSrc: metaHireLogoDark },
   { id: "metaflow", name: "MetaFlow", src: metaFlowLogo },
-  { id: "metacheck", name: "MetaCheck", src: metaCheckLogo },
-  { id: "metaads", name: "MetaAds", src: metaAdsLogo },
-  { id: "metagreen", name: "MetaGreen", src: metaGreenLogo },
-  { id: "metaedu", name: "MetaEdu", src: metaEduLogo },
+  { id: "metacheck", name: "MetaCheck", src: metaCheckLogo, darkSrc: metaCheckLogoDark },
+  { id: "metaads", name: "MetaAds", src: metaAdsLogo, darkSrc: metaAdsLogoDark },
+  { id: "metagreen", name: "MetaGreen", src: metaGreenLogo, darkSrc: metaGreenLogoDark },
+  { id: "metaedu", name: "MetaEdu", src: metaEduLogo, darkSrc: metaEduLogoDark },
   { id: "worktax", name: "WorkTax", src: worktaxLogo },
   { id: "solarhut", name: "SolarHut", src: solarHutLogo },
   { id: "theclearhire", name: "The Clear Hire", src: theClearHireLogo },
@@ -76,10 +83,23 @@ function LogoCard({ logo }: { logo: PartnerLogo }) {
       <img
         src={logo.src}
         alt={logo.name}
-        className={styles.logoImage}
+        className={cn(
+          styles.logoImage,
+          logo.darkSrc && styles.logoImageLightOnly
+        )}
         loading="lazy"
         decoding="async"
       />
+      {logo.darkSrc && (
+        <img
+          src={logo.darkSrc}
+          alt=""
+          aria-hidden="true"
+          className={`${styles.logoImage} ${styles.logoImageDark}`}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
     </li>
   );
 }

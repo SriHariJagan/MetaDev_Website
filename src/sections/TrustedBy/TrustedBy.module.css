@@ -169,9 +169,8 @@
   flex-shrink: 0;
   width: 260px;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   padding: 26px 34px;
   background: transparent;
 }
@@ -179,6 +178,11 @@
 /* Logo image — monochrome at rest (white on dark theme, black on
    light theme), real brand colors revealed on hover. No other
    hover effect (no lift, no background, no box-shadow). */
+
+.logoImage,
+.logoImageDark {
+  grid-area: 1 / 1;
+}
 
 .logoImage {
   display: block;
@@ -200,6 +204,20 @@
   filter: none;
 }
 
+/* Dark-mode variants — shown as-is (already designed for dark bg) */
+
+.logoImageDark {
+  display: none;
+}
+
+:global([data-theme="dark"]) .logoImageDark {
+  display: block;
+}
+
+:global([data-theme="dark"]) .logoImageLightOnly {
+  display: none;
+}
+
 @media (max-width: 48rem) {
   .heading {
     font-size: var(--font-size-2xl);
@@ -214,7 +232,8 @@
     padding: 18px 20px;
   }
 
-  .logoImage {
+  .logoImage,
+  .logoImageDark {
     max-width: 140px;
     max-height: 46px;
   }
