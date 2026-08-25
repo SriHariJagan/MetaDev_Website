@@ -1,72 +1,156 @@
-import { useEffect, useState } from 'react';
-import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState, type CSSProperties } from "react";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard, Users, Building2, Boxes, CreditCard,
-  ListChecks, ScrollText, ChevronDown, ChevronsLeft, ChevronsRight, LogOut, Menu, X,
-  HeartPulse, GraduationCap, ShieldCheck, Megaphone, Wallet, BookOpen,
-  Bell, Search,
-} from 'lucide-react';
+  LayoutDashboard,
+  Users,
+  Building2,
+  Boxes,
+  CreditCard,
+  ScrollText,
+  ChevronDown,
+  ChevronsLeft,
+  ChevronsRight,
+  LogOut,
+  Menu,
+  X,
+  Lock,
+  Bell,
+  Search,
+  Layers,
+  Server,
+  Globe,
+  Plug,
+  LifeBuoy,
+  BarChart3,
+  Settings,
+  ShieldCheck,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
 
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from "@/context/AuthContext";
 
-const PRODUCTS = [
-  { code: 'METAHEALTH', name: 'MetaHealth', icon: HeartPulse, color: '#10b981' },
-  { code: 'METAEDU', name: 'MetaEdu', icon: GraduationCap, color: '#8b5cf6' },
-  { code: 'METACHECK', name: 'MetaCheck', icon: ShieldCheck, color: '#06b6d4' },
-  { code: 'METAADS', name: 'MetaAds', icon: Megaphone, color: '#f59e0b' },
-  { code: 'METALEDGER', name: 'MetaLedger', icon: Wallet, color: '#ef4444' },
-  { code: 'METAPE', name: 'MetaPE', icon: BookOpen, color: '#ec4899' },
+interface NavItem {
+  path?: string;
+  label: string;
+  icon: LucideIcon;
+  end?: boolean;
+  locked?: boolean;
+  color: string;
+}
+
+/* Locked entries are placeholders — routes will be enabled incrementally. */
+const NAV_LINKS: NavItem[] = [
+  {
+    path: "/dashboard",
+    label: "Overview",
+    icon: LayoutDashboard,
+    end: true,
+    color: "#818cf8",
+  },
+  {
+    path: "/dashboard/modules",
+    label: "ERP Products",
+    icon: Boxes,
+    color: "#22d3ee",
+  },
+  { label: "Tenants", icon: Layers, locked: true, color: "#34d399" },
+  {
+    path: "/dashboard/organizations",
+    label: "Organizations",
+    icon: Building2,
+    color: "#f59e0b",
+  },
+  {
+    path: "/dashboard/users",
+    label: "Users & Roles",
+    icon: Users,
+    color: "#38bdf8",
+  },
+  {
+    path: "/dashboard/subscriptions",
+    label: "Subscriptions",
+    icon: CreditCard,
+    color: "#a78bfa",
+  },
+  { label: "Billing & Revenue", icon: Wallet, locked: true, color: "#4ade80" },
+  { label: "Infrastructure", icon: Server, locked: true, color: "#fb7185" },
+  { label: "Domains & SSL", icon: Globe, locked: true, color: "#60a5fa" },
+  { label: "Integrations", icon: Plug, locked: true, color: "#c084fc" },
+  { label: "Support Center", icon: LifeBuoy, locked: true, color: "#2dd4bf" },
+  {
+    path: "/dashboard/audit",
+    label: "Audit Logs",
+    icon: ScrollText,
+    color: "#fbbf24",
+  },
+  { label: "Security", icon: ShieldCheck, locked: true, color: "#f472b6" },
+  {
+    label: "Reports & Analytics",
+    icon: BarChart3,
+    locked: true,
+    color: "#7dd3fc",
+  },
+  { label: "System Settings", icon: Settings, locked: true, color: "#94a3b8" },
 ];
 
-const NAV_LINKS = [
-  { path: '/dashboard', label: 'Overview', icon: LayoutDashboard, end: true },
-  { path: '/dashboard/users', label: 'Users', icon: Users },
-  { path: '/dashboard/organizations', label: 'Organizations', icon: Building2 },
-  { path: '/dashboard/modules', label: 'Modules', icon: Boxes },
-  { path: '/dashboard/subscriptions', label: 'Subscriptions', icon: CreditCard },
-  { path: '/dashboard/jobs', label: 'Jobs', icon: ListChecks },
-  { path: '/dashboard/audit', label: 'Audit Logs', icon: ScrollText },
-];
-
-const COLLAPSE_KEY = 'dash-sidebar-collapsed';
+const COLLAPSE_KEY = "dash-sidebar-collapsed";
 
 export function DashboardLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(() => localStorage.getItem(COLLAPSE_KEY) === '1');
-  const [productsOpen, setProductsOpen] = useState(true);
+  const [collapsed, setCollapsed] = useState(
+    () => localStorage.getItem(COLLAPSE_KEY) === "1",
+  );
 
   useEffect(() => {
-    localStorage.setItem(COLLAPSE_KEY, collapsed ? '1' : '0');
+    localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
   }, [collapsed]);
-
-  // Auto-expand Products section when navigating into a product page
-  useEffect(() => {
-    if (location.pathname.includes('/dashboard/product/')) setProductsOpen(true);
-  }, [location.pathname]);
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate("/login");
   };
 
-  const currentPage = NAV_LINKS.find((l) =>
-    l.end ? location.pathname === '/dashboard' : location.pathname.startsWith(l.path),
+  const currentPage = NAV_LINKS.find(
+    (l) =>
+      l.path &&
+      (l.end
+        ? location.pathname === "/dashboard"
+        : location.pathname.startsWith(l.path)),
   );
 
   return (
     <div className="dash-root">
-      {mobileOpen && <div className="dash-backdrop" onClick={() => setMobileOpen(false)} />}
+      {mobileOpen && (
+        <div className="dash-backdrop" onClick={() => setMobileOpen(false)} />
+      )}
 
       {/* ===== Sidebar ===== */}
-      <aside className={`dash-sidebar ${mobileOpen ? 'dash-sidebar--open' : 'dash-sidebar--closed'} ${collapsed ? 'dash-sidebar--collapsed' : ''}`}>
+      <aside
+        className={`dash-sidebar ${mobileOpen ? "dash-sidebar--open" : "dash-sidebar--closed"} ${collapsed ? "dash-sidebar--collapsed" : ""}`}
+      >
         <div className="dash-sidebar__logo">
           <div className="dash-sidebar__logo-mark" title="MetaDev">
-            <img src="/logo-lightmode.png" alt="" style={{ width: 16, height: 16, objectFit: 'contain' }} />
+            <img
+              src="/logo-lightmode.png"
+              alt="MetaDev"
+              draggable={false}
+              className="dash-logo-img"
+            />
+            <img
+              src="/logo-noBg.png"
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              className="dash-logo-img dash-logo-img--light"
+            />
           </div>
-          <span className="dash-nav__label dash-sidebar__logo-name">MetaDev</span>
+          <span className="dash-nav__label dash-sidebar__logo-name">
+            MetaDev
+          </span>
           <button
             onClick={() => setMobileOpen(false)}
             className="dash-sidebar__close dash-rowaction"
@@ -78,80 +162,85 @@ export function DashboardLayout() {
 
         <nav className="dash-nav">
           <p className="dash-nav__section">Menu</p>
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              end={link.end}
-              onClick={() => setMobileOpen(false)}
-              title={link.label}
-              className={({ isActive }) =>
-                `dash-nav__item ${isActive ? 'dash-nav__item--active' : ''}`
-              }
-            >
-              <link.icon size={17} strokeWidth={2} />
-              <span className="dash-nav__label">{link.label}</span>
-            </NavLink>
-          ))}
-
-          <button
-            onClick={() => { setProductsOpen(!productsOpen); setCollapsed(false); }}
-            className="dash-nav__item"
-            title="Products"
-            style={{ width: '100%', border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}
-          >
-            <Boxes size={17} strokeWidth={2} />
-            <span className="dash-nav__label" style={{ flex: 1, textAlign: 'left' }}>Products</span>
-            <ChevronDown
-              size={13}
-              className="dash-nav__chevron"
-              style={{
-                transition: 'transform 0.2s ease',
-                transform: productsOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
-              }}
-            />
-          </button>
-
-          {productsOpen && (
-            <div className="dash-nav__sub">
-              {PRODUCTS.map((p) => {
-                const active = location.pathname.includes(`/dashboard/product/${p.code.toLowerCase()}`);
-                const Icon = p.icon;
-                return (
-                  <NavLink
-                    key={p.code}
-                    to={`/dashboard/product/${p.code.toLowerCase()}`}
-                    onClick={() => setMobileOpen(false)}
-                    title={p.name}
-                    className={`dash-nav__item ${active ? 'dash-nav__item--active' : ''}`}
-                    style={{ fontSize: 12.5, padding: '7px 10px' }}
-                  >
-                    <Icon size={14} style={{ color: p.color }} />
-                    <span className="dash-nav__label">{p.name}</span>
-                  </NavLink>
-                );
-              })}
-            </div>
+          {NAV_LINKS.map((link) =>
+            link.locked ? (
+              <div
+                key={link.label}
+                className="dash-nav__item dash-nav__item--locked"
+                style={{ "--item-accent": link.color } as CSSProperties}
+                title={`${link.label} — coming soon`}
+                aria-disabled="true"
+              >
+                <link.icon size={17} strokeWidth={2} />
+                <span className="dash-nav__label">{link.label}</span>
+                <Lock size={11} className="dash-nav__lock" aria-hidden="true" />
+              </div>
+            ) : (
+              <NavLink
+                key={link.path}
+                to={link.path!}
+                end={link.end}
+                onClick={() => setMobileOpen(false)}
+                title={link.label}
+                style={{ "--item-accent": link.color } as CSSProperties}
+                className={({ isActive }) =>
+                  `dash-nav__item ${isActive ? "dash-nav__item--active" : ""}`
+                }
+              >
+                <link.icon size={17} strokeWidth={2} />
+                <span className="dash-nav__label">{link.label}</span>
+              </NavLink>
+            ),
           )}
         </nav>
 
         <div className="dash-sidebar__footer">
-          <div className="dash-sidebar__user" title={`${user?.firstName} ${user?.lastName}`}>
-            <div className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? 'dash-avatar--admin' : ''}`}>
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
+          <div
+            className="dash-sidebar__user"
+            title={`${user?.firstName} ${user?.lastName}`}
+          >
+            <div
+              className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
+            >
+              {user?.firstName?.[0]}
+              {user?.lastName?.[0]}
             </div>
-            <div className="dash-sidebar__user-info" style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: 12.5, fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div
+              className="dash-sidebar__user-info"
+              style={{ flex: 1, minWidth: 0 }}
+            >
+              <p
+                style={{
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  color: "#fff",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
                 {user?.firstName} {user?.lastName}
               </p>
-              <p style={{ fontSize: 10.5, color: '#64748b' }}>
-                {user?.isSuperAdmin ? 'Super Admin' : 'Admin'}
+              <p style={{ fontSize: 10.5, color: "#64748b" }}>
+                {user?.isSuperAdmin ? "Super Admin" : "Admin"}
               </p>
             </div>
           </div>
-          <button onClick={handleLogout} className="dash-sidebar__signout" title="Sign Out" style={{ border: 'none', background: 'transparent', cursor: 'pointer', fontFamily: 'inherit' }}>
+          <button
+            onClick={handleLogout}
+            className="dash-sidebar__signout"
+            title="Sign Out"
+            style={{
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              fontFamily: "inherit",
+            }}
+          >
             <LogOut size={16} />
-            <span className="dash-nav__label dash-sidebar__signout-label">Sign Out</span>
+            <span className="dash-nav__label dash-sidebar__signout-label">
+              Sign Out
+            </span>
           </button>
         </div>
       </aside>
@@ -159,34 +248,48 @@ export function DashboardLayout() {
       {/* ===== Main ===== */}
       <div className="dash-main">
         <header className="dash-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <button
               onClick={() => setMobileOpen(true)}
               className="dash-iconbtn dash-menu-btn"
               aria-label="Open menu"
-              style={{ border: 'none', background: 'transparent' }}
+              style={{ border: "none", background: "transparent" }}
             >
               <Menu size={19} />
             </button>
             <button
               onClick={() => setCollapsed(!collapsed)}
               className="dash-collapse-btn"
-              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
-              {collapsed ? <ChevronsRight size={17} /> : <ChevronsLeft size={17} />}
+              {collapsed ? (
+                <ChevronsRight size={17} />
+              ) : (
+                <ChevronsLeft size={17} />
+              )}
             </button>
-            <h1 className="dash-header__title">{currentPage?.label ?? 'Dashboard'}</h1>
+            <h1 className="dash-header__title">
+              {currentPage?.label ?? "Dashboard"}
+            </h1>
           </div>
 
           <div className="dash-header__actions">
             <div className="dash-header__search">
               <Search size={15} className="dash-search__icon" />
-              <input className="dash-input" placeholder="Search…" aria-label="Search" />
+              <input
+                className="dash-input"
+                placeholder="Search…"
+                aria-label="Search"
+              />
               <kbd className="dash-kbd">Ctrl K</kbd>
             </div>
 
-            <button className="dash-iconbtn" aria-label="Notifications" title="Notifications">
+            <button
+              className="dash-iconbtn"
+              aria-label="Notifications"
+              title="Notifications"
+            >
               <Bell size={17} />
               <span className="dash-iconbtn__badge" />
             </button>
@@ -194,18 +297,35 @@ export function DashboardLayout() {
             <div className="dash-header__divider" />
 
             <div className="dash-header__user" title={`${user?.email}`}>
-              <div className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? 'dash-avatar--admin' : ''}`}>
-                {user?.firstName?.[0]}{user?.lastName?.[0]}
+              <div
+                className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
+              >
+                {user?.firstName?.[0]}
+                {user?.lastName?.[0]}
               </div>
-              <div className="dash-header__user-info" style={{ lineHeight: 1.25 }}>
-                <p style={{ fontSize: 12.5, fontWeight: 600, color: '#0f172a', whiteSpace: 'nowrap' }}>
+              <div
+                className="dash-header__user-info"
+                style={{ lineHeight: 1.25 }}
+              >
+                <p
+                  style={{
+                    fontSize: 12.5,
+                    fontWeight: 600,
+                    color: "#0f172a",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p style={{ fontSize: 10.5, color: '#64748b' }}>
-                  {user?.isSuperAdmin ? 'Super Admin' : 'Admin'}
+                <p style={{ fontSize: 10.5, color: "#64748b" }}>
+                  {user?.isSuperAdmin ? "Super Admin" : "Admin"}
                 </p>
               </div>
-              <ChevronDown size={14} className="dash-header__user-chevron" style={{ color: '#94a3b8' }} />
+              <ChevronDown
+                size={14}
+                className="dash-header__user-chevron"
+                style={{ color: "#94a3b8" }}
+              />
             </div>
           </div>
         </header>

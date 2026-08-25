@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { X } from 'lucide-react';
 
 export function DashModal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {

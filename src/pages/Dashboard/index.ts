@@ -5,4 +5,4 @@ export { ModulesPage } from './Modules';
 export { SubscriptionsPage } from './Subscriptions';
 export { JobsPage } from './Jobs';
 export { AuditPage } from './Audit';
-export { ProductPage, ProductOverview, ProductUsers, ProductRoles, ProductSubscriptions, ProductSettings } from './Product';
+export { ProductPage, ProductOverview, ProductPlans, ProductSubscriptions, ProductSettings } from './Product';
