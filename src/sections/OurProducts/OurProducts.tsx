@@ -52,7 +52,7 @@ import { ProductIdentityTree } from "./ProductIdentityTree";
 import { ProductWarehouseGrid } from "./ProductWarehouseGrid";
 import styles from "./OurProducts.module.css";
 
-import metaAddsImage from "@/assets/images/ourProducts/metaAdds.png";
+import metaAddsImage from "@/assets/images/ourProducts/metaAds.png";
 import metaHireImage from "@/assets/images/ourProducts/metaHire.png";
 
 type Accent = "teal" | "blue" | "violet" | "amber";
