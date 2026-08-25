@@ -85,7 +85,7 @@
 .contentRow {
   display: grid;
   grid-template-columns: 23rem 1fr;
-  align-items: start;
+  align-items: center;
   gap: var(--space-8);
 }
 
@@ -101,7 +101,6 @@
     box-shadow var(--transition-medium);
   position: sticky;
   top: calc(var(--navbar-height) + var(--space-8));
-  margin-top: var(--space-12);
 }
 
 .statsPanel:hover {
