@@ -22,7 +22,7 @@
   z-index: 60;
   display: flex;
   flex-direction: column;
-  width: 224px;
+  width: 206px;
   background: linear-gradient(180deg, #101828 0%, #0b1120 100%);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   transition:
@@ -51,14 +51,19 @@
 /* Collapsed (desktop, icon rail) */
 @media (min-width: 1024px) {
   .dash-sidebar--collapsed {
-    width: 76px;
+    width: 64px;
   }
   .dash-sidebar--collapsed .dash-sidebar__logo {
     justify-content: center;
     padding: 0;
   }
+  .dash-sidebar--collapsed .dash-sidebar__logo-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
   .dash-sidebar--collapsed .dash-nav {
-    padding-inline: 10px;
+    padding-inline: 9px;
   }
 
   /* Fade + shrink labels smoothly */
@@ -84,8 +89,26 @@
   }
   .dash-sidebar--collapsed .dash-nav__item {
     justify-content: center;
-    padding: 9px 0;
+    padding: 10px 0;
+    margin-inline: auto;
+    width: 40px;
+    border-radius: 11px;
     gap: 0;
+  }
+  .dash-sidebar--collapsed .dash-nav__item:hover {
+    background: color-mix(in srgb, var(--item-accent, #818cf8) 16%, transparent);
+  }
+
+  /* Active icon tile — compact glowing square instead of the wide pill */
+  .dash-sidebar--collapsed .dash-nav__item--active {
+    background:
+      linear-gradient(180deg,
+        color-mix(in srgb, var(--item-accent, #818cf8) 30%, transparent),
+        color-mix(in srgb, var(--item-accent, #818cf8) 12%, transparent)
+      );
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--item-accent, #818cf8) 42%, transparent),
+      0 6px 16px -8px color-mix(in srgb, var(--item-accent, #818cf8) 60%, transparent);
   }
   .dash-sidebar--collapsed .dash-nav__item--active::before,
   .dash-sidebar--collapsed .dash-nav__item--active::after {
@@ -399,11 +422,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 9px;
+  border-radius: 50%;
   color: #fff;
   font-weight: 700;
   flex-shrink: 0;
   background: linear-gradient(135deg, #6366f1, #818cf8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .dash-avatar--sm { width: 30px; height: 30px; font-size: 10px; }
 .dash-avatar--md { width: 34px; height: 34px; font-size: 11px; }
@@ -566,6 +590,8 @@
   padding: 0 10px 0 5px;
   border-radius: 999px;
   border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
   transition: all 0.15s ease;
   cursor: pointer;
 }
@@ -578,6 +604,119 @@
   .dash-header__user-chevron {
     display: none;
   }
+}
+
+/* Profile dropdown */
+.dash-header__profile {
+  position: relative;
+}
+
+.dash-profile-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 252px;
+  padding: 8px;
+  background: #ffffff;
+  border: 1px solid #e8ebf2;
+  border-radius: 14px;
+  box-shadow:
+    0 24px 50px -20px rgba(15, 23, 42, 0.28),
+    0 4px 14px -8px rgba(15, 23, 42, 0.12);
+  z-index: 80;
+  animation: dashMenuIn 0.16s ease both;
+}
+
+@keyframes dashMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dash-profile-menu__head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #f6f8fc;
+  margin-bottom: 6px;
+}
+
+.dash-profile-menu__name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-profile-menu__email {
+  margin: 1px 0 0;
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-profile-menu__role {
+  display: inline-flex;
+  margin-top: 5px;
+  padding: 1.5px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.28);
+}
+
+.dash-profile-menu__sep {
+  height: 1px;
+  background: #eef1f6;
+  margin: 6px 4px;
+}
+
+.dash-profile-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.13s ease, color 0.13s ease;
+}
+
+.dash-profile-menu__item:hover {
+  background: #f1f4f9;
+  color: #0f172a;
+}
+
+.dash-profile-menu__item--danger {
+  color: #dc2626;
+}
+
+.dash-profile-menu__item--danger:hover {
+  background: #fef2f2;
+  color: #b91c1c;
 }
 
 .dash-content {

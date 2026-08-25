@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -25,6 +25,7 @@ import {
   Settings,
   ShieldCheck,
   Wallet,
+  UserCog,
   type LucideIcon,
 } from "lucide-react";
 
@@ -104,10 +105,25 @@ export function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(
     () => localStorage.getItem(COLLAPSE_KEY) === "1",
   );
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
   }, [collapsed]);
+
+  useEffect(() => {
+    const onPointerDown = (event: MouseEvent) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target as Node)
+      ) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -193,56 +209,6 @@ export function DashboardLayout() {
             ),
           )}
         </nav>
-
-        <div className="dash-sidebar__footer">
-          <div
-            className="dash-sidebar__user"
-            title={`${user?.firstName} ${user?.lastName}`}
-          >
-            <div
-              className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
-            >
-              {user?.firstName?.[0]}
-              {user?.lastName?.[0]}
-            </div>
-            <div
-              className="dash-sidebar__user-info"
-              style={{ flex: 1, minWidth: 0 }}
-            >
-              <p
-                style={{
-                  fontSize: 12.5,
-                  fontWeight: 600,
-                  color: "#fff",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {user?.firstName} {user?.lastName}
-              </p>
-              <p style={{ fontSize: 10.5, color: "#64748b" }}>
-                {user?.isSuperAdmin ? "Super Admin" : "Admin"}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="dash-sidebar__signout"
-            title="Sign Out"
-            style={{
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-              fontFamily: "inherit",
-            }}
-          >
-            <LogOut size={16} />
-            <span className="dash-nav__label dash-sidebar__signout-label">
-              Sign Out
-            </span>
-          </button>
-        </div>
       </aside>
 
       {/* ===== Main ===== */}
@@ -296,36 +262,90 @@ export function DashboardLayout() {
 
             <div className="dash-header__divider" />
 
-            <div className="dash-header__user" title={`${user?.email}`}>
-              <div
-                className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
+            <div className="dash-header__profile" ref={profileRef}>
+              <button
+                type="button"
+                className="dash-header__user"
+                onClick={() => setProfileOpen((open) => !open)}
+                title={user?.email}
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
               >
-                {user?.firstName?.[0]}
-                {user?.lastName?.[0]}
-              </div>
-              <div
-                className="dash-header__user-info"
-                style={{ lineHeight: 1.25 }}
-              >
-                <p
-                  style={{
-                    fontSize: 12.5,
-                    fontWeight: 600,
-                    color: "#0f172a",
-                    whiteSpace: "nowrap",
-                  }}
+                <div
+                  className={`dash-avatar dash-avatar--sm ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
                 >
-                  {user?.firstName} {user?.lastName}
-                </p>
-                <p style={{ fontSize: 10.5, color: "#64748b" }}>
-                  {user?.isSuperAdmin ? "Super Admin" : "Admin"}
-                </p>
-              </div>
-              <ChevronDown
-                size={14}
-                className="dash-header__user-chevron"
-                style={{ color: "#94a3b8" }}
-              />
+                  {user?.firstName?.[0]}
+                  {user?.lastName?.[0]}
+                </div>
+                <div
+                  className="dash-header__user-info"
+                  style={{ lineHeight: 1.25 }}
+                >
+                  <p
+                    style={{
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      color: "#0f172a",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {user?.firstName} {user?.lastName}
+                  </p>
+                  <p style={{ fontSize: 10.5, color: "#64748b" }}>
+                    {user?.isSuperAdmin ? "Super Admin" : "Admin"}
+                  </p>
+                </div>
+                <ChevronDown
+                  size={14}
+                  className="dash-header__user-chevron"
+                  style={{
+                    color: "#94a3b8",
+                    transform: profileOpen ? "rotate(180deg)" : "none",
+                    transition: "transform 0.18s ease",
+                  }}
+                />
+              </button>
+
+              {profileOpen && (
+                <div className="dash-profile-menu" role="menu">
+                  <div className="dash-profile-menu__head">
+                    <div
+                      className={`dash-avatar dash-avatar--md ${user?.isSuperAdmin ? "dash-avatar--admin" : ""}`}
+                    >
+                      {user?.firstName?.[0]}
+                      {user?.lastName?.[0]}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <p className="dash-profile-menu__name">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="dash-profile-menu__email">{user?.email}</p>
+                      <span className="dash-profile-menu__role">
+                        {user?.isSuperAdmin ? "Super Admin" : "Admin"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="dash-profile-menu__sep" />
+
+                  <button
+                    type="button"
+                    className="dash-profile-menu__item"
+                    onClick={() => setProfileOpen(false)}
+                  >
+                    <UserCog size={15} />
+                    Profile
+                  </button>
+                  <button
+                    type="button"
+                    className="dash-profile-menu__item dash-profile-menu__item--danger"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={15} />
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>
