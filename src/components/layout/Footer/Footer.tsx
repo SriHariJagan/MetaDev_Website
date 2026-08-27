@@ -234,7 +234,13 @@ export function LetsBuildFuture() {
             <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </motion.div>
+            <div className={styles.linkRows}>
+            {FOOTER_SECTIONS.map((section) => (
+              <FooterLinkSection key={section.heading} section={section} />
+            ))}
+          </div>
       </motion.div>
+      
     </section>
   );
 }
@@ -280,7 +286,7 @@ interface FooterSection {
 
 const FOOTER_SECTIONS: FooterSection[] = [
   {
-    heading: "Products",
+    heading: " Our Products",
     links: [
       { label: "MetaHealth", href: "/products/metahealth", logo: metaHealth, logoDark: metaHealth },
       { label: "MetaEdu", href: "/products/metaedu", logo: metaEdu, logoDark: metaEduDark },
@@ -295,25 +301,25 @@ const FOOTER_SECTIONS: FooterSection[] = [
       { label: "MetaIM", href: "/products/metaim", logo: metaIm, logoDark: metaImDark },
     ],
   },
-  {
-    heading: "Solutions",
-    links: [
-      { label: "Digital Health", href: "/solutions/digital-health", disabled: true },
-      { label: "Education", href: "/solutions/education", disabled: true },
-      { label: "Government", href: "/solutions/government", disabled: true },
-      { label: "Enterprise", href: "/solutions/enterprise", disabled: true },
-      { label: "FinTech", href: "/solutions/fintech", disabled: true },
-      { label: "AI Automation", href: "/solutions/ai-automation", disabled: true },
-    ],
-  },
-  {
-    heading: "Contact",
-    links: [
-      { label: "About Us", href: "/about" },
-      { label: "Careers", href: "/careers" },
-      { label: "Contact Us", href: "/contact" },
-    ],
-  },
+  // {
+  //   heading: "Solutions",
+  //   links: [
+  //     { label: "Digital Health", href: "/solutions/digital-health", disabled: true },
+  //     { label: "Education", href: "/solutions/education", disabled: true },
+  //     { label: "Government", href: "/solutions/government", disabled: true },
+  //     { label: "Enterprise", href: "/solutions/enterprise", disabled: true },
+  //     { label: "FinTech", href: "/solutions/fintech", disabled: true },
+  //     { label: "AI Automation", href: "/solutions/ai-automation", disabled: true },
+  //   ],
+  // },
+  // {
+  //   heading: "Contact",
+  //   links: [
+  //     { label: "About Us", href: "/about" },
+  //     { label: "Careers", href: "/careers" },
+  //     { label: "Contact Us", href: "/contact" },
+  //   ],
+  // },
 ];
 
 const LEGAL_LINKS = [
@@ -399,11 +405,6 @@ export function Footer() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <div className={styles.linkRows}>
-            {FOOTER_SECTIONS.map((section) => (
-              <FooterLinkSection key={section.heading} section={section} />
-            ))}
-          </div>
 
           <div className={styles.footerBrandRow}>
             <motion.div className={styles.brandCol} variants={footerItemVariants}>

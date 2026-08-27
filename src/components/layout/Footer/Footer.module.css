@@ -8,6 +8,7 @@
   padding-block: var(--space-10);
   margin-top: calc(-1 * var(--space-16));
   background-color: var(--color-bg);
+  padding-top: var(--space-16);
 }
 
 .ctaCard {
@@ -18,6 +19,8 @@
   margin-inline: auto;
   padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.75rem, 4vw, 3rem);
   border-radius: 1.75rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
   border: 1px solid var(--glass-border);
   background:
     radial-gradient(
@@ -197,10 +200,17 @@
   height: 60px;
   border-radius: 50%;
   color: rgb(var(--grad-1, 94 184 255));
-  background: color-mix(in srgb, rgb(var(--grad-1, 94 184 255)) 16%, transparent);
-  border: 1px solid color-mix(in srgb, rgb(var(--grad-1, 94 184 255)) 30%, transparent);
+  background: color-mix(
+    in srgb,
+    rgb(var(--grad-1, 94 184 255)) 16%,
+    transparent
+  );
+  border: 1px solid
+    color-mix(in srgb, rgb(var(--grad-1, 94 184 255)) 30%, transparent);
   box-shadow: 0 8px 20px -10px rgba(var(--grad-2, 94 184 255), 0.5);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .ctaFeature:hover .ctaFeatureIcon {
@@ -324,10 +334,14 @@
 }
 
 :global([data-theme="light"]) .footer {
-  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--color-bg) 0%,
+    var(--color-surface) 100%
+  );
 }
 
-.footer::before {
+/* .footer::before {
   content: "";
   position: absolute;
   top: 0;
@@ -342,7 +356,7 @@
     transparent
   );
   z-index: 2;
-}
+} */
 
 /* Ambient depth — soft brand-color wash in the corners */
 .footer::after {
@@ -388,7 +402,8 @@
   letter-spacing: -0.03em;
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px color-mix(in srgb, var(--color-text) 10%, transparent);
+  -webkit-text-stroke: 1px
+    color-mix(in srgb, var(--color-text) 10%, transparent);
   background: linear-gradient(
     115deg,
     transparent 40%,
@@ -438,7 +453,7 @@
 
 .main {
   position: relative;
-  padding-block: var(--space-16) var(--space-10);
+  padding-bottom: var(--space-4);
 }
 
 .mainInner {
@@ -447,9 +462,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-9, var(--space-8));
-  max-width: 88rem;
+  /* max-width: 88rem; */
   margin-inline: auto;
-  padding-inline: var(--container-padding-x);
+  /* padding-inline: var(--container-padding-x); */
 }
 
 /* ---------- Brand column ---------- */
@@ -470,7 +485,7 @@
 }
 
 .brandLogo {
-  height: 44px;
+  height: 60px;
   width: auto;
   transition: opacity 0.3s ease;
 }
@@ -593,16 +608,38 @@
 .linkRows {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-  min-width: 0;
+  /* gap: var(--space-1); */
+  padding-top: var(--space-12);
+}
+
+.linkRow:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--navbar-accent-start),
+    var(--navbar-accent-end),
+    transparent
+  );
+  z-index: 10;
 }
 
 .linkRow {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: var(--space-3) var(--space-6);
   min-width: 0;
+  padding-block: var(--space-3);
+  position: relative;
+  padding-top: var(--space-6);
 }
 
 .linkRow > .colHeading {
@@ -627,13 +664,14 @@
 .footerBrandRow {
   display: flex;
   justify-content: flex-start;
+  padding-inline: 0.5rem;
 }
 
 .colHeading {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 0.64rem;
+  font-size: 1rem;
   font-weight: var(--font-weight-bold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -642,7 +680,7 @@
   white-space: nowrap;
 }
 
-.colHeading::before {
+/* .colHeading::before {
   content: "";
   width: 12px;
   height: 2px;
@@ -653,7 +691,7 @@
     var(--navbar-accent-end)
   );
   flex: none;
-}
+} */
 
 .link {
   position: relative;
@@ -759,12 +797,15 @@
   flex-shrink: 0;
   background: var(--color-surface);
   border: 1.5px solid var(--color-border);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .productItem:hover .productLogoWrap {
   border-color: var(--navbar-accent);
-  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--navbar-accent) 55%, transparent);
+  box-shadow: 0 0 14px -2px
+    color-mix(in srgb, var(--navbar-accent) 55%, transparent);
 }
 
 .productLogo {
@@ -877,6 +918,28 @@
 
 .bottom {
   position: relative;
+  background: linear-gradient(
+    120deg,
+    #ffffff 0%,
+    #f4f5f7 18%,
+    #e1e5ea 38%,
+    #f8f9fa 55%,
+    #e6e9ed 75%,
+    #ffffff 100%
+  );
+}
+
+[data-theme="dark"] .bottom {
+  position: relative;
+  background: linear-gradient(
+    120deg,
+    #111827 0%,
+    #1a202c 18%,
+    #242a35 38%,
+    #171c26 55%,
+    #252b36 75%,
+    #111827 100%
+  );
 }
 
 .bottom::before {
@@ -899,7 +962,7 @@
   max-width: 88rem;
   margin-inline: auto;
   padding-block: var(--space-6);
-  padding-inline: var(--container-padding-x);
+  padding-inline: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -940,11 +1003,12 @@
 .badgeList {
   display: flex;
   align-items: center;
-  
+
   gap: var(--space-3);
   list-style: none;
-  margin: 0 auto;
   padding: 0;
+  margin: 0 auto;
+  padding-top: 5px;
   flex-wrap: wrap;
 }
 
@@ -969,7 +1033,11 @@
 
 .badge:hover {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--badge-icon, var(--navbar-accent)) 45%, var(--color-border));
+  border-color: color-mix(
+    in srgb,
+    var(--badge-icon, var(--navbar-accent)) 45%,
+    var(--color-border)
+  );
 }
 
 .badge svg {
@@ -1083,7 +1151,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--space-1);
-    margin-top: .2rem;
+    margin-top: 0.2rem;
   }
 
   .linkRow > .colHeading {
@@ -1117,7 +1185,6 @@
     align-items: center;
     text-align: center;
     gap: var(--space-5);
-    padding-block: var(--space-6);
   }
 
   .legalList {
@@ -1135,7 +1202,7 @@
     font-size: 0.7rem;
   }
 
-  .brandCol{
+  .brandCol {
     background: transparent;
     border-bottom: none;
   }

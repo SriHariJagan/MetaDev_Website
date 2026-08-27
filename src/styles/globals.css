@@ -57,11 +57,12 @@ a:hover {
 }
 
 ::-webkit-scrollbar {
-  width: 0.625rem;
+  width: 0.0rem;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  /* background: var(--color-surface); */
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
