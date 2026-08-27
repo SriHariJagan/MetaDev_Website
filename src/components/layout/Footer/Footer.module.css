@@ -723,6 +723,156 @@
     transform var(--transition-fast);
 }
 
+/* ---------- Product link with logo ---------- */
+
+.productItem {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  overflow: visible;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.productItem:hover {
+  border-color: var(--navbar-accent);
+  box-shadow:
+    0 0 20px -4px color-mix(in srgb, var(--navbar-accent) 45%, transparent),
+    0 0 40px -8px color-mix(in srgb, var(--navbar-accent) 20%, transparent);
+}
+
+.productLogoWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  overflow: visible;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.productItem:hover .productLogoWrap {
+  border-color: var(--navbar-accent);
+  box-shadow: 0 0 14px -2px color-mix(in srgb, var(--navbar-accent) 55%, transparent);
+}
+
+.productLogo {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.productLogoLight {
+  display: none;
+}
+
+.productLogoDark {
+  display: block;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+
+:global([data-theme="light"]) .productLogoLight {
+  display: block;
+}
+
+:global([data-theme="light"]) .productLogoDark {
+  display: none;
+}
+
+.productItem:hover .productLogo {
+  transform: scale(1.15);
+}
+
+/* Animated border ring on hover */
+.productRing {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--navbar-accent-start);
+  border-right-color: var(--navbar-accent-end);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  animation: productRingSpin 2s linear infinite;
+  pointer-events: none;
+}
+
+.productItem:hover .productRing {
+  opacity: 1;
+}
+
+@keyframes productRingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Product label — tooltip on logo hover */
+.productLabel {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-semibold);
+  color: #fff;
+  background: var(--glass-navy);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+  z-index: 10;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme="light"]) .productLabel {
+  background: var(--glass-navy-light-soft);
+  color: var(--color-text);
+  border-color: var(--color-border);
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* Tooltip arrow */
+.productLabel::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--glass-navy);
+}
+
+:global([data-theme="light"]) .productLabel::after {
+  border-top-color: var(--glass-navy-light-soft);
+}
+
+.productItem:hover .productLabel {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* ---------- Bottom bar ---------- */
 
 .bottom {

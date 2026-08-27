@@ -15,6 +15,26 @@ import {
   CreditCard,
   type LucideIcon,
 } from "lucide-react";
+
+import metaHealth from "@/assets/images/ourProducts/metaHealth.png";
+import metaEdu from "@/assets/images/ourProducts/metaEdu.png";
+import metaEduDark from "@/assets/images/ourProducts/metaedu-dark.png";
+import metaGreen from "@/assets/images/ourProducts/metaGreen.png";
+import metaGreenDark from "@/assets/images/ourProducts/metagreen-dark.png";
+import metaFlow from "@/assets/images/ourProducts/metaFlow.png";
+import metaHire from "@/assets/images/ourProducts/metaHire.png";
+import metaHireDark from "@/assets/images/ourProducts/metahire-dark.png";
+import metaCheck from "@/assets/images/ourProducts/metaCheck.png";
+import metaCheckDark from "@/assets/images/ourProducts/metacheck-dark.png";
+import metaAds from "@/assets/images/ourProducts/metaAds.png";
+import metaAdsDark from "@/assets/images/ourProducts/metaAds-dark.png";
+import metaNav from "@/assets/images/ourProducts/MetaNav.png";
+import metaLedger from "@/assets/images/ourProducts/MetaLedger.png";
+import metaLedgerDark from "@/assets/images/ourProducts/MetaLedger-dark.png";
+import metaCard from "@/assets/images/ourProducts/metaCard.png";
+import metaCardDark from "@/assets/images/ourProducts/metaCard_dark.png";
+import metaIm from "@/assets/images/ourProducts/metaIm.png";
+import metaImDark from "@/assets/images/ourProducts/metaIm-dark.png";
 import { Button } from "@/components/common/Button";
 import { cn } from "@/utils/cn";
 import styles from "./Footer.module.css";
@@ -255,24 +275,24 @@ const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: Soci
 
 interface FooterSection {
   heading: string;
-  links: { label: string; href: string; disabled?: boolean }[];
+  links: { label: string; href: string; disabled?: boolean; logo?: string; logoDark?: string }[];
 }
 
 const FOOTER_SECTIONS: FooterSection[] = [
   {
     heading: "Products",
     links: [
-      { label: "MetaHealth", href: "/products/metahealth" },
-      { label: "MetaEdu", href: "/products/metaedu" },
-      { label: "MetaGreen", href: "/products/metagreen" },
-      { label: "MetaFlow", href: "/products/metaflow" },
-      { label: "MetaHire", href: "/products/metahire" },
-      { label: "MetaCheck", href: "/products/metacheck" },
-      { label: "MetaAdds", href: "/products/metaadds" },
-      { label: "MetaNav", href: "/products/metanav" },
-      { label: "MetaLedger", href: "/products/metaledger" },
-      { label: "MetaCard", href: "/products/metacard" },
-      { label: "MetaIM", href: "/products/metaim" },
+      { label: "MetaHealth", href: "/products/metahealth", logo: metaHealth, logoDark: metaHealth },
+      { label: "MetaEdu", href: "/products/metaedu", logo: metaEdu, logoDark: metaEduDark },
+      { label: "MetaGreen", href: "/products/metagreen", logo: metaGreen, logoDark: metaGreenDark },
+      { label: "MetaFlow", href: "/products/metaflow", logo: metaFlow, logoDark: metaFlow },
+      { label: "MetaHire", href: "/products/metahire", logo: metaHire, logoDark: metaHireDark },
+      { label: "MetaCheck", href: "/products/metacheck", logo: metaCheck, logoDark: metaCheckDark },
+      { label: "MetaAdds", href: "/products/metaadds", logo: metaAds, logoDark: metaAdsDark },
+      { label: "MetaNav", href: "/products/metanav", logo: metaNav, logoDark: metaNav },
+      { label: "MetaLedger", href: "/products/metaledger", logo: metaLedger, logoDark: metaLedgerDark },
+      { label: "MetaCard", href: "/products/metacard", logo: metaCard, logoDark: metaCardDark },
+      { label: "MetaIM", href: "/products/metaim", logo: metaIm, logoDark: metaImDark },
     ],
   },
   {
@@ -328,6 +348,27 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
                 {link.label}
                 <span className={styles.soonDot} aria-hidden="true" />
               </span>
+            ) : link.logo ? (
+              <Link to={link.href} className={styles.productItem}>
+                <span className={styles.productLogoWrap}>
+                  <img
+                    src={link.logo}
+                    alt=""
+                    className={`${styles.productLogo} ${styles.productLogoLight}`}
+                    draggable={false}
+                  />
+                  {link.logoDark && (
+                    <img
+                      src={link.logoDark}
+                      alt=""
+                      className={`${styles.productLogo} ${styles.productLogoDark}`}
+                      draggable={false}
+                    />
+                  )}
+                  <span className={styles.productRing} aria-hidden="true" />
+                </span>
+                <span className={styles.productLabel}>{link.label}</span>
+              </Link>
             ) : (
               <Link to={link.href} className={styles.link}>
                 {link.label}
