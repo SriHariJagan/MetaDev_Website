@@ -277,6 +277,10 @@ export const contactApi = {
   get: (id: string) => api.get<ApiResponse<ContactSubmission>>(`/admin/contact/${id}`),
   update: (id: string, data: { status?: string; read?: boolean; notes?: string }) =>
     api.patch<ApiResponse<ContactSubmission>>(`/admin/contact/${id}`, data),
+  markRead: (id: string) =>
+    api.patch<ApiResponse<ContactSubmission>>(`/admin/contact/${id}/read`),
+  unreadCount: () =>
+    api.get<ApiResponse<{ count: number }>>('/admin/contact/unread-count'),
   delete: (id: string) => api.delete<ApiResponse<null>>(`/admin/contact/${id}`),
 };
 

@@ -51,15 +51,21 @@ function mapSubmission(sub: ContactSubmission): SupportTicket {
 
 export function SupportTicketsProvider({ children }: { children: ReactNode }) {
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const fetchTickets = async () => {
     try {
-      const res = await contactApi.list();
-      const data = res.data.data as unknown as ContactSubmission[];
+      const [ticketsRes, countRes] = await Promise.all([
+        contactApi.list(),
+        contactApi.unreadCount(),
+      ]);
+      const data = ticketsRes.data.data as unknown as ContactSubmission[];
       setTickets(data.map(mapSubmission));
+      setUnreadCount((countRes.data.data as { count: number }).count);
     } catch {
       setTickets([]);
+      setUnreadCount(0);
     } finally {
       setLoading(false);
     }
@@ -71,15 +77,18 @@ export function SupportTicketsProvider({ children }: { children: ReactNode }) {
 
   const markRead = async (id: string) => {
     setTickets((prev) => prev.map((t) => (t.id === id ? { ...t, read: true } : t)));
+    setUnreadCount((prev) => Math.max(0, prev - 1));
     try {
-      await contactApi.update(id, { read: true });
+      await contactApi.markRead(id);
     } catch { /* ignore */ }
   };
 
   const markAllRead = async () => {
+    const unreadIds = tickets.filter((t) => !t.read).map((t) => t.id);
     setTickets((prev) => prev.map((t) => ({ ...t, read: true })));
-    for (const t of tickets.filter((t) => !t.read)) {
-      try { await contactApi.update(t.id, { read: true }); } catch { /* ignore */ }
+    setUnreadCount(0);
+    for (const id of unreadIds) {
+      try { await contactApi.markRead(id); } catch { /* ignore */ }
     }
   };
 
@@ -96,14 +105,14 @@ export function SupportTicketsProvider({ children }: { children: ReactNode }) {
   const value = useMemo<SupportTicketsContextValue>(
     () => ({
       tickets,
-      unreadCount: tickets.filter((t) => !t.read).length,
+      unreadCount,
       loading,
       markRead,
       markAllRead,
       setStatus,
       refresh: fetchTickets,
     }),
-    [tickets, loading],
+    [tickets, unreadCount, loading],
   );
 
   return (

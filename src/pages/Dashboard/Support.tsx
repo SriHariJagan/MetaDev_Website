@@ -9,7 +9,7 @@ import {
   type ProductKey,
   type TicketStatus,
 } from '@/data/supportTickets';
-import { useSupportTickets, type SupportTicket } from '@/context/SupportTicketsContext';
+import { useSupportTickets } from '@/context/SupportTicketsContext';
 import { DashModal, EmptyState, PageHead } from './_shared';
 
 const STATUS_BADGE: Record<TicketStatus, string> = {
