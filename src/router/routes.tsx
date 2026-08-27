@@ -35,6 +35,7 @@ const OrganizationsPage = lazy(() => import('@/pages/Dashboard/Organizations').t
 const ModulesPage = lazy(() => import('@/pages/Dashboard/Modules').then((m) => ({ default: m.ModulesPage })));
 const SubscriptionsPage = lazy(() => import('@/pages/Dashboard/Subscriptions').then((m) => ({ default: m.SubscriptionsPage })));
 const JobsPage = lazy(() => import('@/pages/Dashboard/Jobs').then((m) => ({ default: m.JobsPage })));
+const SupportPage = lazy(() => import('@/pages/Dashboard/Support').then((m) => ({ default: m.SupportPage })));
 const AuditPage = lazy(() => import('@/pages/Dashboard/Audit').then((m) => ({ default: m.AuditPage })));
 const ProductPage = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductPage })));
 const ProductOverview = lazy(() => import('@/pages/Dashboard/Product').then((m) => ({ default: m.ProductOverview })));
@@ -98,6 +99,7 @@ export const routes: RouteObject[] = [
       { path: 'modules', element: <ModulesPage /> },
       { path: 'subscriptions', element: <SubscriptionsPage /> },
       { path: 'jobs', element: <JobsPage /> },
+      { path: 'support', element: <SupportPage /> },
       { path: 'audit', element: <AuditPage /> },
       {
         path: 'product/:code',

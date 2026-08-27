@@ -382,7 +382,7 @@
   position: absolute;
   z-index: 0;
   right: -1%;
-  bottom: -8%;
+  bottom: -4%;
   font-size: clamp(7rem, 16vw, 13rem);
   font-weight: var(--font-weight-bold);
   letter-spacing: -0.03em;

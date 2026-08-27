@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "@/context/AuthContext";
+import { SupportTicketsProvider, useSupportTickets } from "@/context/SupportTicketsContext";
+import { PRODUCT_META, timeAgo } from "@/data/supportTickets";
 
 interface NavItem {
   path?: string;
@@ -78,7 +80,12 @@ const NAV_LINKS: NavItem[] = [
   { label: "Infrastructure", icon: Server, locked: true, color: "#fb7185" },
   { label: "Domains & SSL", icon: Globe, locked: true, color: "#60a5fa" },
   { label: "Integrations", icon: Plug, locked: true, color: "#c084fc" },
-  { label: "Support Center", icon: LifeBuoy, locked: true, color: "#2dd4bf" },
+  {
+    path: "/dashboard/support",
+    label: "Support Center",
+    icon: LifeBuoy,
+    color: "#2dd4bf",
+  },
   {
     path: "/dashboard/audit",
     label: "Audit Logs",
@@ -97,8 +104,9 @@ const NAV_LINKS: NavItem[] = [
 
 const COLLAPSE_KEY = "dash-sidebar-collapsed";
 
-export function DashboardLayout() {
+function DashboardLayoutInner() {
   const { user, logout } = useAuth();
+  const { tickets, unreadCount, markRead, markAllRead } = useSupportTickets();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -106,11 +114,26 @@ export function DashboardLayout() {
     () => localStorage.getItem(COLLAPSE_KEY) === "1",
   );
   const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
   }, [collapsed]);
+
+  useEffect(() => {
+    const onPointerDown = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setProfileOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, []);
 
   useEffect(() => {
     const onPointerDown = (event: MouseEvent) => {
@@ -251,14 +274,99 @@ export function DashboardLayout() {
               <kbd className="dash-kbd">Ctrl K</kbd>
             </div>
 
-            <button
-              className="dash-iconbtn"
-              aria-label="Notifications"
-              title="Notifications"
-            >
-              <Bell size={17} />
-              <span className="dash-iconbtn__badge" />
-            </button>
+            <div className="dash-notif" ref={notifRef}>
+              <button
+                type="button"
+                className="dash-iconbtn"
+                onClick={() => setNotifOpen((open) => !open)}
+                aria-label="Notifications"
+                title="Notifications"
+                aria-haspopup="menu"
+                aria-expanded={notifOpen}
+              >
+                <Bell size={17} />
+                {unreadCount > 0 && <span className="dash-iconbtn__badge" />}
+              </button>
+
+              {notifOpen && (
+                <div className="dash-notif__panel" role="menu">
+                  <div className="dash-notif__head">
+                    <span className="dash-notif__heading">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="dash-notif__count">{unreadCount} new</span>
+                    )}
+                    {unreadCount > 0 && (
+                      <button
+                        type="button"
+                        className="dash-notif__markall"
+                        onClick={markAllRead}
+                      >
+                        Mark all read
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="dash-notif__list">
+                    {[...tickets]
+                      .sort(
+                        (a, b) =>
+                          new Date(b.receivedAt).getTime() -
+                          new Date(a.receivedAt).getTime(),
+                      )
+                      .slice(0, 6)
+                      .map((ticket) => {
+                        const product = PRODUCT_META[ticket.product];
+                        const Icon = product.icon;
+                        return (
+                          <button
+                            key={ticket.id}
+                            type="button"
+                            className={`dash-notif__item ${!ticket.read ? "dash-notif__item--unread" : ""}`}
+                            onClick={() => {
+                              markRead(ticket.id);
+                              setNotifOpen(false);
+                              navigate(`/dashboard/support?ticket=${ticket.id}`);
+                            }}
+                          >
+                            <span
+                              className="dash-notif__icon"
+                              style={{
+                                color: product.color,
+                                background: `${product.color}16`,
+                              }}
+                            >
+                              <Icon size={14} />
+                            </span>
+                            <span className="dash-notif__body">
+                              <span className="dash-notif__title">
+                                {ticket.name} · {product.label}
+                              </span>
+                              <span className="dash-notif__text">
+                                {ticket.subject}
+                              </span>
+                              <span className="dash-notif__time">
+                                {timeAgo(ticket.receivedAt)}
+                              </span>
+                            </span>
+                            {!ticket.read && <span className="dash-notif__dot" />}
+                          </button>
+                        );
+                      })}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="dash-notif__footer"
+                    onClick={() => {
+                      setNotifOpen(false);
+                      navigate("/dashboard/support");
+                    }}
+                  >
+                    Open Support Center
+                  </button>
+                </div>
+              )}
+            </div>
 
             <div className="dash-header__divider" />
 
@@ -357,6 +465,14 @@ export function DashboardLayout() {
         </main>
       </div>
     </div>
+  );
+}
+
+export function DashboardLayout() {
+  return (
+    <SupportTicketsProvider>
+      <DashboardLayoutInner />
+    </SupportTicketsProvider>
   );
 }
 
