@@ -9,7 +9,7 @@ import {
   type ProductKey,
   type TicketStatus,
 } from '@/data/supportTickets';
-import { useSupportTickets } from '@/context/SupportTicketsContext';
+import { useSupportTickets, type SupportTicket } from '@/context/SupportTicketsContext';
 import { DashModal, EmptyState, PageHead } from './_shared';
 
 const STATUS_BADGE: Record<TicketStatus, string> = {
@@ -23,6 +23,10 @@ const STATUS_LABEL: Record<TicketStatus, string> = {
   open: 'Open',
   resolved: 'Resolved',
 };
+
+function getProductMeta(product: string | undefined | null) {
+  return PRODUCT_META[(product as ProductKey) || 'metadev'];
+}
 
 export function SupportPage() {
   const { tickets, markRead, setStatus } = useSupportTickets();
@@ -153,7 +157,7 @@ export function SupportPage() {
         ) : (
           <div style={{ padding: 8 }}>
             {filtered.map((ticket) => {
-              const product = PRODUCT_META[ticket.product];
+              const product = getProductMeta(ticket.product);
               const Icon = product.icon;
               return (
                 <div
@@ -266,7 +270,7 @@ export function SupportPage() {
               </h3>
               <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', alignItems: 'center' }}>
                 {(() => {
-                  const product = PRODUCT_META[selected.product];
+                  const product = getProductMeta(selected.product);
                   const Icon = product.icon;
                   return (
                     <span
@@ -307,7 +311,7 @@ export function SupportPage() {
               <div>
                 <p className="dash-table__cellsub">Product</p>
                 <p style={{ margin: '2px 0 0', fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
-                  {PRODUCT_META[selected.product].label}
+                  {getProductMeta(selected.product).label}
                 </p>
               </div>
               <div>
@@ -329,6 +333,7 @@ export function SupportPage() {
               </div>
               <div>
                 <p className="dash-table__cellsub">Phone</p>
+                {selected.phone ? (
                 <a
                   href={`tel:${selected.phone.replace(/\s/g, '')}`}
                   style={{
@@ -343,6 +348,9 @@ export function SupportPage() {
                 >
                   <Phone size={12} /> {selected.phone}
                 </a>
+                ) : (
+                <p style={{ margin: '2px 0 0', fontSize: 13, color: '#94a3b8' }}>—</p>
+                )}
               </div>
             </div>
 

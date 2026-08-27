@@ -15,6 +15,7 @@
 import { Mail, Phone, MapPin, Clock, Send, MessageSquare, HeadphonesIcon, Building2, ArrowRight, CheckCircle, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import type { ReactNode, ElementType, FormEvent, ChangeEvent } from "react";
+import { contactApi } from "../../services/api";
 import styles from "./contact.module.css";
 
 /* ============================================================
@@ -253,20 +254,37 @@ export function ContactForm() {
   });
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    setTimeout(() => {
-      setBusy(false);
+    setErrorMsg("");
+
+    try {
+      await contactApi.submit({
+        name: form.name,
+        email: form.email,
+        phone: form.phone || undefined,
+        subject: form.subject,
+        message: form.message,
+        product: "metadev",
+      });
       setStatus("success");
       setForm({ name: "", email: "", phone: "", subject: "", message: "" });
       setTimeout(() => setStatus("idle"), 5000);
-    }, 2000);
+    } catch (err: unknown) {
+      setStatus("error");
+      const axiosError = err as { response?: { data?: { error?: { message?: string } } } };
+      setErrorMsg(axiosError.response?.data?.error?.message || "Failed to send message. Please try again.");
+      setTimeout(() => setStatus("error"), 5000);
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -372,6 +390,14 @@ export function ContactForm() {
           <div className={styles.successBanner} role="status">
             <CheckCircle size={20} strokeWidth={2} aria-hidden="true" />
             Thank you! We'll get back to you soon.
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {status === "error" && errorMsg && (
+          <div className={styles.errorBanner} role="alert">
+            <CheckCircle size={20} strokeWidth={2} aria-hidden="true" />
+            {errorMsg}
           </div>
         )}
 

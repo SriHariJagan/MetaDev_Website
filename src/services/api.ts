@@ -247,4 +247,37 @@ export const auditApi = {
     api.get<ApiResponse<AuditLog[]>>('/admin/audit', { params }),
 };
 
+// Contact
+export interface ContactSubmission {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string;
+  message: string;
+  product: string | null;
+  status: string;
+  read: boolean;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const contactApi = {
+  submit: (data: {
+    name: string;
+    email: string;
+    phone?: string;
+    subject: string;
+    message: string;
+    product?: string;
+  }) => api.post<ApiResponse<ContactSubmission>>('/contact', data),
+  list: (params?: Record<string, string>) =>
+    api.get<ApiResponse<ContactSubmission[]>>('/admin/contact', { params }),
+  get: (id: string) => api.get<ApiResponse<ContactSubmission>>(`/admin/contact/${id}`),
+  update: (id: string, data: { status?: string; read?: boolean; notes?: string }) =>
+    api.patch<ApiResponse<ContactSubmission>>(`/admin/contact/${id}`, data),
+  delete: (id: string) => api.delete<ApiResponse<null>>(`/admin/contact/${id}`),
+};
+
 export default api;

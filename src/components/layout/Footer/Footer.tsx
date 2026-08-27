@@ -47,13 +47,14 @@ interface BrandIconProps {
   size?: number;
 }
 
-const svgProps = (size: number) => ({
-  width: size,
-  height: size,
-  viewBox: "0 0 24 24",
-  fill: "currentColor",
-  "aria-hidden": true,
-} as const);
+const svgProps = (size: number) =>
+  ({
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "currentColor",
+    "aria-hidden": true,
+  }) as const;
 
 function LinkedInIcon({ size = 16 }: BrandIconProps) {
   return (
@@ -200,7 +201,10 @@ export function LetsBuildFuture() {
             </motion.p>
           </div>
 
-          <motion.ul className={styles.ctaFeatures} variants={containerVariants}>
+          <motion.ul
+            className={styles.ctaFeatures}
+            variants={containerVariants}
+          >
             {FEATURES.map(({ icon: Icon, title, description, accent }) => (
               <motion.li
                 key={title}
@@ -234,13 +238,12 @@ export function LetsBuildFuture() {
             <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </motion.div>
-            <div className={styles.linkRows}>
-            {FOOTER_SECTIONS.map((section) => (
-              <FooterLinkSection key={section.heading} section={section} />
-            ))}
-          </div>
+        <div className={styles.linkRows}>
+          {FOOTER_SECTIONS.map((section) => (
+            <FooterLinkSection key={section.heading} section={section} />
+          ))}
+        </div>
       </motion.div>
-      
     </section>
   );
 }
@@ -251,14 +254,24 @@ export function LetsBuildFuture() {
 
 type SocialAccent = "linkedin" | "x" | "youtube" | "facebook" | "instagram";
 
-const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: SocialAccent }[] = [
+const SOCIAL_LINKS: {
+  icon: BrandIcon;
+  label: string;
+  href: string;
+  accent: SocialAccent;
+}[] = [
   {
     icon: LinkedInIcon,
     label: "LinkedIn",
     href: "https://www.linkedin.com/company/metadev-innovations-privated-limited/",
     accent: "linkedin",
   },
-  { icon: XIcon, label: "X / Twitter", href: "https://x.com/metadev_pvt_ltd", accent: "x" },
+  {
+    icon: XIcon,
+    label: "X / Twitter",
+    href: "https://x.com/metadev_pvt_ltd",
+    accent: "x",
+  },
   {
     icon: YouTubeIcon,
     label: "YouTube",
@@ -281,24 +294,97 @@ const SOCIAL_LINKS: { icon: BrandIcon; label: string; href: string; accent: Soci
 
 interface FooterSection {
   heading: string;
-  links: { label: string; href: string; disabled?: boolean; logo?: string; logoDark?: string }[];
+  links: {
+    label: string;
+    href: string;
+    external?: boolean;
+    disabled?: boolean;
+    logo?: string;
+    logoDark?: string;
+  }[];
 }
 
 const FOOTER_SECTIONS: FooterSection[] = [
   {
     heading: " Our Products",
     links: [
-      { label: "MetaHealth", href: "/products/metahealth", logo: metaHealth, logoDark: metaHealth },
-      { label: "MetaEdu", href: "/products/metaedu", logo: metaEdu, logoDark: metaEduDark },
-      { label: "MetaGreen", href: "/products/metagreen", logo: metaGreen, logoDark: metaGreenDark },
-      { label: "MetaFlow", href: "/products/metaflow", logo: metaFlow, logoDark: metaFlow },
-      { label: "MetaHire", href: "/products/metahire", logo: metaHire, logoDark: metaHireDark },
-      { label: "MetaCheck", href: "/products/metacheck", logo: metaCheck, logoDark: metaCheckDark },
-      { label: "MetaAdds", href: "/products/metaadds", logo: metaAds, logoDark: metaAdsDark },
-      { label: "MetaNav", href: "/products/metanav", logo: metaNav, logoDark: metaNav },
-      { label: "MetaLedger", href: "/products/metaledger", logo: metaLedger, logoDark: metaLedgerDark },
-      { label: "MetaCard", href: "/products/metacard", logo: metaCard, logoDark: metaCardDark },
-      { label: "MetaIM", href: "/products/metaim", logo: metaIm, logoDark: metaImDark },
+      {
+        label: "MetaHealth",
+        href: "https://metahealth.live",
+        external: true,
+        logo: metaHealth,
+        logoDark: metaHealth,
+      },
+      {
+        label: "MetaEdu",
+        href: "https://metaedu.in",
+        external: true,
+        logo: metaEdu,
+        logoDark: metaEduDark,
+      },
+      {
+        label: "MetaGreen",
+        href: "https://metagreen.in",
+        external: true,
+        logo: metaGreen,
+        logoDark: metaGreenDark,
+      },
+      {
+        label: "MetaFlow",
+        href: "https://metaflow.in",
+        external: true,
+        logo: metaFlow,
+        logoDark: metaFlow,
+      },
+      {
+        label: "MetaHire",
+        href: "https://metahire.in",
+        external: true,
+        logo: metaHire,
+        logoDark: metaHireDark,
+      },
+      {
+        label: "MetaCheck",
+        href: "https://metacheck.in",
+        external: true,
+        logo: metaCheck,
+        logoDark: metaCheckDark,
+      },
+      {
+        label: "MetaAdds",
+        href: "https://metaads.in",
+        external: true,
+        logo: metaAds,
+        logoDark: metaAdsDark,
+      },
+      {
+        label: "MetaNav",
+        href: "https://metanav.in",
+        external: true,
+        logo: metaNav,
+        logoDark: metaNav,
+      },
+      {
+        label: "MetaLedger",
+        href: "https://metaledger.in",
+        external: true,
+        logo: metaLedger,
+        logoDark: metaLedgerDark,
+      },
+      {
+        label: "MetaCard",
+        href: "https://metacard.in",
+        external: true,
+        logo: metaCard,
+        logoDark: metaCardDark,
+      },
+      {
+        label: "MetaIM",
+        href: "https://metaim.in",
+        external: true,
+        logo: metaIm,
+        logoDark: metaImDark,
+      },
     ],
   },
   // {
@@ -330,9 +416,20 @@ const LEGAL_LINKS = [
   { label: "Sitemap", href: "/sitemap" },
 ];
 
-type BadgeAccent = "iso" | "soc2" | "hipaa" | "gdpr" | "iso9001" | "iso42001" | "pci";
+type BadgeAccent =
+  | "iso"
+  | "soc2"
+  | "hipaa"
+  | "gdpr"
+  | "iso9001"
+  | "iso42001"
+  | "pci";
 
-const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent }[] = [
+const COMPLIANCE_BADGES: {
+  icon: LucideIcon;
+  label: string;
+  accent: BadgeAccent;
+}[] = [
   { icon: ShieldCheck, label: "ISO 27001", accent: "iso" },
   { icon: ShieldCheck, label: "ISO 9001", accent: "iso9001" },
   { icon: ShieldCheck, label: "ISO 42001", accent: "iso42001" },
@@ -344,37 +441,77 @@ const COMPLIANCE_BADGES: { icon: LucideIcon; label: string; accent: BadgeAccent 
 
 function FooterLinkSection({ section }: { section: FooterSection }) {
   return (
-    <motion.div className={styles.linkRow} variants={footerItemVariants}>
+    <div className={styles.linkRow}>
       <h3 className={styles.colHeading}>{section.heading}</h3>
       <ul className={styles.linkRowList}>
         {section.links.map((link) => (
           <li key={link.label}>
             {link.disabled ? (
-              <span className={cn(styles.link, styles.linkDisabled)} title="Coming soon">
+              <span
+                className={cn(styles.link, styles.linkDisabled)}
+                title="Coming soon"
+              >
                 {link.label}
                 <span className={styles.soonDot} aria-hidden="true" />
               </span>
             ) : link.logo ? (
-              <Link to={link.href} className={styles.productItem}>
-                <span className={styles.productLogoWrap}>
-                  <img
-                    src={link.logo}
-                    alt=""
-                    className={`${styles.productLogo} ${styles.productLogoLight}`}
-                    draggable={false}
-                  />
-                  {link.logoDark && (
+              link.external ? (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.productItem}
+                >
+                  <span className={styles.productLogoWrap}>
                     <img
-                      src={link.logoDark}
+                      src={link.logo}
                       alt=""
-                      className={`${styles.productLogo} ${styles.productLogoDark}`}
+                      className={`${styles.productLogo} ${styles.productLogoLight}`}
                       draggable={false}
                     />
-                  )}
-                  <span className={styles.productRing} aria-hidden="true" />
-                </span>
-                <span className={styles.productLabel}>{link.label}</span>
-              </Link>
+                    {link.logoDark && (
+                      <img
+                        src={link.logoDark}
+                        alt=""
+                        className={`${styles.productLogo} ${styles.productLogoDark}`}
+                        draggable={false}
+                      />
+                    )}
+                    <span className={styles.productRing} aria-hidden="true" />
+                  </span>
+                  <span className={styles.productLabel}>{link.label}</span>
+                </a>
+              ) : (
+                <Link to={link.href} className={styles.productItem}>
+                  <span className={styles.productLogoWrap}>
+                    <img
+                      src={link.logo}
+                      alt=""
+                      className={`${styles.productLogo} ${styles.productLogoLight}`}
+                      draggable={false}
+                    />
+                    {link.logoDark && (
+                      <img
+                        src={link.logoDark}
+                        alt=""
+                        className={`${styles.productLogo} ${styles.productLogoDark}`}
+                        draggable={false}
+                      />
+                    )}
+                    <span className={styles.productRing} aria-hidden="true" />
+                  </span>
+                  <span className={styles.productLabel}>{link.label}</span>
+                </Link>
+              )
+            ) : link.external ? (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.link}
+              >
+                {link.label}
+              </a>
             ) : (
               <Link to={link.href} className={styles.link}>
                 {link.label}
@@ -383,7 +520,7 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
           </li>
         ))}
       </ul>
-    </motion.div>
+    </div>
   );
 }
 
@@ -405,9 +542,11 @@ export function Footer() {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-
           <div className={styles.footerBrandRow}>
-            <motion.div className={styles.brandCol} variants={footerItemVariants}>
+            <motion.div
+              className={styles.brandCol}
+              variants={footerItemVariants}
+            >
               <Link to="/" className={styles.brand}>
                 <img
                   src="/logo-noBg.png"
@@ -464,7 +603,10 @@ export function Footer() {
 
           <ul className={styles.badgeList}>
             {COMPLIANCE_BADGES.map(({ icon: Icon, label, accent }) => (
-              <li key={label} className={`${styles.badge} ${styles[`badge-${accent}`]}`}>
+              <li
+                key={label}
+                className={`${styles.badge} ${styles[`badge-${accent}`]}`}
+              >
                 <Icon size={14} aria-hidden="true" />
                 <span>{label}</span>
               </li>
