@@ -117,11 +117,11 @@ const TermsOfServicePage = lazy(() =>
 const SecurityPage = lazy(() =>
   import("@/pages/Legal/Security").then((m) => ({ default: m.SecurityPage })),
 );
-const CompliancePage = lazy(() =>
-  import("@/pages/Legal/Compliance").then((m) => ({
-    default: m.CompliancePage,
-  })),
-);
+// const CompliancePage = lazy(() =>
+//   import("@/pages/Legal/Compliance").then((m) => ({
+//     default: m.CompliancePage,
+//   })),
+// );
 const SitemapPage = lazy(() =>
   import("@/pages/Legal/Sitemap").then((m) => ({ default: m.SitemapPage })),
 );
