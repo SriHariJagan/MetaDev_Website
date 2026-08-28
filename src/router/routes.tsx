@@ -28,6 +28,11 @@ const LoginPage = lazy(() => import('@/pages/Login').then((module) => ({ default
 const ForgotPasswordPage = lazy(() => import('@/pages/ForgotPassword').then((module) => ({ default: module.ForgotPasswordPage })));
 const NotFoundPage = lazy(() => import('@/pages/NotFound').then((module) => ({ default: module.NotFoundPage })));
 const ErrorPage = lazy(() => import('@/pages/Error').then((module) => ({ default: module.ErrorPage })));
+const PrivacyPolicyPage = lazy(() => import('@/pages/Legal/PrivacyPolicy').then((m) => ({ default: m.PrivacyPolicyPage })));
+const TermsOfServicePage = lazy(() => import('@/pages/Legal/TermsOfService').then((m) => ({ default: m.TermsOfServicePage })));
+const SecurityPage = lazy(() => import('@/pages/Legal/Security').then((m) => ({ default: m.SecurityPage })));
+const CompliancePage = lazy(() => import('@/pages/Legal/Compliance').then((m) => ({ default: m.CompliancePage })));
+const SitemapPage = lazy(() => import('@/pages/Legal/Sitemap').then((m) => ({ default: m.SitemapPage })));
 
 const DashboardOverview = lazy(() => import('@/pages/Dashboard/Overview').then((m) => ({ default: m.DashboardOverview })));
 const UsersPage = lazy(() => import('@/pages/Dashboard/Users').then((m) => ({ default: m.UsersPage })));
@@ -79,6 +84,16 @@ export const routes: RouteObject[] = [
       { path: 'contact', element: <ContactPage /> },
       { path: 'team', element: <TeamPage /> },
       { path: 'careers', element: <CareersPage /> },
+      {
+        path: 'legal',
+        children: [
+          { path: 'privacy-policy', element: <PrivacyPolicyPage /> },
+          { path: 'terms-of-service', element: <TermsOfServicePage /> },
+          { path: 'security', element: <SecurityPage /> },
+          { path: 'compliance', element: <CompliancePage /> },
+        ],
+      },
+      { path: 'sitemap', element: <SitemapPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
