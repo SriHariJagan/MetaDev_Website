@@ -411,6 +411,7 @@ const FOOTER_SECTIONS: FooterSection[] = [
 const LEGAL_LINKS = [
   { label: "Privacy Policy", href: "/legal/privacy-policy" },
   { label: "Terms of Service", href: "/legal/terms-of-service" },
+  { label: "Cancellation & Refunds", href: "/legal/cancellation" },
   { label: "Security", href: "/legal/security" },
   { label: "Compliance", href: "/legal/compliance" },
   { label: "Sitemap", href: "/sitemap" },

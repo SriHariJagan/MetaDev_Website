@@ -117,13 +117,16 @@ const TermsOfServicePage = lazy(() =>
 const SecurityPage = lazy(() =>
   import("@/pages/Legal/Security").then((m) => ({ default: m.SecurityPage })),
 );
-// const CompliancePage = lazy(() =>
-//   import("@/pages/Legal/Compliance").then((m) => ({
-//     default: m.CompliancePage,
-//   })),
-// );
+const CompliancePage = lazy(() =>
+  import("@/pages/Legal/Compliance").then((m) => ({
+    default: m.CompliancePage,
+  })),
+);
 const SitemapPage = lazy(() =>
   import("@/pages/Legal/Sitemap").then((m) => ({ default: m.SitemapPage })),
+);
+const CancellationPage = lazy(() =>
+  import("@/pages/Legal/Cancellation").then((m) => ({ default: m.CancellationPage })),
 );
 
 const DashboardOverview = lazy(() =>
@@ -222,7 +225,11 @@ export const routes: RouteObject[] = [
           { path: "privacy-policy", element: <PrivacyPolicyPage /> },
           { path: "terms-of-service", element: <TermsOfServicePage /> },
           { path: "security", element: <SecurityPage /> },
-          // { path: 'compliance', element: <CompliancePage /> },
+          { path: 'compliance', element: <CompliancePage /> },
+          { path: "cancellation", element: <CancellationPage /> },
+          // alias for /legal/cancellation-and-refund and /legal/refund
+          { path: "cancellation-and-refund", element: <CancellationPage /> },
+          { path: "refund", element: <CancellationPage /> },
         ],
       },
       { path: "sitemap", element: <SitemapPage /> },
