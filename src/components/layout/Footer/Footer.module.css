@@ -1078,14 +1078,25 @@
 @media (max-width: 72rem) {
   .main {
     padding-block: var(--space-12) var(--space-6);
+    padding-bottom: 8rem;
   }
 
   .mainInner {
     gap: var(--space-8);
   }
 
+  .watermark {
+    right: auto;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    font-size: clamp(7rem, 20vw, 16rem);
+    opacity: 0.5;
+  }
+
   .brandCol {
     position: relative;
+    z-index: 1;
     flex: none;
     width: 100%;
     max-width: 28rem;
@@ -1165,10 +1176,16 @@
 @media (max-width: 48rem) {
   .main {
     padding-block: var(--space-10) var(--space-5);
+    padding-bottom: 7rem;
   }
 
   .mainInner {
     gap: var(--space-7);
+  }
+
+  .watermark {
+    font-size: clamp(6rem, 18vw, 14rem);
+    opacity: 0.4;
   }
 
   .colHeading {
@@ -1210,6 +1227,12 @@
 @media (max-width: 32rem) {
   .main {
     padding-block: var(--space-8) var(--space-4);
+    padding-bottom: 6rem;
+  }
+
+  .watermark {
+    font-size: clamp(5rem, 15vw, 12rem);
+    opacity: 0.35;
   }
 
   .linkRows {
