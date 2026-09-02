@@ -1,6 +1,7 @@
 import { FileCheck2, Scale, AlertTriangle } from "lucide-react";
 import { LegalLayout, type TocItem } from "./LegalLayout";
-import styles from "./Legal.module.css";
+import { SEO } from '@/seo/SEO';
+import styles from './Legal.module.css';
 
 const TOC: TocItem[] = [
   { id: "acceptance", label: "1. Acceptance" },
@@ -20,7 +21,9 @@ const TOC: TocItem[] = [
 
 export function TermsOfServicePage() {
   return (
-    <LegalLayout
+    <>
+      <SEO />
+      <LegalLayout
       icon={FileCheck2}
       eyebrow="Legal — Terms"
       title="Terms of Service"
@@ -106,5 +109,6 @@ export function TermsOfServicePage() {
       <p>We may update these Terms to reflect legal, technical, or business changes. Material changes will be posted here with a new “Last updated” date; for registered users we may also email. Continued use after the effective date constitutes acceptance.</p>
       <p>Questions: <a href="mailto:info@metadev.in">info@metadev.in</a> · Grievance Officer (IT Rules): <a href="mailto:contact@metadev.in">contact@metadev.in</a> — 15-day redressal. Postal: MetaDev Innovations Pvt. Ltd., Hyderabad, Telangana, India.</p>
     </LegalLayout>
+    </>
   );
 }

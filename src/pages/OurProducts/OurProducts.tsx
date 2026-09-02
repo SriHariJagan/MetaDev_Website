@@ -36,6 +36,7 @@ import { fadeUp, staggerContainer } from '@/constants/motion';
 import { PRODUCTS, type ProductAccent, type ProductMeta } from '@/constants/products';
 import { cn } from '@/utils/cn';
 import { SHOWCASE_PRODUCTS } from './showcaseData';
+import { SEO } from '@/seo/SEO';
 import styles from './OurProducts.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -411,6 +412,7 @@ function ProductGridSection() {
 export function OurProductsPage() {
   return (
     <>
+      <SEO />
       <ProductShowcase products={SHOWCASE_PRODUCTS} showHeader={false} fullscreen />
       <ProductGridSection />
     </>

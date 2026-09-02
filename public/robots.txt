@@ -1,0 +1,13 @@
+# robots.txt for https://metadev.in
+# Allow all legitimate crawlers; disallow private/auth areas
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /forgot-password
+Disallow: /api/
+
+# Do not block CSS, JS, images or fonts - required for rendering
+
+# Sitemap
+Sitemap: https://metadev.in/sitemap.xml

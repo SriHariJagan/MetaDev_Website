@@ -23,8 +23,9 @@ export function Button({
   size = 'md',
   fullWidth = false,
   className,
+  onClick,
   ...rest
-}: ButtonProps) {
+}: ButtonProps & { onClick?: (e: React.MouseEvent<HTMLElement>) => void }) {
   const classes = cn(
     styles.button,
     styles[variant],
@@ -55,6 +56,7 @@ export function Button({
           href={to}
           className={classes}
           onClick={(event) => {
+            onClick?.(event as unknown as React.MouseEvent<HTMLElement>);
             event.preventDefault();
             scrollToHash(to.slice(1));
           }}
@@ -65,7 +67,14 @@ export function Button({
     }
 
     return (
-      <Link to={to} className={classes} onClick={handleAnchorClick}>
+      <Link
+        to={to}
+        className={classes}
+        onClick={(e) => {
+          onClick?.(e as unknown as React.MouseEvent<HTMLElement>);
+          handleAnchorClick(e);
+        }}
+      >
         {children}
       </Link>
     );

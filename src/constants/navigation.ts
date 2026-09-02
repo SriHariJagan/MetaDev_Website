@@ -1,6 +1,6 @@
 import type { NavItem } from '@/types';
 
-export const SITE_NAME = 'MeteDev';
+export const SITE_NAME = 'MetaDev';
 
 export const NAV_LINKS: NavItem[] = [
   { label: 'Home', path: '/' },

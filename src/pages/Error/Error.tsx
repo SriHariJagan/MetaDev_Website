@@ -1,5 +1,6 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router-dom';
 import { PagePlaceholder } from '@/components/common/PagePlaceholder';
+import { SEO } from '@/seo/SEO';
 
 export function ErrorPage() {
   const error = useRouteError();
@@ -11,10 +12,13 @@ export function ErrorPage() {
   }
 
   return (
-    <PagePlaceholder
-      title="Something went wrong"
-      description={message}
-      action={{ label: 'Back to Home', to: '/' }}
-    />
+    <>
+      <SEO title="Error | MetaDev" description={message} robots="noindex, nofollow" noindex />
+      <PagePlaceholder
+        title="Something went wrong"
+        description={message}
+        action={{ label: 'Back to Home', to: '/' }}
+      />
+    </>
   );
 }

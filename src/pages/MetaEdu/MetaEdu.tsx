@@ -39,6 +39,7 @@ import { Section } from '@/components/common/Section';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { defaultContainerVariants, defaultItemVariants } from '@/constants/motion';
 import { cn } from '@/utils/cn';
+import { SEO } from '@/seo/SEO';
 import styles from './MetaEdu.module.css';
 
 const VIEWPORT = { once: false, amount: 0.2 } as const;
@@ -570,7 +571,9 @@ export function MetaEduPage() {
   const audience = AUDIENCES[activeAudience];
 
   return (
-    <div className={styles.page}>
+    <>
+      <SEO />
+      <div className={styles.page}>
       <GradientDefs />
 
       {/* ================= HERO ================= */}
@@ -1043,6 +1046,7 @@ export function MetaEduPage() {
         </Container>
       </Section>
     </div>
+    </>
   );
 }
 

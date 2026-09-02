@@ -37,6 +37,7 @@ import metaIm from "@/assets/images/ourProducts/metaIm.png";
 import metaImDark from "@/assets/images/ourProducts/metaIm-dark.png";
 import { Button } from "@/components/common/Button";
 import { cn } from "@/utils/cn";
+import { trackCtaClick } from "@/seo/analytics";
 import styles from "./Footer.module.css";
 
 /* ==================================================================== */
@@ -229,11 +230,12 @@ export function LetsBuildFuture() {
             variant="gradient"
             size="md"
             className={styles.primaryBtn}
+            onClick={() => trackCtaClick("talk_to_sales", "/contact?intent=sales")}
           >
             Talk to Sales
             <ArrowRight size={14} aria-hidden="true" />
           </Button>
-          <Link to="/solutions" className={styles.tertiaryLink}>
+          <Link to="/solutions" className={styles.tertiaryLink} onClick={() => trackCtaClick("explore_solutions", "/solutions")}>
             Explore Solutions
             <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
@@ -467,6 +469,10 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
                     <img
                       src={link.logo}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
+                      width={28}
+                      height={28}
                       className={`${styles.productLogo} ${styles.productLogoLight}`}
                       draggable={false}
                     />
@@ -474,6 +480,10 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
                       <img
                         src={link.logoDark}
                         alt=""
+                        loading="lazy"
+                        decoding="async"
+                        width={28}
+                        height={28}
                         className={`${styles.productLogo} ${styles.productLogoDark}`}
                         draggable={false}
                       />
@@ -488,6 +498,10 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
                     <img
                       src={link.logo}
                       alt=""
+                      loading="lazy"
+                      decoding="async"
+                      width={28}
+                      height={28}
                       className={`${styles.productLogo} ${styles.productLogoLight}`}
                       draggable={false}
                     />
@@ -495,6 +509,10 @@ function FooterLinkSection({ section }: { section: FooterSection }) {
                       <img
                         src={link.logoDark}
                         alt=""
+                        loading="lazy"
+                        decoding="async"
+                        width={28}
+                        height={28}
                         className={`${styles.productLogo} ${styles.productLogoDark}`}
                         draggable={false}
                       />
@@ -548,16 +566,24 @@ export function Footer() {
               className={styles.brandCol}
               variants={footerItemVariants}
             >
-              <Link to="/" className={styles.brand}>
+              <Link to="/" className={styles.brand} aria-label="MetaDev — Home">
                 <img
                   src="/logo-noBg.png"
-                  alt="metadev"
+                  alt="MetaDev logo"
+                  width={140}
+                  height={32}
+                  loading="lazy"
+                  decoding="async"
                   className={`${styles.brandLogo} ${styles.brandLogoDark}`}
                   draggable={false}
                 />
                 <img
                   src="/logo-lightmode.png"
-                  alt="metadev"
+                  alt="MetaDev logo"
+                  width={140}
+                  height={32}
+                  loading="lazy"
+                  decoding="async"
                   className={`${styles.brandLogo} ${styles.brandLogoLight}`}
                   draggable={false}
                 />

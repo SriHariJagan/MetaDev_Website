@@ -16,6 +16,8 @@ import { Mail, Phone, MapPin, Clock, Send, MessageSquare, HeadphonesIcon, Buildi
 import { useState, useEffect, useRef } from "react";
 import type { ReactNode, ElementType, FormEvent, ChangeEvent } from "react";
 import { contactApi } from "../../services/api";
+import { SEO } from "@/seo/SEO";
+import { trackContactSubmit, trackCtaClick } from "@/seo/analytics";
 import styles from "./contact.module.css";
 
 /* ============================================================
@@ -275,6 +277,11 @@ export function ContactForm() {
         product: "metadev",
       });
       setStatus("success");
+      trackContactSubmit();
+      // Partnership intent is tracked separately for attribution
+      if (form.subject === "business") {
+        trackCtaClick("partnership_inquiry_submit", "/contact");
+      }
       setForm({ name: "", email: "", phone: "", subject: "", message: "" });
       setTimeout(() => setStatus("idle"), 5000);
     } catch (err: unknown) {
@@ -497,8 +504,8 @@ const DEPARTMENTS: DeptItem[] = [
   },
   {
     icon: Building2,
-    name: "Business Inquiries",
-    email: "business@metadev.in",
+    name: "Partnership",
+    email: "partnership@metadev.in",
   },
   {
     icon: MessageSquare,
@@ -623,6 +630,7 @@ export function MapSection({
 export function ContactPage() {
   return (
     <div className={styles.page}>
+      <SEO />
       <ContactHero />
       <ContactInfoStrip />
       <ContactFormSection />

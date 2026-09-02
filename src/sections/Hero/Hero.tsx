@@ -20,6 +20,7 @@ import { GradientText } from '@/components/common/GradientText';
 import { Badge } from '@/components/common/Badge';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
 import { fadeUp, staggerContainer } from '@/constants/motion';
+import { trackCtaClick } from '@/seo/analytics';
 import { DigitalGlobe } from './DigitalGlobe';
 import styles from './Hero.module.css';
 
@@ -180,9 +181,13 @@ function HeroVisual() {
 
       <img
         src="/logo-noBg.png"
-        alt="metadev logo"
+        alt="MetaDev"
+        width={64}
+        height={64}
         className={styles.heroLogo}
         draggable={false}
+        decoding="async"
+        fetchPriority="high"
       />
 
       {FLOATING_CARDS.map((card) => (
@@ -235,7 +240,7 @@ export function Hero() {
           </motion.p>
 
           <motion.div className={styles.actions} variants={itemVariants}>
-            <Button to="/solutions" size="md" variant="gradient">
+            <Button to="/solutions" size="md" variant="gradient" onClick={() => trackCtaClick("hero_explore_solutions", "/solutions")}>
               Explore Solutions
               <ArrowRight size={16} aria-hidden="true" />
             </Button>

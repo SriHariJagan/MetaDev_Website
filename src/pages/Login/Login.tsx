@@ -1,4 +1,5 @@
 // Login.tsx — MetaDev admin portal sign in page
+import { SEO } from '@/seo/SEO';
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -274,7 +275,9 @@ export function LoginPage() {
   };
 
   return (
-    <div className={styles.page}>
+    <>
+      <SEO />
+      <div className={styles.page}>
       <BrandPanel />
 
       <div className={styles.rightPanel}>
@@ -361,7 +364,8 @@ export function LoginPage() {
           <p className={styles.cardFooter}>© {new Date().getFullYear()} MetaDev. All rights reserved.</p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

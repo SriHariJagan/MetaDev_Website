@@ -32,6 +32,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { SupportTicketsProvider, useSupportTickets } from "@/context/SupportTicketsContext";
 import { PRODUCT_META, timeAgo } from "@/data/supportTickets";
+import { SEO } from "@/seo/SEO";
 
 interface NavItem {
   path?: string;
@@ -163,6 +164,7 @@ function DashboardLayoutInner() {
 
   return (
     <div className="dash-root">
+      <SEO robots="noindex, nofollow" noindex />
       {mobileOpen && (
         <div className="dash-backdrop" onClick={() => setMobileOpen(false)} />
       )}

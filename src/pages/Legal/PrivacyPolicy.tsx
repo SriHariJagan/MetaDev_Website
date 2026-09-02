@@ -1,6 +1,7 @@
 import { ShieldCheck, Info, Lock } from "lucide-react";
 import { LegalLayout, type TocItem } from "./LegalLayout";
-import styles from "./Legal.module.css";
+import { SEO } from '@/seo/SEO';
+import styles from './Legal.module.css';
 
 const TOC: TocItem[] = [
   { id: "overview", label: "1. Overview" },
@@ -20,7 +21,9 @@ const TOC: TocItem[] = [
 
 export function PrivacyPolicyPage() {
   return (
-    <LegalLayout
+    <>
+      <SEO />
+      <LegalLayout
       icon={Lock}
       eyebrow="Legal — Privacy"
       title="Privacy Policy"
@@ -128,5 +131,6 @@ export function PrivacyPolicyPage() {
       <p><strong>Email:</strong> <a href="mailto:info@metadev.in">info@metadev.in</a> · <a href="mailto:contact@metadev.in">contact@metadev.in</a> · <strong>Post:</strong> MetaDev Innovations Pvt. Ltd., Hyderabad, Telangana, India.</p>
       <p className={styles.sitemapNote}>This policy is for transparency and does not create rights beyond applicable law. Product-specific DPAs and customer contracts prevail in case of conflict.</p>
     </LegalLayout>
+    </>
   );
 }

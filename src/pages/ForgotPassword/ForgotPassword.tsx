@@ -1,4 +1,5 @@
 // ForgotPassword.tsx — reset password request page (super-admin only)
+import { SEO } from '@/seo/SEO';
 import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CheckCircle, KeyRound, Mail } from 'lucide-react';
@@ -29,8 +30,10 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <div className={loginStyles.page}>
-      <BrandPanel />
+    <>
+      <SEO />
+      <div className={loginStyles.page}>
+        <BrandPanel />
 
       <div className={loginStyles.rightPanel}>
         <div className={loginStyles.card}>
@@ -102,7 +105,8 @@ export function ForgotPasswordPage() {
           </Link>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 

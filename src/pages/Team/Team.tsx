@@ -4,11 +4,13 @@ import { HowWeWork } from '@/sections/HowWeWork';
 import { BeyondTheCode } from '@/sections/BeyondTheCode';
 import { JoinUs } from '@/sections/JoinUs';
 import { SectionDivider } from '@/components/common/SectionDivider';
+import { SEO } from '@/seo/SEO';
 import styles from './Team.module.css';
 
 export function TeamPage() {
   return (
     <div className={styles.team}>
+      <SEO />
       <TeamHero />
       <SectionDivider />
       <TeamGrid />

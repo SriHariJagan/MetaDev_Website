@@ -5,17 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="MeteDev — a premium web development company crafting high-performance web, mobile and UI/UX experiences."
+      content="MetaDev builds secure, scalable digital platforms — web, mobile, AI, cloud and enterprise software — empowering businesses, institutions and communities across India and beyond."
     />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://metadev.in/" />
+    <meta property="og:title" content="MetaDev | Software Development &amp; Digital Solutions" />
+    <meta property="og:description" content="MetaDev builds secure, scalable digital platforms — web, mobile, AI, cloud and enterprise software — empowering businesses, institutions and communities across India and beyond." />
+    <meta property="og:url" content="https://metadev.in/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://metadev.in/metaDev.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="MetaDev" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MetaDev | Software Development &amp; Digital Solutions" />
+    <meta name="twitter:description" content="MetaDev builds secure, scalable digital platforms — web, mobile, AI, cloud and enterprise software." />
+    <meta name="twitter:image" content="https://metadev.in/metaDev.png" />
     <meta name="theme-color" content="#4f46e5" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/svg+xml" href="/favIocn.png" />
-    <title>MeteDev — Premium Web Solutions</title>
+    <link rel="icon" type="image/png" href="/favIocn.png" />
+    <link rel="apple-touch-icon" href="/metaDev.png" />
+    <title>MetaDev | Software Development &amp; Digital Solutions</title>
+    <!-- Google tag (gtag.js) — also injected via src/seo/analytics.ts for SPA tracking; this static tag ensures earliest load -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BBE49ZZTRT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      // Prevent duplicate init if analytics.ts already ran
+      if (!window.__GA_INITIALIZED__) {
+        gtag('js', new Date());
+        gtag('config', 'G-BBE49ZZTRT', { anonymize_ip: true, send_page_view: true });
+        window.__GA_INITIALIZED__ = true;
+      }
+    </script>
     <script>
       (function () {
         var stored = null;

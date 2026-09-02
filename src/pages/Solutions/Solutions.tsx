@@ -7,10 +7,12 @@ import { TechStack } from '@/sections/TechStack';
 import { AIPowered } from '@/sections/AIPowered';
 import { WhyPartnerWithUs } from '@/sections/WhyPartnerWithUs';
 import { IndustriesMarquee } from '@/sections/IndustriesMarquee';
+import { SEO } from '@/seo/SEO';
 
 export function SolutionsPage() {
   return (
     <>
+      <SEO />
       <SolutionsHero />
       <SolutionsShowcase solutions={SOLUTIONS} />
       <OurSolutions showDescriptions={false} />

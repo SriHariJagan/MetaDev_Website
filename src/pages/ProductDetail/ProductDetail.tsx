@@ -37,6 +37,7 @@ import { SectionHeader } from '@/components/common/SectionHeader';
 import { defaultContainerVariants, defaultItemVariants } from '@/constants/motion';
 import { PRODUCTS, type ProductMeta } from '@/constants/products';
 import { NotFoundPage } from '@/pages/NotFound';
+import { SEO } from '@/seo/SEO';
 import styles from './ProductDetail.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -381,6 +382,7 @@ export function ProductDetailPage() {
 
   return (
     <div className={`${styles.page} ${accentClass}`}>
+      <SEO />
       <GradientDefs />
 
       {/* ---------------- Hero ---------------- */}

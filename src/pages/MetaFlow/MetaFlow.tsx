@@ -31,6 +31,7 @@ import { Section } from '@/components/common/Section';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { defaultContainerVariants, defaultItemVariants } from '@/constants/motion';
 import { cn } from '@/utils/cn';
+import { SEO } from '@/seo/SEO';
 import styles from './MetaFlow.module.css';
 
 const VIEWPORT = { once: false, amount: 0.2 } as const;
@@ -341,7 +342,9 @@ const PROCESS_FLOW = [
 
 export function MetaFlowPage() {
   return (
-    <div className={styles.page}>
+    <>
+      <SEO />
+      <div className={styles.page}>
       <GradientDefs />
 
       {/* ---------------- Hero ---------------- */}
@@ -592,6 +595,7 @@ export function MetaFlowPage() {
         </Container>
       </Section>
     </div>
+    </>
   );
 }
 

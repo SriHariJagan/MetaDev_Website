@@ -43,6 +43,7 @@ import { StickyFeatureShowcase } from "@/sections/StickyFeatureShowcase";
 import { ProvenProcess } from "@/sections/ProvenProcess";
 import { TechStackNew } from "@/sections/TechStackNew";
 import { GradientText } from "@/components/common/GradientText";
+import { SEO } from "@/seo/SEO";
 import styles from "./Home.module.css";
 
 const WHY_TITLE: ReactNode = (
@@ -202,6 +203,7 @@ const WHY_CAPABILITIES: Capability[] = [
 export function HomePage() {
   return (
     <div className={styles.home}>
+      <SEO />
       <Hero />
       <TrustedBy />
       <WhyMetaNext />

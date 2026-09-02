@@ -38,6 +38,7 @@ import { Section } from '@/components/common/Section';
 import { SectionHeader } from '@/components/common/SectionHeader';
 import { defaultContainerVariants, defaultItemVariants } from '@/constants/motion';
 import { cn } from '@/utils/cn';
+import { SEO } from '@/seo/SEO';
 import styles from './MetaHealth.module.css';
 
 const VIEWPORT = { once: false, amount: 0.2 } as const;
@@ -540,7 +541,9 @@ export function MetaHealthPage() {
   const specialty = SPECIALTIES[activeSpecialty];
 
   return (
-    <div className={styles.page}>
+    <>
+      <SEO />
+      <div className={styles.page}>
       <GradientDefs />
 
       {/* ================= HERO ================= */}
@@ -993,6 +996,7 @@ align="center" spacing="md" className={styles.sectionHeader}
         </Container>
       </Section>
     </div>
+    </>
   );
 }
 

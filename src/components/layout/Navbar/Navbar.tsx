@@ -33,17 +33,21 @@ function LogoMark() {
     <span className={styles.logoWrap}>
       <img
         src="/logo-noBg.png"
-        alt="metadev"
+        alt="MetaDev logo"
+        width={120}
+        height={28}
         className={`${styles.logoImage} ${styles.logoDark}`}
-        aria-hidden="true"
         draggable={false}
+        decoding="async"
       />
       <img
         src="/logo-lightmode.png"
-        alt="metadev"
+        alt="MetaDev logo"
+        width={120}
+        height={28}
         className={`${styles.logoImage} ${styles.logoLight}`}
-        aria-hidden="true"
         draggable={false}
+        decoding="async"
       />
     </span>
   );
