@@ -1,4 +1,4 @@
-/* TeamGrid.module.css — photo team cards */
+/* TeamGrid.module.css — founder profile cards */
 
 .root {
   position: relative;
@@ -27,69 +27,13 @@
   opacity: 0.07;
 }
 
-/* ---------- Header ---------- */
+/* ---------- Container ---------- */
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+  position: relative;
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-2);
-}
-
-.eyebrowLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: 0.7rem;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--navbar-accent);
-}
-
-.eyebrowLabel::before,
-.eyebrowLabel::after {
-  content: "";
-  width: 18px;
-  height: 2px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--navbar-accent-start),
-    var(--navbar-accent-end)
-  );
-}
-
-.eyebrowLabel::after {
-  transform: scaleX(-1);
-}
-
-.title {
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--color-text);
-  text-wrap: balance;
-  margin: 0;
-  padding-bottom: 0;
-}
-
-.subtitle {
-  max-width: 36rem;
-  font-size: var(--font-size-3xs);
-  color: var(--color-text-muted);
-  margin: 0;
-}
-
-/* ---------- Per-member accent colors ---------- */
+/* ---------- Per-founder accent colors ---------- */
 
 .accent-blue {
   --accent: var(--product-accent-blue, 37 99 235);
@@ -101,29 +45,22 @@
   --grad-1: var(--product-grad-violet-1, 139 92 246);
   --grad-2: var(--product-grad-violet-2, 109 40 217);
 }
-.accent-rose {
-  --accent: var(--product-accent-rose, 190 18 60);
-  --grad-1: var(--product-grad-rose-1, 244 63 94);
-  --grad-2: var(--product-grad-rose-2, 190 18 60);
-}
-.accent-amber {
-  --accent: var(--product-accent-amber, 217 119 6);
-  --grad-1: var(--product-grad-amber-1, 245 158 11);
-  --grad-2: var(--product-grad-amber-2, 180 83 9);
-}
 
-/* ---------- Member grid ---------- */
+/* ---------- Founder grid ---------- */
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  align-items: stretch;
 }
 
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6);
   border-radius: var(--radius-lg);
   border: 1px solid var(--glass-border);
   background: var(--glass-navy);
@@ -138,31 +75,31 @@
 .card::before {
   content: "";
   position: absolute;
-  top: -70px;
-  right: -60px;
-  width: 190px;
-  height: 190px;
+  top: -90px;
+  right: -70px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(var(--accent, 94 184 255), 0.18) 0%,
+    rgba(var(--accent, 94 184 255), 0.2) 0%,
     transparent 70%
   );
-  filter: blur(26px);
+  filter: blur(28px);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-medium);
-  z-index: 2;
+  z-index: 0;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(var(--accent, 94 184 255), 0.55);
+  transform: translateY(-4px);
+  border-color: rgba(var(--accent, 94 184 255), 0.5);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(var(--accent, 94 184 255), 0.12),
-    0 22px 46px rgba(2, 10, 30, 0.4),
-    0 0 50px -12px rgba(var(--accent, 94 184 255), 0.4);
+    0 0 0 1px rgba(var(--accent, 94 184 255), 0.1),
+    0 22px 46px rgba(2, 10, 30, 0.36),
+    0 0 50px -14px rgba(var(--accent, 94 184 255), 0.36);
 }
 
 .card:hover::before {
@@ -174,44 +111,45 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
-/* Icon avatar block */
+/* Keep content above the decorative glow. */
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Avatar + name ---------- */
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
 
 .avatarWrap {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  background:
-    radial-gradient(
-      ellipse 70% 70% at 50% 0%,
-      rgba(var(--accent, 94 184 255), 0.12) 0%,
-      transparent 75%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(var(--accent, 94 184 255), 0.05) 0%,
-      transparent 60%
-    );
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 78px;
+  height: 78px;
 }
 
 .avatarRing {
   position: absolute;
-  inset: 22%;
+  inset: -7px;
   border-radius: 50%;
   border: 1px dashed rgba(var(--accent, 94 184 255), 0.4);
   animation: avatarSpin 18s linear infinite;
 }
 
 .avatar {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44%;
-  aspect-ratio: 1;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-size: 1.15rem;
   font-weight: var(--font-weight-bold);
   letter-spacing: -0.01em;
   color: #fff;
@@ -229,13 +167,13 @@
 }
 
 .card:hover .avatar {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .avatarDot {
   position: absolute;
-  top: 17%;
-  right: 20%;
+  top: 1px;
+  right: 1px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -249,113 +187,111 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .avatarRing {
-    animation: none;
-  }
-}
-
-/* Info */
-
 .info {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: var(--space-3) var(--space-4) 0;
   min-width: 0;
 }
 
 .name {
-  font-size: var(--font-size-3xs);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
   font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--color-text);
   margin: 0;
   padding-bottom: 0;
 }
 
 .role {
-  font-size: var(--font-size-4xs);
+  font-size: var(--font-size-3xs);
   font-weight: var(--font-weight-semibold);
   color: rgb(var(--accent, 94 184 255));
   margin: 0;
   padding-bottom: 0;
 }
 
-/* Footer: LinkedIn left, View Profile right */
+/* ---------- Bio ---------- */
 
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+.bio {
+  font-size: var(--font-size-3xs);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---------- Highlights ---------- */
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
   margin-top: auto;
-  padding: var(--space-3) var(--space-4);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--glass-border);
 }
 
-.linkedin {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
-  background: var(--glass-navy);
+.highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
-  transition:
-    color var(--transition-fast),
-    border-color var(--transition-fast),
-    background var(--transition-fast),
-    transform var(--transition-fast);
+  background: rgba(255, 255, 255, 0.02);
 }
 
-:global([data-theme='light']) .linkedin {
+:global([data-theme='light']) .highlight {
   background: var(--glass-navy-light-soft);
 }
 
-.linkedin:hover {
-  color: #0a66c2;
-  border-color: rgba(10, 102, 194, 0.5);
-  background: rgba(10, 102, 194, 0.08);
-  transform: translateY(-2px);
-}
-
-.profile {
+.highlightIcon {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 0.1rem;
+  border-radius: var(--radius-sm);
+  color: rgb(var(--accent, 94 184 255));
+  background: rgba(var(--accent, 94 184 255), 0.12);
+}
+
+.highlightLabel {
   font-size: var(--font-size-4xs);
   font-weight: var(--font-weight-bold);
-  color: rgb(var(--accent, 94 184 255));
-  text-decoration: none;
-  transition:
-    gap var(--transition-fast),
-    color var(--transition-fast);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text);
 }
 
-.profile svg {
-  transition: transform var(--transition-fast);
-}
-
-.profile:hover {
-  gap: 0.55rem;
-}
-
-.profile:hover svg {
-  transform: translate(2px, -2px);
+.highlightDescription {
+  font-size: var(--font-size-4xs);
+  line-height: 1.5;
+  color: var(--color-text-muted);
 }
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 64rem) {
+@media (max-width: 56rem) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 36rem) {
-  .grid {
+  .card {
+    padding: var(--space-5);
+  }
+
+  .highlights {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatarRing {
+    animation: none;
   }
 }

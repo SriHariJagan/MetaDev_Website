@@ -1,65 +1,85 @@
-// TeamGrid.tsx — team member cards grid
+// TeamGrid.tsx — founder profile cards
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
-import { FaLinkedinIn } from 'react-icons/fa';
+import { Rocket, Shield, Sparkles, Target, UserCheck, Users } from 'lucide-react';
 import { Section } from '@/components/common/Section';
 import { Container } from '@/components/common/Container';
-import { GradientText } from '@/components/common/GradientText';
 import { BackgroundDecor } from '@/components/common/BackgroundDecor';
 import { blurUp, staggerContainer } from '@/constants/motion';
 import { cn } from '@/utils/cn';
 import styles from './TeamGrid.module.css';
 
-const containerVariants = staggerContainer(0.07);
+const containerVariants = staggerContainer(0.08);
 
 const itemVariants = blurUp(20, 0.5, 8);
 
-interface Member {
+interface Highlight {
+  icon: typeof Rocket;
+  label: string;
+  description: string;
+}
+
+interface Founder {
   initials: string;
   name: string;
   role: string;
+  bio: string;
+  highlights: Highlight[];
   accent: string;
 }
 
-const MEMBERS: Member[] = [
+const FOUNDERS: Founder[] = [
   {
-    initials: 'AO',
-    name: 'Amara Okafor',
-    role: 'Co-Founder & CEO',
+    initials: 'KK',
+    name: 'Kishore Kodali',
+    role: 'Founder & CEO',
+    bio: "Kishore founded MetaDev to replace fragmented tools with one connected business platform. He sets product vision, growth strategy, and partnerships so companies can launch a website, admin, payments, and operations without rebuilding from scratch. His focus is simple: clear outcomes for every business that works with MetaDev.",
+    highlights: [
+      {
+        icon: Rocket,
+        label: 'Product Vision',
+        description: 'Defines roadmap & category strategy',
+      },
+      {
+        icon: Target,
+        label: 'Growth Strategy',
+        description: 'Scales from 0 → $10M+ ARR',
+      },
+      {
+        icon: UserCheck,
+        label: 'Partnerships',
+        description: 'Builds ecosystem alliances',
+      },
+    ],
     accent: 'accent-blue',
   },
   {
-    initials: 'DR',
-    name: 'Daniel Reyes',
-    role: 'Co-Founder & CTO',
+    initials: 'SK',
+    name: 'Satya Kavipurapu',
+    role: 'COO',
+    bio: "Satya runs MetaDev's day-to-day operations—delivery, support systems, and process quality. He keeps onboarding, module activation, and customer success moving in sync so teams can scale without losing reliability. Customers feel that discipline as faster launches and smoother handoffs.",
+    highlights: [
+      {
+        icon: Shield,
+        label: 'Operations',
+        description: 'Delivery, support & process quality',
+      },
+      {
+        icon: Users,
+        label: 'Customer Success',
+        description: 'Onboarding & activation at scale',
+      },
+      {
+        icon: Sparkles,
+        label: 'Reliability',
+        description: 'Systems that scale without breaking',
+      },
+    ],
     accent: 'accent-violet',
-  },
-  {
-    initials: 'SL',
-    name: 'Sofia Lindqvist',
-    role: 'Chief Product Officer',
-    accent: 'accent-rose',
-  },
-  {
-    initials: 'PS',
-    name: 'Priya Sharma',
-    role: 'Head of Design',
-    accent: 'accent-amber',
   },
 ];
 
-export interface TeamGridProps {
-  eyebrow?: string;
-  title?: string;
-  subtitle?: string;
-}
-
-export function TeamGrid({
-  eyebrow = 'Who We Are',
-  title = 'The people, not the pixels',
-  subtitle = 'A senior team that owns outcomes end to end — no hand-offs, no middlemen, no mystery. Meet the people your product will actually work with.',
-}: TeamGridProps) {
+export function TeamGrid() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
@@ -70,63 +90,45 @@ export function TeamGrid({
       </BackgroundDecor>
 
       <Container maxWidth="wide" className={styles.container} ref={sectionRef}>
-        {/* ---------- Header ---------- */}
-        <motion.div
-          className={styles.header}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          <motion.span className={styles.eyebrowLabel} variants={itemVariants}>
-            {eyebrow}
-          </motion.span>
-          <motion.h2 className={styles.title} variants={itemVariants}>
-            {title} <GradientText>→ Meet Them</GradientText>
-          </motion.h2>
-          <motion.p className={styles.subtitle} variants={itemVariants}>
-            {subtitle}
-          </motion.p>
-        </motion.div>
-
-        {/* ---------- Member grid ---------- */}
         <motion.div
           className={styles.grid}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {MEMBERS.map((member) => (
+          {FOUNDERS.map((founder) => (
             <motion.article
-              key={member.name}
-              className={cn(styles.card, styles[member.accent])}
+              key={founder.name}
+              className={cn(styles.card, styles[founder.accent])}
               variants={itemVariants}
             >
-              <div className={styles.avatarWrap}>
-                <span className={styles.avatarRing} />
-                <span className={styles.avatar}>
-                  {member.initials}
-                </span>
-                <span className={styles.avatarDot} />
+              <div className={styles.profile}>
+                <div className={styles.avatarWrap}>
+                  <span className={styles.avatarRing} />
+                  <span className={styles.avatar}>{founder.initials}</span>
+                  <span className={styles.avatarDot} />
+                </div>
+
+                <div className={styles.info}>
+                  <h2 className={styles.name}>{founder.name}</h2>
+                  <p className={styles.role}>{founder.role}</p>
+                </div>
               </div>
 
-              <div className={styles.info}>
-                <h3 className={styles.name}>{member.name}</h3>
-                <p className={styles.role}>{member.role}</p>
-              </div>
+              <p className={styles.bio}>{founder.bio}</p>
 
-              <div className={styles.footer}>
-                <a
-                  href="#"
-                  className={styles.linkedin}
-                  aria-label={`${member.name} on LinkedIn`}
-                  title="LinkedIn"
-                >
-                  <FaLinkedinIn size={15} aria-hidden="true" />
-                </a>
-                <a href="#" className={styles.profile}>
-                  View Profile
-                  <ArrowUpRight size={14} aria-hidden="true" />
-                </a>
+              <div className={styles.highlights}>
+                {founder.highlights.map((highlight) => (
+                  <div key={highlight.label} className={styles.highlight}>
+                    <span className={styles.highlightIcon}>
+                      <highlight.icon size={15} aria-hidden="true" />
+                    </span>
+                    <span className={styles.highlightLabel}>{highlight.label}</span>
+                    <span className={styles.highlightDescription}>
+                      {highlight.description}
+                    </span>
+                  </div>
+                ))}
               </div>
             </motion.article>
           ))}
