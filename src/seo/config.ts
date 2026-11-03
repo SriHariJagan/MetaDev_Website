@@ -4,6 +4,8 @@
  * No fake data — all content derived from existing site copy, PRODUCTS and SOLUTIONS constants.
  */
 
+import { PRODUCTS } from "@/constants/products";
+
 export const SITE_URL = "https://metadev.in";
 export const SITE_NAME = "MetaDev";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/metaDev.png`;
@@ -58,7 +60,7 @@ export const SEO_CONFIG: Record<string, SeoEntry> = {
   "/products": {
     title: "Products | Enterprise Platforms Built for Impact | MetaDev",
     description:
-      "Discover the MetaDev product family — MetaHealth, MetaEdu, MetaGreen, MetaFlow, MetaHire, MetaCheck, MetaAds, MetaNav, MetaLedger, MetaCard and MetaIM — integrated platforms for real industries.",
+      "Discover the MetaDev product family — MetaHealth, MetaEdu, MetaGreen, MetaFlow, MetaHire, MetaCheck, MetaAdds, MetaNav, MetaLedger, MetaCard and MetaIM — integrated platforms for real industries.",
     canonical: canon("/products"),
     ogType: "website",
   },
@@ -170,9 +172,9 @@ export const SEO_CONFIG: Record<string, SeoEntry> = {
     ogType: "product",
   },
   "/products/metaadds": {
-    title: "MetaAds — AdTech & Marketing Platform | MetaDev",
+    title: "MetaAdds — AdTech & Marketing Platform | MetaDev",
     description:
-      "MetaAds unifies campaign creation, targeting and optimisation — turning ad spend into measurable growth across every channel.",
+      "MetaAdds unifies campaign creation, targeting and optimisation — turning ad spend into measurable growth across every channel.",
     canonical: canon("/products/metaadds"),
     ogType: "product",
   },
@@ -228,6 +230,40 @@ export const SEO_CONFIG: Record<string, SeoEntry> = {
     noindex: true,
   },
 };
+
+// ---------------------------------------------------------------------------
+// Product pages — derived from PRODUCTS so JSON-LD and sitemap stay in sync
+// ---------------------------------------------------------------------------
+
+export interface ProductPageEntry {
+  slug: string;
+  name: string;
+  subtitle: string;
+  url: string;
+  description: string;
+  alternateName?: string;
+}
+
+export const PRODUCT_PAGES: Record<string, ProductPageEntry> = Object.fromEntries(
+  PRODUCTS.map((product) => {
+    const path = `/products/${product.id}`;
+    return [
+      product.id,
+      {
+        slug: product.id,
+        name: product.name,
+        subtitle: product.subtitle,
+        url: canon(path),
+        description:
+          SEO_CONFIG[path]?.description ??
+          `${product.name} by MetaDev — ${product.subtitle}.`,
+        // Keep the historical "MetaAds" spelling discoverable without using it
+        // as the primary name anywhere in the UI.
+        ...(product.id === "metaadds" ? { alternateName: "MetaAds" } : {}),
+      },
+    ];
+  }),
+);
 
 // ---------------------------------------------------------------------------
 // Solution SEO — generated from SOLUTIONS constant data shape
@@ -372,26 +408,41 @@ export function getSeoForPath(pathname: string): SeoEntry | undefined {
   return undefined;
 }
 
+const STATIC_BREADCRUMB_LABELS: Record<string, string> = {
+  products: "Products",
+  solutions: "Solutions",
+  about: "About Us",
+  team: "Team",
+  careers: "Careers",
+  contact: "Contact",
+  legal: "Legal",
+  sitemap: "Sitemap",
+  "privacy-policy": "Privacy Policy",
+  "terms-of-service": "Terms of Service",
+  security: "Security",
+  compliance: "Compliance",
+  cancellation: "Cancellation & Refund",
+};
+
 export function getBreadcrumbs(pathname: string): Array<{ name: string; url: string }> {
   const clean = pathname.split("?")[0].split("#")[0].replace(/\/$/, "") || "/";
+  const crumbs: Array<{ name: string; url: string }> = [
+    { name: "Home", url: canon("/") },
+  ];
+  if (clean === "/") return crumbs;
+
   const parts = clean.split("/").filter(Boolean);
-  const crumbs: Array<{ name: string; url: string }> = [{ name: "Home", url: canon("/") }];
   let acc = "";
   for (const part of parts) {
     acc += `/${part}`;
-    // Humanise
-    const label = part
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase())
-      // Special cases
-      .replace("And", "and")
-      .replace("Sitemap", "Sitemap");
+    // Prefer exact product/solution names ("MetaHealth", "UI/UX Design") over
+    // naive title-casing ("Metahealth", "Ui Ux Design").
+    const label =
+      PRODUCT_PAGES[part]?.name ??
+      SOLUTION_SEO[part]?.name ??
+      STATIC_BREADCRUMB_LABELS[part] ??
+      part.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
     crumbs.push({ name: label, url: canon(acc) });
   }
-  // Fix product names: ensure capitalised MetaX
-  return crumbs.map((c) => {
-    if (/^Meta\w+/.test(c.name.replace(/\s/g, ""))) return c;
-    // Title-case already done
-    return c;
-  });
+  return crumbs;
 }

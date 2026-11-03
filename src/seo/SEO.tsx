@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import {
   DEFAULT_OG_IMAGE,
+  PRODUCT_PAGES,
   SITE_NAME,
   SITE_URL,
   getBreadcrumbs,
@@ -153,6 +154,9 @@ export function SEO(props: SeoProps) {
     // JSON-LD: if explicit jsonLd prop provided, use it. Otherwise auto-generate safe defaults.
     if (props.jsonLd) {
       setJsonLd("seo-jsonld", props.jsonLd);
+    } else if (robots.includes("noindex")) {
+      // Never advertise structured data for private or error pages.
+      removeJsonLd("seo-jsonld");
     } else {
       // Auto-generate minimal structured data
       const jsonLdData = buildAutoJsonLd(pathname, {
@@ -218,46 +222,25 @@ function buildAutoJsonLd(
 ): Record<string, unknown> | Record<string, unknown>[] | null {
   const clean = pathname.replace(/\/$/, "") || "/";
 
-  // Homepage: Organization + WebSite
+  const organizationRef = { "@id": `${SITE_URL}/#organization` };
+  const websiteRef = { "@id": `${SITE_URL}/#website` };
+  const pageImage = { "@type": "ImageObject", url: DEFAULT_OG_IMAGE };
+
+  // Homepage: WebPage referencing the static Organization/WebSite nodes in
+  // index.html. Keeping one canonical entity avoids contradictory duplicates.
   if (clean === "/") {
-    return [
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        name: "MetaDev Innovations Private Limited",
-        alternateName: "MetaDev",
-        url: SITE_URL,
-        logo: `${SITE_URL}/logo-noBg.png`,
-        description: seo.description,
-        email: "partnership@metadev.in",
-        sameAs: [
-          "https://www.linkedin.com/company/metadev-innovations-privated-limited/",
-          "https://x.com/metadev_pvt_ltd",
-          "https://www.youtube.com/channel/UCpowzU8EBeOHiaoMnokOjNg",
-          "https://www.facebook.com/people/Metadev-Innovations/61587397852801/",
-          "https://www.instagram.com/metadev_pvt_ltd",
-        ],
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Hyderabad",
-          addressRegion: "Telangana",
-          addressCountry: "IN",
-        },
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: SITE_NAME,
-        url: SITE_URL,
-        description: seo.description,
-        inLanguage: "en-IN",
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          logo: { "@type": "ImageObject", url: `${SITE_URL}/logo-noBg.png` },
-        },
-      },
-    ];
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/#webpage`,
+      url: seo.canonical,
+      name: seo.title,
+      description: seo.description,
+      isPartOf: websiteRef,
+      about: organizationRef,
+      primaryImageOfPage: pageImage,
+      inLanguage: "en-IN",
+    };
   }
 
   // Auth / dashboard: no structured data
@@ -269,21 +252,112 @@ function buildAutoJsonLd(
     return null;
   }
 
-  // Generic WebPage for internal pages
-  // For products, emit Product schema partially (without fake ratings)
-  if (clean.startsWith("/products/")) {
-    const productName =
-      seo.title.split("—")[0].split("|")[0].trim() ||
-      clean.split("/").pop() ||
-      "Product";
+  // Products index: CollectionPage + ItemList of every product page. This is
+  // the strongest explicit signal that these URLs are the site's key sections.
+  if (clean === "/products") {
+    const itemListId = `${SITE_URL}/products#itemlist`;
     return {
       "@context": "https://schema.org",
-      "@type": "Product",
-      name: productName,
+      "@graph": [
+        {
+          "@type": "CollectionPage",
+          "@id": `${SITE_URL}/products#webpage`,
+          url: seo.canonical,
+          name: seo.title,
+          description: seo.description,
+          isPartOf: websiteRef,
+          about: organizationRef,
+          mainEntity: { "@id": itemListId },
+          primaryImageOfPage: pageImage,
+          inLanguage: "en-IN",
+        },
+        {
+          "@type": "ItemList",
+          "@id": itemListId,
+          name: "MetaDev product platforms",
+          numberOfItems: Object.keys(PRODUCT_PAGES).length,
+          itemListOrder: "https://schema.org/ItemListOrderAscending",
+          itemListElement: Object.values(PRODUCT_PAGES).map(
+            (product, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              name: product.name,
+              url: product.url,
+              item: {
+                "@type": "SoftwareApplication",
+                "@id": `${product.url}#software`,
+                name: product.name,
+                ...(product.alternateName
+                  ? { alternateName: product.alternateName }
+                  : {}),
+                applicationCategory: "BusinessApplication",
+                applicationSubCategory: product.subtitle,
+                operatingSystem: "Web",
+                url: product.url,
+                description: product.description,
+                publisher: organizationRef,
+              },
+            }),
+          ),
+        },
+      ],
+    };
+  }
+
+  // Individual product page: SoftwareApplication + WebPage.
+  if (clean.startsWith("/products/")) {
+    const slug = clean.replace("/products/", "");
+    const product = PRODUCT_PAGES[slug];
+
+    if (product) {
+      const appId = `${product.url}#software`;
+      return {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": appId,
+            name: product.name,
+            ...(product.alternateName
+              ? { alternateName: product.alternateName }
+              : {}),
+            applicationCategory: "BusinessApplication",
+            applicationSubCategory: product.subtitle,
+            operatingSystem: "Web",
+            url: product.url,
+            description: product.description,
+            image: DEFAULT_OG_IMAGE,
+            brand: { "@type": "Brand", name: product.name },
+            publisher: organizationRef,
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${product.url}#webpage`,
+            url: product.url,
+            name: seo.title,
+            description: seo.description,
+            isPartOf: websiteRef,
+            about: { "@id": appId },
+            primaryImageOfPage: pageImage,
+            inLanguage: "en-IN",
+          },
+        ],
+      };
+    }
+
+    // Unknown product slug — keep a minimal, truthful node until the 404 SEO
+    // (noindex) takes over.
+    const fallbackName =
+      seo.title.split("—")[0].split("|")[0].trim() || slug || "Product";
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: seo.title,
       description: seo.description,
-      brand: { "@type": "Brand", name: SITE_NAME },
       url: seo.canonical,
-      image: DEFAULT_OG_IMAGE,
+      isPartOf: websiteRef,
+      about: { "@type": "Brand", name: fallbackName },
+      inLanguage: "en-IN",
     };
   }
 
@@ -294,7 +368,7 @@ function buildAutoJsonLd(
       "@type": "Service",
       name: solName,
       description: seo.description,
-      provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      provider: organizationRef,
       url: seo.canonical,
       serviceType: solName,
     };
@@ -307,7 +381,9 @@ function buildAutoJsonLd(
     name: seo.title,
     description: seo.description,
     url: seo.canonical,
-    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL },
+    isPartOf: websiteRef,
+    about: organizationRef,
+    primaryImageOfPage: pageImage,
     inLanguage: "en-IN",
   };
 }

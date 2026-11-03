@@ -43,6 +43,246 @@
     <link rel="icon" type="image/png" href="/favIocn.png" />
     <link rel="apple-touch-icon" href="/metaDev.png" />
     <title>MetaDev | Software Development &amp; Digital Solutions</title>
+    <!-- Site-wide structured data. Static so crawlers see it without running
+         React. Page-specific JSON-LD is layered on top by src/seo/SEO.tsx and
+         references the @id values defined here. -->
+    <script type="application/ld+json" id="site-jsonld">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://metadev.in/#organization",
+            "name": "MetaDev Innovations Private Limited",
+            "legalName": "MetaDev Innovations Private Limited",
+            "alternateName": ["MetaDev", "MeteDev"],
+            "url": "https://metadev.in/",
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://metadev.in/#logo",
+              "url": "https://metadev.in/logo-noBg.png",
+              "contentUrl": "https://metadev.in/logo-noBg.png",
+              "caption": "MetaDev"
+            },
+            "image": { "@id": "https://metadev.in/#logo" },
+            "description": "MetaDev builds secure, scalable digital platforms — web, mobile, AI, cloud and enterprise software — empowering businesses, institutions and communities across India and beyond.",
+            "email": "partnership@metadev.in",
+            "telephone": "+91-95595-59143",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Hyderabad",
+              "addressRegion": "Telangana",
+              "addressCountry": "IN"
+            },
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "sales",
+                "email": "partnership@metadev.in",
+                "telephone": "+91-95595-59143",
+                "areaServed": "IN",
+                "availableLanguage": ["English", "Telugu", "Hindi"]
+              }
+            ],
+            "sameAs": [
+              "https://www.linkedin.com/company/metadev-innovations-privated-limited/",
+              "https://x.com/metadev_pvt_ltd",
+              "https://www.youtube.com/channel/UCpowzU8EBeOHiaoMnokOjNg",
+              "https://www.facebook.com/people/Metadev-Innovations/61587397852801/",
+              "https://www.instagram.com/metadev_pvt_ltd"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://metadev.in/#website",
+            "url": "https://metadev.in/",
+            "name": "MetaDev",
+            "alternateName": ["MetaDev Innovations", "MeteDev"],
+            "description": "MetaDev builds secure, scalable digital platforms — web, mobile, AI, cloud and enterprise software.",
+            "publisher": { "@id": "https://metadev.in/#organization" },
+            "inLanguage": "en-IN"
+          },
+          {
+            "@type": "OfferCatalog",
+            "@id": "https://metadev.in/#products",
+            "name": "MetaDev Product Platforms",
+            "url": "https://metadev.in/products",
+            "numberOfItems": 11,
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaHealth",
+                  "url": "https://metadev.in/products/metahealth",
+                  "applicationCategory": "HealthApplication",
+                  "applicationSubCategory": "Healthcare Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaHealth unifies clinical documentation, telehealth, remote monitoring and patient engagement — FHIR-native, HIPAA-ready care that gives clinicians time back.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaEdu",
+                  "url": "https://metadev.in/products/metaedu",
+                  "applicationCategory": "EducationalApplication",
+                  "applicationSubCategory": "EdTech Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaEdu is a complete learning operating system — courses, assessments, live classes and analytics for institutions that scale education without compromise.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaGreen",
+                  "url": "https://metadev.in/products/metagreen",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Sustainability Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaGreen helps organisations track, reduce and report environmental impact — carbon, energy and ESG workflows in one auditable platform.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaFlow",
+                  "url": "https://metadev.in/products/metaflow",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Enterprise Workflow Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaFlow orchestrates enterprise workflows and approvals — automate cross-team processes with visibility, compliance and speed built in.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaHire",
+                  "url": "https://metadev.in/products/metahire",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Hiring & Talent Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaHire is an AI-powered hiring platform that sources, screens, schedules and onboards five times faster — from job posting to day-one onboarding.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaCheck",
+                  "url": "https://metadev.in/products/metacheck",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Verification & Compliance Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaCheck automates identity verification, background screening and KYC/KYB compliance with AI fraud detection and enterprise-grade accuracy.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaAdds",
+                  "alternateName": "MetaAds",
+                  "url": "https://metadev.in/products/metaadds",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "AdTech & Marketing Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaAdds unifies campaign creation, targeting and optimisation — turning ad spend into measurable growth across every channel.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaNav",
+                  "url": "https://metadev.in/products/metanav",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Fleet & Logistics Management",
+                  "operatingSystem": "Web",
+                  "description": "MetaNav optimises fleet and logistics — live tracking, route optimisation and dispatch control for operations that never miss a delivery.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaLedger",
+                  "url": "https://metadev.in/products/metaledger",
+                  "applicationCategory": "FinanceApplication",
+                  "applicationSubCategory": "Billing & Invoicing Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaLedger streamlines billing, invoicing and revenue operations — GST-aware finance workflows trusted by growing enterprises.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaCard",
+                  "url": "https://metadev.in/products/metacard",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Digital ID Cards Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaCard issues and manages secure digital ID cards — for employees, students and members with verifiable credentials and access control.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "SoftwareApplication",
+                  "name": "MetaIM",
+                  "url": "https://metadev.in/products/metaim",
+                  "applicationCategory": "BusinessApplication",
+                  "applicationSubCategory": "Inventory Management Platform",
+                  "operatingSystem": "Web",
+                  "description": "MetaIM tracks inventory in real time — stock, procurement and fulfilment in one system designed for retail, warehouses and multi-outlet operations.",
+                  "publisher": { "@id": "https://metadev.in/#organization" }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://metadev.in/#sitelinks",
+            "name": "MetaDev products and main sections",
+            "itemListOrder": "https://schema.org/ItemListOrderAscending",
+            "numberOfItems": 16,
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "item": { "@type": "SiteNavigationElement", "name": "MetaHealth — Healthcare Platform", "url": "https://metadev.in/products/metahealth" } },
+              { "@type": "ListItem", "position": 2, "item": { "@type": "SiteNavigationElement", "name": "MetaEdu — EdTech Platform", "url": "https://metadev.in/products/metaedu" } },
+              { "@type": "ListItem", "position": 3, "item": { "@type": "SiteNavigationElement", "name": "MetaGreen — Sustainability Platform", "url": "https://metadev.in/products/metagreen" } },
+              { "@type": "ListItem", "position": 4, "item": { "@type": "SiteNavigationElement", "name": "MetaFlow — Enterprise Workflow Platform", "url": "https://metadev.in/products/metaflow" } },
+              { "@type": "ListItem", "position": 5, "item": { "@type": "SiteNavigationElement", "name": "MetaHire — Hiring & Talent Platform", "url": "https://metadev.in/products/metahire" } },
+              { "@type": "ListItem", "position": 6, "item": { "@type": "SiteNavigationElement", "name": "MetaCheck — Verification & Compliance Platform", "url": "https://metadev.in/products/metacheck" } },
+              { "@type": "ListItem", "position": 7, "item": { "@type": "SiteNavigationElement", "name": "MetaAdds — AdTech & Marketing Platform", "url": "https://metadev.in/products/metaadds" } },
+              { "@type": "ListItem", "position": 8, "item": { "@type": "SiteNavigationElement", "name": "MetaNav — Fleet & Logistics Management", "url": "https://metadev.in/products/metanav" } },
+              { "@type": "ListItem", "position": 9, "item": { "@type": "SiteNavigationElement", "name": "MetaLedger — Billing & Invoicing Platform", "url": "https://metadev.in/products/metaledger" } },
+              { "@type": "ListItem", "position": 10, "item": { "@type": "SiteNavigationElement", "name": "MetaCard — Digital ID Cards Platform", "url": "https://metadev.in/products/metacard" } },
+              { "@type": "ListItem", "position": 11, "item": { "@type": "SiteNavigationElement", "name": "MetaIM — Inventory Management Platform", "url": "https://metadev.in/products/metaim" } },
+              { "@type": "ListItem", "position": 12, "item": { "@type": "SiteNavigationElement", "name": "All Products", "url": "https://metadev.in/products" } },
+              { "@type": "ListItem", "position": 13, "item": { "@type": "SiteNavigationElement", "name": "Solutions", "url": "https://metadev.in/solutions" } },
+              { "@type": "ListItem", "position": 14, "item": { "@type": "SiteNavigationElement", "name": "About MetaDev", "url": "https://metadev.in/about" } },
+              { "@type": "ListItem", "position": 15, "item": { "@type": "SiteNavigationElement", "name": "Careers", "url": "https://metadev.in/careers" } },
+              { "@type": "ListItem", "position": 16, "item": { "@type": "SiteNavigationElement", "name": "Contact MetaDev", "url": "https://metadev.in/contact" } }
+            ]
+          }
+        ]
+      }
+    </script>
     <script>
       (function () {
         var stored = null;
@@ -705,7 +945,6 @@
         var loader = document.getElementById('app-loader');
         if (!loader) return;
 
-        var startedAt = performance.now();
         var firstFrameAt = 0;
         var done = false;
         var leaving = false;
@@ -713,9 +952,12 @@
         var leaveTimer = 0;
 
         var MIN_VISIBLE = 900;
-        var MIN_PAINTED = 400;
         var EXIT_MS = 500;
-        var HARD_CAP_MS = 1400;
+        // Safety net only. The loader normally leaves as soon as the app has
+        // painted real content, so this must never fire before that on a slow
+        // connection — otherwise it uncovers an empty page while the route
+        // chunk is still in flight.
+        var HARD_CAP_MS = 8000;
 
         function removeLoader() {
           if (removalScheduled) return;
@@ -749,13 +991,7 @@
         function scheduleLeave() {
           if (!done || leaving || !firstFrameAt) return;
 
-          var minVisibleUntil = firstFrameAt + MIN_VISIBLE;
-          var hardCapUntil = startedAt + HARD_CAP_MS;
-          // The hard cap wins, but always give the loader a painted moment.
-          var leaveAt = Math.max(
-            firstFrameAt + MIN_PAINTED,
-            Math.min(minVisibleUntil, hardCapUntil),
-          );
+          var leaveAt = firstFrameAt + MIN_VISIBLE;
 
           window.clearTimeout(leaveTimer);
           leaveTimer = window.setTimeout(leave, Math.max(0, leaveAt - performance.now()));

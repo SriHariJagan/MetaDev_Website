@@ -15,14 +15,49 @@ function App() {
     const hideLoader = () => {
       if (finished) return;
       finished = true;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => window.__hideMetaDevLoader?.());
-      });
+
+      // The route chunk mounts the whole page in one commit, so a plain
+      // double-rAF hand-off can still fire before the hero has painted: its
+      // entrance starts at opacity 0 and the main thread is still busy with
+      // the mount. Wait until the page's primary heading is actually visible
+      // (bounded, so a broken animation can never trap the loader).
+      const heading = root.querySelector<HTMLElement>('main h1, h1');
+
+      const isHeadingVisible = () => {
+        if (!heading || !heading.isConnected) return true;
+
+        const style = window.getComputedStyle(heading);
+        return Number(style.opacity) > 0.01 && heading.getBoundingClientRect().height > 0;
+      };
+
+      const reveal = () => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => window.__hideMetaDevLoader?.());
+        });
+      };
+
+      const startedAt = performance.now();
+      const MAX_WAIT = 1200;
+
+      const waitForEntrance = () => {
+        if (isHeadingVisible() || performance.now() - startedAt >= MAX_WAIT) {
+          reveal();
+          return;
+        }
+        requestAnimationFrame(waitForEntrance);
+      };
+
+      requestAnimationFrame(waitForEntrance);
     };
 
     const hasPageContent = () => {
       const main = root.querySelector('main');
-      return Boolean(main && main.childElementCount > 0);
+      // Routes that render inside MainLayout only count once the routed page
+      // itself has mounted, otherwise the layout alone would reveal a blank
+      // content area. Standalone routes (login, dashboard error pages) have no
+      // <main>, so fall back to the root being populated.
+      if (main) return main.childElementCount > 0;
+      return root.childElementCount > 0;
     };
 
     if (hasPageContent()) {
