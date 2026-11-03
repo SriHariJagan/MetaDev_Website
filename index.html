@@ -61,6 +61,21 @@
         document.documentElement.style.colorScheme = theme;
       })();
     </script>
+    <script>
+      /* The branded loader is a first-visit moment. Show it once per browser
+         session, then let repeat loads paint the site directly. */
+      (function () {
+        try {
+          if (sessionStorage.getItem('metadev-loader-seen-v1') === '1') {
+            document.documentElement.classList.add('md-loader-skip');
+          } else {
+            sessionStorage.setItem('metadev-loader-seen-v1', '1');
+          }
+        } catch (e) {
+          /* Storage unavailable; the loader keeps its normal hard cap. */
+        }
+      })();
+    </script>
     <style>
       /* First-paint loader — fully inline so it paints instantly with zero
          network requests. The MetaDev bracket and MD monogram are drawn in
@@ -87,6 +102,19 @@
         /* CSS-owned timeout: the overlay fades itself out even if the main
            thread is busy or JavaScript fails. Fully gone before 2 seconds. */
         animation: md-loader-timeout 0.5s ease 0.95s forwards;
+      }
+
+      /* Repeat loads in the same session skip the full-screen moment entirely. */
+      html.md-loader-skip #app-loader {
+        display: none !important;
+      }
+
+      html.md-loader-skip {
+        background-color: #f6f8fe;
+      }
+
+      html.md-loader-skip[data-theme='dark'] {
+        background-color: #050c18;
       }
 
       html[data-theme='dark'] .md-loader {
@@ -718,6 +746,13 @@
         if (!loader) return;
 
         var startedAt = performance.now();
+
+        // Repeat loads in the same session already saw the brand moment.
+        if (document.documentElement.classList.contains('md-loader-skip')) {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+          return;
+        }
+
         var done = false;
         var removalScheduled = false;
         var MIN_VISIBLE = 900;
