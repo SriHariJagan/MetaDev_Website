@@ -1,12 +1,11 @@
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { PageLoader } from '@/components/ui/PageLoader';
 import { router } from '@/router';
 
 function App() {
-  // Keep the initial loader up until the routed page has actually rendered
-  // content, then fade it away. The inline loader has its own 1.45s hard stop,
-  // so a slow network can never hold the site hostage.
+  // Keep the inline first-paint loader up until the routed page has actually
+  // rendered content, then fade it away. It is the only loader on the page and
+  // has its own hard stop, so a slow network can never hold the site hostage.
   useEffect(() => {
     const root = document.getElementById('root');
     if (!root) return;
@@ -42,7 +41,7 @@ function App() {
   }, []);
 
   return (
-    <Suspense fallback={<PageLoader />}>
+    <Suspense fallback={null}>
       <RouterProvider router={router} />
     </Suspense>
   );

@@ -62,6 +62,16 @@
       })();
     </script>
     <style>
+      /* The page sits on the same surface as the loader, so the hand-off is
+         invisible even if a route chunk is still arriving. */
+      html {
+        background-color: #f6f8fe;
+      }
+
+      html[data-theme='dark'] {
+        background-color: #050c18;
+      }
+
       /* First-paint loader — fully inline so it paints instantly with zero
          network requests. The MetaDev bracket and MD monogram are drawn in
          SVG, so the loader is unique to the brand rather than a stock spinner. */
@@ -84,9 +94,8 @@
         background-color: var(--md-loader-bg);
         color: var(--md-loader-text);
         font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-        /* CSS-owned timeout: the overlay fades itself out even if the main
-           thread is busy or JavaScript fails. Fully gone before 2 seconds. */
-        animation: md-loader-timeout 0.5s ease 0.95s forwards;
+        opacity: 1;
+        visibility: visible;
       }
 
       html[data-theme='dark'] .md-loader {
@@ -107,14 +116,6 @@
 
       .md-loader.is-leaving .md-loader__content {
         animation: md-loader-content-out 0.4s ease forwards;
-      }
-
-      /* React uses the same lockup as its route fallback, but it must stay
-         visible until the route has rendered — no self-timeout. */
-      .md-loader--persistent {
-        animation: none;
-        opacity: 1;
-        visibility: visible;
       }
 
       .md-loader__backdrop,
@@ -410,14 +411,6 @@
         pointer-events: none;
       }
 
-      @keyframes md-loader-timeout {
-        to {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none;
-        }
-      }
-
       @keyframes md-loader-leave {
         from {
           opacity: 1;
@@ -589,11 +582,6 @@
           transition-duration: 0.01ms !important;
         }
 
-        .md-loader {
-          animation-duration: 0.01ms !important;
-          animation-delay: 0.95s !important;
-        }
-
         .md-loader.is-leaving {
           animation-duration: 0.01ms !important;
           animation-delay: 0s !important;
@@ -718,11 +706,16 @@
         if (!loader) return;
 
         var startedAt = performance.now();
+        var firstFrameAt = 0;
         var done = false;
+        var leaving = false;
         var removalScheduled = false;
+        var leaveTimer = 0;
+
         var MIN_VISIBLE = 900;
+        var MIN_PAINTED = 400;
         var EXIT_MS = 500;
-        var TIMEOUT_START_MS = 950;
+        var HARD_CAP_MS = 1400;
 
         function removeLoader() {
           if (removalScheduled) return;
@@ -734,71 +727,61 @@
           window.setTimeout(removeLoader, delay);
         }
 
-        // The CSS timeout and the JS-driven leave both end with `animationend`.
-        // Removing there keeps the overlay from flashing back or lingering in
-        // the DOM after it has already faded out.
+        // Removing on animationend keeps the overlay from lingering in the DOM
+        // after it has already faded out.
         loader.addEventListener('animationend', function (event) {
-          if (event.target !== loader) return;
-          if (event.animationName === 'md-loader-timeout' || event.animationName === 'md-loader-leave') {
+          if (event.target === loader && event.animationName === 'md-loader-leave') {
             scheduleRemoval(60);
           }
         });
 
-        // Find the CSS-owned timeout animation so we can tell whether its fade
-        // has already begun.
-        function getCssTimeout() {
-          if (typeof loader.getAnimations !== 'function') return null;
-          var animations = loader.getAnimations();
-          for (var i = 0; i < animations.length; i += 1) {
-            if (animations[i].animationName === 'md-loader-timeout') return animations[i];
-          }
-          return null;
+        function leave() {
+          if (leaving || !done || !loader.parentNode) return;
+          leaving = true;
+          loader.classList.add('is-leaving');
+          // Backstop in case animationend is missed (e.g. tab hidden).
+          scheduleRemoval(EXIT_MS + 100);
         }
 
-        // Adding `.is-leaving` after the CSS timeout has started would restart
-        // the fade from opacity 1, so once it is running we let it finish.
-        function cssTimeoutHasStarted(animation) {
-          if (!animation) {
-            return performance.now() - startedAt >= TIMEOUT_START_MS;
-          }
+        // The loader may only leave after it has actually been painted. This
+        // keeps a slow first paint from consuming the minimum-visible window
+        // and making the animation disappear before anyone sees it.
+        function scheduleLeave() {
+          if (!done || leaving || !firstFrameAt) return;
 
-          if (animation.playState === 'finished') return true;
-          if (typeof animation.currentTime !== 'number') return false;
+          var minVisibleUntil = firstFrameAt + MIN_VISIBLE;
+          var hardCapUntil = startedAt + HARD_CAP_MS;
+          // The hard cap wins, but always give the loader a painted moment.
+          var leaveAt = Math.max(
+            firstFrameAt + MIN_PAINTED,
+            Math.min(minVisibleUntil, hardCapUntil),
+          );
 
-          var timing = animation.effect && animation.effect.getTiming ? animation.effect.getTiming() : null;
-          return animation.currentTime >= (timing ? timing.delay : TIMEOUT_START_MS);
+          window.clearTimeout(leaveTimer);
+          leaveTimer = window.setTimeout(leave, Math.max(0, leaveAt - performance.now()));
         }
 
         function finish() {
           if (done || !loader.parentNode) return;
           done = true;
           loader.setAttribute('aria-hidden', 'true');
-
-          var wait = Math.max(0, MIN_VISIBLE - (performance.now() - startedAt));
-
-          window.setTimeout(function () {
-            var timeout = getCssTimeout();
-
-            if (cssTimeoutHasStarted(timeout)) {
-              if (timeout && timeout.playState === 'finished') {
-                removeLoader();
-              } else {
-                // Safety net in case animationend is missed (e.g. tab hidden).
-                scheduleRemoval(EXIT_MS + 100);
-              }
-              return;
-            }
-
-            loader.classList.add('is-leaving');
-            scheduleRemoval(EXIT_MS + 100);
-          }, wait);
+          scheduleLeave();
         }
 
         window.__hideMetaDevLoader = finish;
 
-        // Hard cap: the CSS timeout hides the overlay on its own, and this
-        // guarantees the node is removed even if the app never calls finish().
-        window.setTimeout(finish, 1300);
+        // Two frames: the first callback runs before the paint that shows the
+        // loader, the second after it. Only then does the exit clock start.
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            firstFrameAt = performance.now();
+            scheduleLeave();
+          });
+        });
+
+        // Hard cap: even if the app never finishes loading, never hold the page
+        // hostage. This is the only path that can remove the loader on its own.
+        window.setTimeout(finish, HARD_CAP_MS);
       })();
     </script>
     <div id="root"></div>
