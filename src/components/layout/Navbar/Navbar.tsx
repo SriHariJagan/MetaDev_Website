@@ -29,25 +29,20 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 function LogoMark() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <span className={styles.logoWrap}>
       <img
-        src="/logo-noBg.png"
+        src={isDark ? '/logo-noBg.png' : '/logo-lightmode.png'}
         alt="MetaDev logo"
-        width={120}
-        height={28}
-        className={`${styles.logoImage} ${styles.logoDark}`}
+        width={63}
+        height={48}
+        className={styles.logoImage}
         draggable={false}
         decoding="async"
-      />
-      <img
-        src="/logo-lightmode.png"
-        alt="MetaDev logo"
-        width={120}
-        height={28}
-        className={`${styles.logoImage} ${styles.logoLight}`}
-        draggable={false}
-        decoding="async"
+        fetchPriority="high"
       />
     </span>
   );

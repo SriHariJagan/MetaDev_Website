@@ -48,13 +48,25 @@ export function initGA(): void {
     } as unknown as (...args: unknown[]) => void;
   }
 
-  // Inject gtag.js script — async, once
-  const existing = document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`);
-  if (!existing) {
+  // Inject gtag.js only after the page has loaded, so analytics never
+  // competes with the assets needed for first paint. Events queue in
+  // dataLayer and are processed as soon as gtag.js arrives.
+  const injectGtag = () => {
+    const existing = document.querySelector(
+      `script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`,
+    );
+    if (existing) return;
+
     const script = document.createElement("script");
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
     document.head.appendChild(script);
+  };
+
+  if (document.readyState === "complete") {
+    injectGtag();
+  } else {
+    window.addEventListener("load", injectGtag, { once: true });
   }
 
   // Initial config — per GA docs

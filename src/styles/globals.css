@@ -10,7 +10,6 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   overflow-x: clip;
-  transition: background-color var(--transition-medium), color var(--transition-medium);
 }
 
 #root {
@@ -74,12 +73,6 @@ a:hover {
   background: var(--color-text-muted);
 }
 
-html.theme-transition,
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-  transition:
-    background-color 130ms ease,
-    color 130ms ease,
-    border-color 130ms ease !important;
-}
+/* Theme changes apply instantly. A document-wide transition used to be
+   forced onto every element here, which caused long style recalcs and
+   multi-second jank when toggling light/dark. */

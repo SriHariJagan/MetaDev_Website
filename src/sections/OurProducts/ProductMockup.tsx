@@ -535,7 +535,13 @@ export function ProductMockup({ id, name, icon: Icon, screenshotUrl }: ProductMo
   if (screenshotUrl) {
     return (
       <div className={styles.mockupWrap}>
-        <img src={screenshotUrl} alt="" className={styles.mockupImage} />
+        <img
+          src={screenshotUrl}
+          alt=""
+          className={styles.mockupImage}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     );
   }

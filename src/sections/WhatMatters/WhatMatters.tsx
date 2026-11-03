@@ -123,6 +123,8 @@ export function WhatMatters() {
                   className={styles.cardIconImage}
                   draggable={false}
                   aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
                 />
               </span>
               <h3 className={styles.cardTitle}>{pillar.title}</h3>

@@ -174,13 +174,8 @@
   background: transparent;
 }
 
-/* Logo image — full brand colour in both themes, using a dedicated
-   dark-background variant where the artwork needs it. */
-
-.logoImage,
-.logoImageDark {
-  grid-area: 1 / 1;
-}
+/* Logo image — full brand colour in both themes. The active theme's
+   artwork is mounted, so the unused variant is never downloaded. */
 
 .logoImage {
   display: block;
@@ -194,20 +189,6 @@
 
 .logoBannerItem:hover .logoImage {
   transform: scale(1.04);
-}
-
-/* Dark-mode variants — shown as-is (already designed for dark bg) */
-
-.logoImageDark {
-  display: none;
-}
-
-:global([data-theme="dark"]) .logoImageDark {
-  display: block;
-}
-
-:global([data-theme="dark"]) .logoImageLightOnly {
-  display: none;
 }
 
 @media (max-width: 48rem) {
@@ -224,8 +205,7 @@
     padding: 18px 20px;
   }
 
-  .logoImage,
-  .logoImageDark {
+  .logoImage {
     max-width: 140px;
     max-height: 46px;
   }

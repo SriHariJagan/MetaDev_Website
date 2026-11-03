@@ -99,6 +99,8 @@ function SecurityOrbit({ inView }: { inView: boolean }) {
         className={styles.shieldImage}
         draggable={false}
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
         animate={inView ? { y: [0, -10, 0] } : { y: 0 }}
         transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
       />

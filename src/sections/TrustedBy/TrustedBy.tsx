@@ -1,5 +1,5 @@
 // TrustedBy.tsx
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { motion, useAnimationFrame, useInView, useMotionValue } from "framer-motion";
 import { Users2 } from "lucide-react";
 import { Section } from "@/components/common/Section";
@@ -8,7 +8,7 @@ import { SectionHeader } from "@/components/common/SectionHeader";
 import { Badge } from "@/components/common/Badge";
 import { GradientText } from "@/components/common/GradientText";
 import { fadeUp, staggerContainer } from "@/constants/motion";
-import { cn } from "@/utils/cn";
+import { useTheme } from "@/context/ThemeContext";
 import styles from "./TrustedBy.module.css";
 
 import metaHireLogo from "@/assets/images/trustedBy/metaHire.png";
@@ -86,36 +86,74 @@ const SPEED = 40; // px per second
 /* variant so every mark stays readable in both themes.                 */
 /* ------------------------------------------------------------------ */
 
-function LogoCard({ logo }: { logo: PartnerLogo }) {
+function LogoCard({ logo, isDark }: { logo: PartnerLogo; isDark: boolean }) {
   return (
     <li className={styles.logoBannerItem}>
       <img
-        src={logo.src}
+        src={isDark && logo.darkSrc ? logo.darkSrc : logo.src}
         alt={logo.name}
-        className={cn(
-          styles.logoImage,
-          logo.darkSrc && styles.logoImageLightOnly
-        )}
+        className={styles.logoImage}
         loading="lazy"
         decoding="async"
+        fetchPriority="low"
       />
-      {logo.darkSrc && (
-        <img
-          src={logo.darkSrc}
-          alt=""
-          aria-hidden="true"
-          className={`${styles.logoImage} ${styles.logoImageDark}`}
-          loading="lazy"
-          decoding="async"
-        />
-      )}
     </li>
   );
 }
 
 function LogoMarquee() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const prefetched = useRef(false);
   const x = useMotionValue(0);
   const loopWidth = CARD_WIDTH * PARTNER_LOGOS.length;
+
+  // Load the dark artwork after the initial page is done so it is already
+  // cached when someone flips the theme — without competing with first paint.
+  useEffect(() => {
+    if (isDark || prefetched.current) return;
+
+    const prefetch = () => {
+      if (prefetched.current) return;
+
+      const connection = (
+        navigator as Navigator & {
+          connection?: { saveData?: boolean; effectiveType?: string };
+        }
+      ).connection;
+
+      if (
+        connection?.saveData ||
+        /(^|-)2g$|(^|-)3g$/.test(connection?.effectiveType ?? "")
+      ) {
+        return;
+      }
+
+      prefetched.current = true;
+      PARTNER_LOGOS.forEach((logo) => {
+        if (!logo.darkSrc) return;
+        const image = new Image();
+        image.decoding = "async";
+        image.src = logo.darkSrc;
+      });
+    };
+
+    let timer: number | undefined;
+    const onLoad = () => {
+      timer = window.setTimeout(prefetch, 1200);
+    };
+
+    if (document.readyState === "complete") {
+      onLoad();
+    } else {
+      window.addEventListener("load", onLoad, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener("load", onLoad);
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [isDark]);
 
   useAnimationFrame((_, delta) => {
     let next = x.get() - (SPEED * delta) / 1000;
@@ -134,7 +172,7 @@ function LogoMarquee() {
         <div className={styles.marqueeViewport}>
           <motion.ul className={styles.marqueeTrack} style={{ x }}>
             {doubled.map((logo, i) => (
-              <LogoCard key={`${logo.id}-${i}`} logo={logo} />
+              <LogoCard key={`${logo.id}-${i}`} logo={logo} isDark={isDark} />
             ))}
           </motion.ul>
         </div>

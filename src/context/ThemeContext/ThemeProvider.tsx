@@ -1,9 +1,14 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import {
+  useCallback,
+  useDeferredValue,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import type { Theme } from '@/types';
 import { storage } from '@/utils/storage';
 import { THEME_STORAGE_KEY, ThemeContext } from './ThemeContext';
-
-const TRANSITION_DURATION = 150;
 
 function getInitialTheme(): Theme {
   const stored = storage.get(THEME_STORAGE_KEY);
@@ -19,30 +24,19 @@ function getInitialTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function enableThemeTransition(): void {
-  const root = document.documentElement;
-  root.classList.add('theme-transition');
-  window.setTimeout(() => root.classList.remove('theme-transition'), TRANSITION_DURATION);
-}
-
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-  const isFirstRender = useRef(true);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    enableThemeTransition();
-  }, [theme]);
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+  // Apply the theme before the browser paints so switching is instant and
+  // never forces hundreds of CSS transitions across the whole document.
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    root.style.colorScheme = theme;
     storage.set(THEME_STORAGE_KEY, theme);
   }, [theme]);
 
@@ -54,9 +48,15 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setThemeState((previous) => (previous === 'dark' ? 'light' : 'dark'));
   }, []);
 
+  // CSS switches instantly via the data-theme attribute. Deferring the value
+  // React consumers see lets the browser paint the new theme first, then
+  // re-render heavier JS-driven visuals (logo swaps, SVG palettes) at a lower
+  // priority — so a theme change never feels blocked.
+  const deferredTheme = useDeferredValue(theme);
+
   const value = useMemo(
-    () => ({ theme, setTheme, toggleTheme }),
-    [theme, setTheme, toggleTheme],
+    () => ({ theme: deferredTheme, setTheme, toggleTheme }),
+    [deferredTheme, setTheme, toggleTheme],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
