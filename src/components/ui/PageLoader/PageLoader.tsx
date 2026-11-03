@@ -2,18 +2,8 @@
  * Full-screen branded fallback shown while a lazy route is loading.
  * It deliberately reuses the loader classes defined inline in index.html so
  * the hand-off from the first-paint loader is completely seamless.
- *
- * The first-paint loader is a once-per-session moment. The inline head script
- * adds `md-loader-skip` on repeat loads, so this fallback stays out of the way
- * instead of replaying the intro animation.
  */
-const skipInitialLoader =
-  typeof document !== 'undefined' &&
-  document.documentElement.classList.contains('md-loader-skip');
-
 export function PageLoader() {
-  if (skipInitialLoader) return null;
-
   return (
     <div
       className="md-loader md-loader--persistent"
