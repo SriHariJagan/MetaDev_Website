@@ -9,9 +9,9 @@ import { blurUp, staggerContainer } from '@/constants/motion';
 import { cn } from '@/utils/cn';
 import styles from './TeamGrid.module.css';
 
-const containerVariants = staggerContainer(0.08);
+const containerVariants = staggerContainer(0.1);
 
-const itemVariants = blurUp(20, 0.5, 8);
+const itemVariants = blurUp(20, 0.55, 8);
 
 interface Highlight {
   icon: typeof Rocket;
@@ -20,9 +20,11 @@ interface Highlight {
 }
 
 interface Founder {
+  photo: string;
   initials: string;
   name: string;
   role: string;
+  focus: string;
   bio: string;
   highlights: Highlight[];
   accent: string;
@@ -30,9 +32,11 @@ interface Founder {
 
 const FOUNDERS: Founder[] = [
   {
+    photo: '/team/kishore-kodali.jpg',
     initials: 'KK',
     name: 'Kishore Kodali',
     role: 'Founder & CEO',
+    focus: 'Product vision, growth strategy & partnerships',
     bio: "Kishore founded MetaDev to replace fragmented tools with one connected business platform. He sets product vision, growth strategy, and partnerships so companies can launch a website, admin, payments, and operations without rebuilding from scratch. His focus is simple: clear outcomes for every business that works with MetaDev.",
     highlights: [
       {
@@ -54,9 +58,11 @@ const FOUNDERS: Founder[] = [
     accent: 'accent-blue',
   },
   {
+    photo: '/team/satya-kavipurapu.jpg',
     initials: 'SK',
     name: 'Satya Kavipurapu',
     role: 'COO',
+    focus: 'Operations, customer success & reliability',
     bio: "Satya runs MetaDev's day-to-day operations—delivery, support systems, and process quality. He keeps onboarding, module activation, and customer success moving in sync so teams can scale without losing reliability. Customers feel that discipline as faster launches and smoother handoffs.",
     highlights: [
       {
@@ -102,16 +108,26 @@ export function TeamGrid() {
               className={cn(styles.card, styles[founder.accent])}
               variants={itemVariants}
             >
-              <div className={styles.profile}>
-                <div className={styles.avatarWrap}>
-                  <span className={styles.avatarRing} />
-                  <span className={styles.avatar}>{founder.initials}</span>
-                  <span className={styles.avatarDot} />
+              <div className={styles.top}>
+                <div className={styles.portrait}>
+                  <img
+                    className={styles.photo}
+                    src={founder.photo}
+                    alt={`Portrait of ${founder.name}`}
+                    width={600}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className={styles.photoMonogram} aria-hidden="true">
+                    {founder.initials}
+                  </span>
                 </div>
 
-                <div className={styles.info}>
+                <div className={styles.heading}>
                   <h2 className={styles.name}>{founder.name}</h2>
                   <p className={styles.role}>{founder.role}</p>
+                  <p className={styles.focus}>{founder.focus}</p>
                 </div>
               </div>
 
@@ -121,11 +137,13 @@ export function TeamGrid() {
                 {founder.highlights.map((highlight) => (
                   <div key={highlight.label} className={styles.highlight}>
                     <span className={styles.highlightIcon}>
-                      <highlight.icon size={15} aria-hidden="true" />
+                      <highlight.icon size={14} aria-hidden="true" />
                     </span>
-                    <span className={styles.highlightLabel}>{highlight.label}</span>
-                    <span className={styles.highlightDescription}>
-                      {highlight.description}
+                    <span className={styles.highlightCopy}>
+                      <span className={styles.highlightLabel}>{highlight.label}</span>
+                      <span className={styles.highlightDescription}>
+                        {highlight.description}
+                      </span>
                     </span>
                   </div>
                 ))}
