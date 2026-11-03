@@ -1,5 +1,5 @@
 // Footer.tsx
-import { useRef, type ReactElement } from "react";
+import { useRef, type CSSProperties, type ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, type Variants } from "framer-motion";
 import {
@@ -18,23 +18,15 @@ import {
 
 import metaHealth from "@/assets/images/ourProducts/metaHealth.png";
 import metaEdu from "@/assets/images/ourProducts/metaEdu.png";
-import metaEduDark from "@/assets/images/ourProducts/metaedu-dark.png";
 import metaGreen from "@/assets/images/ourProducts/metaGreen.png";
-import metaGreenDark from "@/assets/images/ourProducts/metagreen-dark.png";
 import metaFlow from "@/assets/images/ourProducts/metaFlow.png";
 import metaHire from "@/assets/images/ourProducts/metaHire.png";
-import metaHireDark from "@/assets/images/ourProducts/metahire-dark.png";
 import metaCheck from "@/assets/images/ourProducts/metaCheck.png";
-import metaCheckDark from "@/assets/images/ourProducts/metacheck-dark.png";
 import metaAds from "@/assets/images/ourProducts/metaAds.png";
-import metaAdsDark from "@/assets/images/ourProducts/metaAds-dark.png";
 import metaNav from "@/assets/images/ourProducts/MetaNav.png";
 import metaLedger from "@/assets/images/ourProducts/MetaLedger.png";
-import metaLedgerDark from "@/assets/images/ourProducts/MetaLedger-dark.png";
 import metaCard from "@/assets/images/ourProducts/metaCard.png";
-import metaCardDark from "@/assets/images/ourProducts/metaCard_dark.png";
 import metaIm from "@/assets/images/ourProducts/metaIm.png";
-import metaImDark from "@/assets/images/ourProducts/metaIm-dark.png";
 import { Button } from "@/components/common/Button";
 import { cn } from "@/utils/cn";
 import { trackCtaClick } from "@/seo/analytics";
@@ -302,7 +294,8 @@ interface FooterSection {
     external?: boolean;
     disabled?: boolean;
     logo?: string;
-    logoDark?: string;
+    /** Brand colour used to tint the logo tile and its hover glow. */
+    accent?: string;
   }[];
 }
 
@@ -315,77 +308,77 @@ const FOOTER_SECTIONS: FooterSection[] = [
         href: "https://metahealth.live",
         external: true,
         logo: metaHealth,
-        logoDark: metaHealth,
+        accent: "#14b8a6",
       },
       {
         label: "MetaEdu",
         href: "https://metaedu.in",
         external: true,
         logo: metaEdu,
-        logoDark: metaEduDark,
+        accent: "#0d9488",
       },
       {
         label: "MetaGreen",
         href: "https://metagreen.in",
         external: true,
         logo: metaGreen,
-        logoDark: metaGreenDark,
+        accent: "#22c55e",
       },
       {
         label: "MetaFlow",
         href: "https://metaflow.in",
         external: true,
         logo: metaFlow,
-        logoDark: metaFlow,
+        accent: "#0ea5e9",
       },
       {
         label: "MetaHire",
         href: "https://metahire.in",
         external: true,
         logo: metaHire,
-        logoDark: metaHireDark,
+        accent: "#16a34a",
       },
       {
         label: "MetaCheck",
         href: "https://metacheck.in",
         external: true,
         logo: metaCheck,
-        logoDark: metaCheckDark,
+        accent: "#2563eb",
       },
       {
         label: "MetaAdds",
         href: "https://metaads.in",
         external: true,
         logo: metaAds,
-        logoDark: metaAdsDark,
+        accent: "#8b5cf6",
       },
       {
         label: "MetaNav",
         href: "https://metanav.in",
         external: true,
         logo: metaNav,
-        logoDark: metaNav,
+        accent: "#06b6d4",
       },
       {
         label: "MetaLedger",
         href: "https://metaledger.in",
         external: true,
         logo: metaLedger,
-        logoDark: metaLedgerDark,
+        accent: "#0284c7",
       },
       {
         label: "MetaCard",
         href: "https://metacard.in",
         external: true,
         logo: metaCard,
-        logoDark: metaCardDark,
+        accent: "#0891b2",
       },
       {
         label: "MetaIM",
         href: "https://metaim.in",
         external: true,
         logo: metaIm,
-        logoDark: metaImDark,
+        accent: "#f59e0b",
       },
     ],
   },
@@ -442,102 +435,82 @@ const COMPLIANCE_BADGES: {
   { icon: CreditCard, label: "PCI DSS", accent: "pci" },
 ];
 
+function ProductLinkContent({ link }: { link: FooterSection["links"][number] }) {
+  return (
+    <>
+      <span className={styles.productLogoWrap}>
+        <img
+          src={link.logo}
+          alt=""
+          className={styles.productLogo}
+          draggable={false}
+          loading="lazy"
+          decoding="async"
+        />
+        <span className={styles.productRing} aria-hidden="true" />
+      </span>
+      <span className={styles.productName}>{link.label}</span>
+    </>
+  );
+}
+
 function FooterLinkSection({ section }: { section: FooterSection }) {
   return (
     <div className={styles.linkRow}>
       <h3 className={styles.colHeading}>{section.heading}</h3>
       <ul className={styles.linkRowList}>
-        {section.links.map((link) => (
-          <li key={link.label}>
-            {link.disabled ? (
-              <span
-                className={cn(styles.link, styles.linkDisabled)}
-                title="Coming soon"
-              >
-                {link.label}
-                <span className={styles.soonDot} aria-hidden="true" />
-              </span>
-            ) : link.logo ? (
-              link.external ? (
+        {section.links.map((link) => {
+          const brandStyle = {
+            "--brand": link.accent ?? "#5eb8ff",
+          } as CSSProperties;
+
+          return (
+            <li key={link.label}>
+              {link.disabled ? (
+                <span
+                  className={cn(styles.link, styles.linkDisabled)}
+                  title="Coming soon"
+                >
+                  {link.label}
+                  <span className={styles.soonDot} aria-hidden="true" />
+                </span>
+              ) : link.logo ? (
+                link.external ? (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.productItem}
+                    style={brandStyle}
+                  >
+                    <ProductLinkContent link={link} />
+                  </a>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className={styles.productItem}
+                    style={brandStyle}
+                  >
+                    <ProductLinkContent link={link} />
+                  </Link>
+                )
+              ) : link.external ? (
                 <a
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={styles.productItem}
+                  className={styles.link}
                 >
-                  <span className={styles.productLogoWrap}>
-                    <img
-                      src={link.logo}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      width={28}
-                      height={28}
-                      className={`${styles.productLogo} ${styles.productLogoLight}`}
-                      draggable={false}
-                    />
-                    {link.logoDark && (
-                      <img
-                        src={link.logoDark}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        width={28}
-                        height={28}
-                        className={`${styles.productLogo} ${styles.productLogoDark}`}
-                        draggable={false}
-                      />
-                    )}
-                    <span className={styles.productRing} aria-hidden="true" />
-                  </span>
-                  <span className={styles.productLabel}>{link.label}</span>
+                  {link.label}
                 </a>
               ) : (
-                <Link to={link.href} className={styles.productItem}>
-                  <span className={styles.productLogoWrap}>
-                    <img
-                      src={link.logo}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      width={28}
-                      height={28}
-                      className={`${styles.productLogo} ${styles.productLogoLight}`}
-                      draggable={false}
-                    />
-                    {link.logoDark && (
-                      <img
-                        src={link.logoDark}
-                        alt=""
-                        loading="lazy"
-                        decoding="async"
-                        width={28}
-                        height={28}
-                        className={`${styles.productLogo} ${styles.productLogoDark}`}
-                        draggable={false}
-                      />
-                    )}
-                    <span className={styles.productRing} aria-hidden="true" />
-                  </span>
-                  <span className={styles.productLabel}>{link.label}</span>
+                <Link to={link.href} className={styles.link}>
+                  {link.label}
                 </Link>
-              )
-            ) : link.external ? (
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.link}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link to={link.href} className={styles.link}>
-                {link.label}
-              </Link>
-            )}
-          </li>
-        ))}
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

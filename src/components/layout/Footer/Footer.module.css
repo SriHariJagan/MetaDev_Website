@@ -394,7 +394,7 @@
 .watermark {
   position: absolute;
   z-index: 0;
-  right: -1%;
+  right: 4%;
   bottom: -4%;
   font-size: clamp(7rem, 16vw, 13rem);
   font-weight: var(--font-weight-bold);
@@ -648,11 +648,13 @@
 }
 
 .linkRowList {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.55rem 1.35rem;
-  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+  gap: 1rem 0.75rem;
+  width: 100%;
+  max-width: 60rem;
+  margin: 0 auto;
   padding: 0;
   list-style: none;
   min-width: 0;
@@ -764,154 +766,175 @@
 /* ---------- Product link with logo ---------- */
 
 .productItem {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  padding: 4px;
-  border-radius: var(--radius-full);
-  border: 1px solid transparent;
-  overflow: visible;
-  transition:
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
+  --brand: #5eb8ff;
 
-.productItem:hover {
-  border-color: var(--navbar-accent);
-  box-shadow:
-    0 0 20px -4px color-mix(in srgb, var(--navbar-accent) 45%, transparent),
-    0 0 40px -8px color-mix(in srgb, var(--navbar-accent) 20%, transparent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 18px;
 }
 
 .productLogoWrap {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  overflow: visible;
-  flex-shrink: 0;
-  background: var(--color-surface);
-  border: 1.5px solid var(--color-border);
+  width: 100%;
+  height: 62px;
+  padding: 8px 13px;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      130% 170% at 16% 0%,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0.9) 32%,
+      transparent 72%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand) 6%, #ffffff) 0%,
+      color-mix(in srgb, var(--brand) 13%, #ffffff) 55%,
+      color-mix(in srgb, var(--brand) 20%, #ffffff) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--brand) 32%, #ffffff);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 6px color-mix(in srgb, var(--brand) 10%, transparent),
+    0 8px 18px -12px rgba(0, 0, 0, 0.8);
   transition:
+    transform var(--transition-fast),
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
 }
 
-.productItem:hover .productLogoWrap {
-  border-color: var(--navbar-accent);
-  box-shadow: 0 0 14px -2px
-    color-mix(in srgb, var(--navbar-accent) 55%, transparent);
+/* Thin brand-coloured highlight along the top edge */
+.productLogoWrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--brand) 80%, #ffffff),
+    transparent
+  );
+  opacity: 0.75;
+  pointer-events: none;
 }
 
 .productLogo {
-  width: 80%;
-  height: 80%;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   transition: transform var(--transition-fast);
 }
 
-.productLogoLight {
-  display: none;
+.productName {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  text-align: center;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  transition:
+    color var(--transition-fast),
+    text-shadow var(--transition-fast);
 }
 
-.productLogoDark {
-  display: block;
-  position: absolute;
-  inset: 0;
-  margin: auto;
+.productItem:hover .productLogoWrap,
+.productItem:focus-visible .productLogoWrap {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--brand) 62%, #ffffff);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.98),
+    inset 0 -2px 8px color-mix(in srgb, var(--brand) 16%, transparent),
+    0 16px 28px -16px rgba(0, 0, 0, 0.9),
+    0 0 22px -6px color-mix(in srgb, var(--brand) 62%, transparent);
 }
 
-:global([data-theme="light"]) .productLogoLight {
-  display: block;
+.productItem:hover .productLogo,
+.productItem:focus-visible .productLogo {
+  transform: scale(1.05);
 }
 
-:global([data-theme="light"]) .productLogoDark {
-  display: none;
+.productItem:hover .productName,
+.productItem:focus-visible .productName {
+  color: var(--color-text);
+  text-shadow: 0 0 14px color-mix(in srgb, var(--brand) 55%, transparent);
 }
 
-.productItem:hover .productLogo {
-  transform: scale(1.15);
+.productItem:focus-visible {
+  outline: none;
 }
 
-/* Animated border ring on hover */
+.productItem:focus-visible .productLogoWrap {
+  outline: 2px solid color-mix(in srgb, var(--brand) 75%, #ffffff);
+  outline-offset: 3px;
+}
+
+/* Animated brand-coloured border on hover */
 .productRing {
   position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 1.5px solid transparent;
-  border-top-color: var(--navbar-accent-start);
-  border-right-color: var(--navbar-accent-end);
+  inset: 0;
+  z-index: 2;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--brand) 95%, #ffffff) 0%,
+    transparent 30%,
+    transparent 64%,
+    color-mix(in srgb, var(--brand) 95%, #ffffff) 100%
+  );
+  background-size: 250% 100%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
   opacity: 0;
-  transition: opacity var(--transition-fast);
-  animation: productRingSpin 2s linear infinite;
   pointer-events: none;
+  transition: opacity var(--transition-fast);
 }
 
-.productItem:hover .productRing {
+.productItem:hover .productRing,
+.productItem:focus-visible .productRing {
   opacity: 1;
+  animation: productRingShimmer 2.4s linear infinite;
 }
 
-@keyframes productRingSpin {
-  to {
-    transform: rotate(360deg);
+@keyframes productRingShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 
-/* Product label — tooltip on logo hover */
-.productLabel {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  font-size: 0.7rem;
-  font-weight: var(--font-weight-semibold);
-  color: #fff;
-  background: var(--glass-navy);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 5px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--glass-border);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition:
-    opacity var(--transition-fast),
-    transform var(--transition-fast);
-  z-index: 10;
-  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.3);
-}
-
-:global([data-theme="light"]) .productLabel {
-  background: var(--glass-navy-light-soft);
-  color: var(--color-text);
-  border-color: var(--color-border);
-  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12);
-}
-
-/* Tooltip arrow */
-.productLabel::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: var(--glass-navy);
-}
-
-:global([data-theme="light"]) .productLabel::after {
-  border-top-color: var(--glass-navy-light-soft);
-}
-
-.productItem:hover .productLabel {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  .productItem:hover .productRing,
+  .productItem:focus-visible .productRing {
+    animation: none;
+  }
 }
 
 /* ---------- Bottom bar ---------- */
@@ -1175,6 +1198,13 @@
   }
 }
 
+@media (max-width: 60rem) {
+  .linkRowList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 44rem;
+  }
+}
+
 @media (max-width: 48rem) {
   .main {
     padding-block: var(--space-10) var(--space-5);
@@ -1196,6 +1226,20 @@
 
   .link {
     font-size: 0.82rem;
+  }
+
+  .linkRowList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 34rem;
+  }
+
+  .productLogoWrap {
+    height: 58px;
+    padding: 7px 11px;
+  }
+
+  .productName {
+    font-size: 0.68rem;
   }
 
   .bottomInner {
@@ -1242,7 +1286,18 @@
   }
 
   .linkRowList {
-    gap: 0.5rem 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 24rem;
+    gap: 0.75rem;
+  }
+
+  .productLogoWrap {
+    height: 56px;
+    padding: 7px 10px;
+  }
+
+  .productName {
+    font-size: 0.66rem;
   }
 
   .link {
