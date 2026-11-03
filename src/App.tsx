@@ -5,7 +5,7 @@ import { router } from '@/router';
 
 function App() {
   // Keep the initial loader up until the routed page has actually rendered
-  // content, then fade it away. The inline loader has its own 1.5s hard stop,
+  // content, then fade it away. The inline loader has its own 1.45s hard stop,
   // so a slow network can never hold the site hostage.
   useEffect(() => {
     const root = document.getElementById('root');

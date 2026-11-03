@@ -62,53 +62,51 @@
       })();
     </script>
     <style>
-      /* First-paint loader — inline so it paints instantly with zero requests. */
+      /* First-paint loader — fully inline so it paints instantly with zero
+         network requests. The MetaDev bracket and MD monogram are drawn in
+         SVG, so the loader is unique to the brand rather than a stock spinner. */
       .md-loader {
-        --md-loader-bg: #f7f9ff;
+        --md-loader-bg: #f6f8fe;
         --md-loader-text: #0b1220;
         --md-loader-muted: #64748b;
-        --md-loader-line: rgba(79, 70, 229, 0.16);
-        --md-loader-tile: rgba(255, 255, 255, 0.84);
-        --md-loader-track: rgba(15, 23, 42, 0.09);
+        --md-loader-line: rgba(15, 23, 42, 0.32);
+        --md-loader-track: rgba(79, 70, 229, 0.2);
         --md-loader-mark-a: #4f46e5;
         --md-loader-mark-b: #0891b2;
+        --md-loader-mark-c: #10b981;
+        --md-loader-glow: rgba(79, 70, 229, 0.28);
         position: fixed;
         inset: 0;
         z-index: 9999;
         display: grid;
         place-items: center;
-        padding: 24px;
         overflow: hidden;
         background-color: var(--md-loader-bg);
-        background-image:
-          radial-gradient(circle at 16% 10%, rgba(99, 102, 241, 0.16), transparent 42%),
-          radial-gradient(circle at 86% 92%, rgba(34, 211, 238, 0.14), transparent 46%);
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-        /* CSS-owned timeout: the loader fades itself out even if the main
-           thread is busy or JavaScript fails. Keeps the hard cap under 2s. */
-        animation: md-loader-timeout 0.3s ease 1.45s forwards;
-        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
         color: var(--md-loader-text);
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+        /* CSS-owned timeout: the overlay fades itself out even if the main
+           thread is busy or JavaScript fails. Fully gone before 2 seconds. */
+        animation: md-loader-timeout 0.5s ease 0.95s forwards;
       }
 
       html[data-theme='dark'] .md-loader {
-        --md-loader-bg: #070f1d;
-        --md-loader-text: #f8fafc;
-        --md-loader-muted: #94a3b8;
-        --md-loader-line: rgba(129, 140, 248, 0.2);
-        --md-loader-tile: rgba(255, 255, 255, 0.05);
-        --md-loader-track: rgba(148, 163, 184, 0.18);
+        --md-loader-bg: #050c18;
+        --md-loader-text: #f1f5f9;
+        --md-loader-muted: #8c9cb5;
+        --md-loader-line: rgba(148, 163, 184, 0.3);
+        --md-loader-track: rgba(129, 140, 248, 0.28);
         --md-loader-mark-a: #818cf8;
         --md-loader-mark-b: #22d3ee;
-        background-image:
-          radial-gradient(circle at 16% 10%, rgba(99, 102, 241, 0.22), transparent 44%),
-          radial-gradient(circle at 86% 92%, rgba(34, 211, 238, 0.16), transparent 48%);
+        --md-loader-mark-c: #34d399;
+        --md-loader-glow: rgba(34, 211, 238, 0.28);
       }
 
-      .md-loader.is-hidden {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
+      .md-loader.is-leaving {
+        animation: md-loader-leave 0.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+      }
+
+      .md-loader.is-leaving .md-loader__content {
+        animation: md-loader-content-out 0.4s ease forwards;
       }
 
       /* React uses the same lockup as its route fallback, but it must stay
@@ -119,115 +117,297 @@
         visibility: visible;
       }
 
+      .md-loader__backdrop,
+      .md-loader__grid {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .md-loader__backdrop {
+        background:
+          radial-gradient(circle at 50% 46%, rgba(79, 70, 229, 0.1), transparent 34%),
+          radial-gradient(circle at 16% 12%, rgba(99, 102, 241, 0.12), transparent 38%),
+          radial-gradient(circle at 84% 88%, rgba(34, 211, 238, 0.1), transparent 40%);
+      }
+
+      html[data-theme='dark'] .md-loader__backdrop {
+        background:
+          radial-gradient(circle at 50% 46%, rgba(99, 102, 241, 0.14), transparent 36%),
+          radial-gradient(circle at 16% 12%, rgba(99, 102, 241, 0.16), transparent 40%),
+          radial-gradient(circle at 84% 88%, rgba(34, 211, 238, 0.12), transparent 42%);
+      }
+
+      .md-loader__grid {
+        background-image:
+          linear-gradient(var(--md-loader-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--md-loader-line) 1px, transparent 1px);
+        background-size: 72px 72px;
+        opacity: 0.06;
+        -webkit-mask-image: radial-gradient(circle at 50% 48%, #000 0%, transparent 62%);
+        mask-image: radial-gradient(circle at 50% 48%, #000 0%, transparent 62%);
+      }
+
+      .md-loader__glow {
+        position: absolute;
+        width: 46vmax;
+        height: 46vmax;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--md-loader-glow), transparent 66%);
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .md-loader__glow--a {
+        top: -18vmax;
+        left: -10vmax;
+        animation: md-loader-drift-a 14s ease-in-out infinite alternate;
+      }
+
+      .md-loader__glow--b {
+        right: -14vmax;
+        bottom: -18vmax;
+        animation: md-loader-drift-b 17s ease-in-out infinite alternate;
+      }
+
       .md-loader__content {
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 24px;
         text-align: center;
-        animation: md-loader-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation: md-loader-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
       }
 
-      .md-loader__mark {
+      .md-loader__sigil {
         position: relative;
         display: grid;
         place-items: center;
-        width: 80px;
-        height: 80px;
-        margin-bottom: 26px;
-        border-radius: 24px;
-        background: var(--md-loader-tile);
-        border: 1px solid var(--md-loader-line);
-        box-shadow:
-          0 22px 60px -26px rgba(30, 41, 59, 0.5),
-          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        width: 228px;
+        height: 228px;
       }
 
       .md-loader__halo {
         position: absolute;
-        inset: -22px;
+        inset: 26px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.34), transparent 68%);
-        filter: blur(9px);
-        animation: md-loader-pulse 2.4s ease-in-out infinite;
+        background: radial-gradient(circle, var(--md-loader-glow), transparent 68%);
+        opacity: 0.7;
+        animation: md-loader-breathe 3.4s ease-in-out infinite;
       }
 
-      .md-loader__arc {
+      .md-loader__pulse {
         position: absolute;
-        inset: -4px;
-        padding: 2px;
-        border-radius: 28px;
-        background: conic-gradient(
-          from 0deg,
-          transparent 0 52%,
-          rgba(99, 102, 241, 0.12) 66%,
-          #6366f1 86%,
-          #22d3ee 100%
-        );
-        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-        -webkit-mask-composite: xor;
-        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-        mask-composite: exclude;
-        animation: md-loader-spin 1.6s linear infinite;
+        inset: 42px;
+        border: 1px solid var(--md-loader-mark-a);
+        border-radius: 50%;
+        opacity: 0;
+        animation: md-loader-pulse 3.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
       }
 
-      .md-loader__glyph {
+      .md-loader__pulse--b {
+        animation-delay: 1.8s;
+        border-color: var(--md-loader-mark-b);
+      }
+
+      .md-loader__svg {
         position: relative;
-        width: 40px;
-        height: 40px;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
       }
 
-      .md-loader__wordmark {
-        font-size: 27px;
-        font-weight: 700;
-        letter-spacing: -0.035em;
-        line-height: 1;
+      .md-loader__ring {
+        transform-box: view-box;
+        transform-origin: 120px 120px;
+        animation: md-loader-spin 44s linear infinite;
       }
 
-      .md-loader__wordmark span {
-        background-image: linear-gradient(100deg, #6366f1, #22d3ee);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+      .md-loader__ring-dot {
+        fill: var(--md-loader-mark-b);
+        opacity: 0.85;
+        filter: drop-shadow(0 0 5px var(--md-loader-mark-b));
       }
 
-      html[data-theme='dark'] .md-loader__wordmark span {
-        background-image: linear-gradient(100deg, #a5b4fc, #67e8f9);
+      .md-loader__sat-b-wrap {
+        transform-box: view-box;
+        transform-origin: 120px 120px;
+        animation: md-loader-spin-reverse 26s linear infinite;
+      }
+
+      .md-loader__sat-b {
+        fill: var(--md-loader-mark-a);
+        opacity: 0.9;
+      }
+
+      .md-loader__cross {
+        stroke: var(--md-loader-line);
+        stroke-width: 1;
+        opacity: 0.45;
       }
 
       .md-loader__track {
+        stroke: var(--md-loader-track);
+        stroke-width: 5;
+        stroke-linecap: round;
+        fill: none;
+      }
+
+      .md-loader__stroke {
+        stroke: url(#mdLoaderStroke);
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: md-loader-draw 0.45s cubic-bezier(0.65, 0, 0.35, 1) 0s forwards;
+        filter: drop-shadow(0 0 6px var(--md-loader-glow));
+      }
+
+      .md-loader__comet {
+        stroke: url(#mdLoaderComet);
+        stroke-width: 5;
+        stroke-linecap: round;
+        fill: none;
+        stroke-dasharray: 7 93;
+        stroke-dashoffset: 100;
+        opacity: 0;
+        animation:
+          md-loader-flow 3.2s linear 0.45s infinite, md-loader-comet-in 0.3s ease 0.45s forwards;
+      }
+
+      .md-loader__monogram {
+        stroke: url(#mdLoaderStroke);
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        filter: drop-shadow(0 0 7px var(--md-loader-glow));
+      }
+
+      .md-loader__m {
+        animation: md-loader-draw 0.32s cubic-bezier(0.65, 0, 0.35, 1) 0.06s forwards;
+      }
+
+      .md-loader__d {
+        animation: md-loader-draw 0.28s cubic-bezier(0.65, 0, 0.35, 1) 0.12s forwards;
+      }
+
+      .md-loader__wordmark {
         position: relative;
-        width: 172px;
-        height: 3px;
-        margin-top: 22px;
-        overflow: hidden;
-        border-radius: 999px;
-        background-color: var(--md-loader-track);
+        margin-top: 12px;
+        font-size: 31px;
+        font-weight: 700;
+        letter-spacing: -0.045em;
+        line-height: 1;
+        color: var(--md-loader-text);
+        animation: md-loader-rise 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards;
+      }
+
+      .md-loader__wordmark span {
         background-image: linear-gradient(
-          90deg,
-          rgba(99, 102, 241, 0.4),
-          rgba(34, 211, 238, 0.4)
+          100deg,
+          var(--md-loader-mark-a) 8%,
+          var(--md-loader-mark-b) 68%,
+          var(--md-loader-mark-c) 100%
         );
+        background-size: 220% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: md-loader-sheen 5.5s ease-in-out 1.5s infinite;
       }
 
-      .md-loader__track span {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 38%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, transparent, #6366f1 35%, #22d3ee 70%, transparent);
-        animation: md-loader-sweep 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      .md-loader__rule {
+        width: 44px;
+        height: 2px;
+        margin-top: 16px;
+        border-radius: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--md-loader-mark-a),
+          var(--md-loader-mark-b),
+          transparent
+        );
+        transform: scaleX(0);
+        animation: md-loader-rule 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
       }
 
-      .md-loader__caption {
+      .md-loader__tagline {
         margin: 14px 0 0;
-        font-size: 10px;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        color: var(--md-loader-muted);
+        animation: md-loader-appear 0.35s ease 0.28s backwards;
+      }
+
+      .md-loader__meta {
+        position: absolute;
+        right: 30px;
+        bottom: 26px;
+        left: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 9px;
         font-weight: 600;
         letter-spacing: 0.26em;
         text-transform: uppercase;
+        white-space: nowrap;
         color: var(--md-loader-muted);
-        animation: md-loader-fade 2s ease-in-out infinite;
+        animation: md-loader-appear 0.35s ease 0.32s backwards;
+      }
+
+      .md-loader__status {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .md-loader__dots {
+        display: inline-flex;
+        gap: 5px;
+        margin-left: 7px;
+      }
+
+      .md-loader__dots i {
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: md-loader-dot 1.35s ease-in-out infinite;
+      }
+
+      .md-loader__dots i:nth-child(2) {
+        animation-delay: 0.18s;
+      }
+
+      .md-loader__dots i:nth-child(3) {
+        animation-delay: 0.36s;
+      }
+
+      .md-loader__edge {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--md-loader-mark-a),
+          var(--md-loader-mark-b),
+          transparent
+        );
+        opacity: 0.25;
+        pointer-events: none;
       }
 
       @keyframes md-loader-timeout {
@@ -238,58 +418,185 @@
         }
       }
 
+      @keyframes md-loader-leave {
+        from {
+          opacity: 1;
+          visibility: visible;
+        }
+        to {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+      }
+
+      @keyframes md-loader-content-out {
+        to {
+          opacity: 0;
+          transform: translateY(-6px) scale(0.985);
+        }
+      }
+
+      @keyframes md-loader-draw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes md-loader-flow {
+        from {
+          stroke-dashoffset: 100;
+        }
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes md-loader-comet-in {
+        to {
+          opacity: 0.85;
+        }
+      }
+
       @keyframes md-loader-spin {
         to {
           transform: rotate(1turn);
         }
       }
 
-      @keyframes md-loader-pulse {
+      @keyframes md-loader-spin-reverse {
+        to {
+          transform: rotate(-1turn);
+        }
+      }
+
+      @keyframes md-loader-breathe {
         0%,
         100% {
-          opacity: 0.55;
+          opacity: 0.45;
           transform: scale(0.94);
         }
         50% {
-          opacity: 1;
-          transform: scale(1.06);
+          opacity: 0.9;
+          transform: scale(1.05);
         }
       }
 
-      @keyframes md-loader-sweep {
+      @keyframes md-loader-pulse {
         0% {
-          transform: translateX(-120%);
+          opacity: 0.5;
+          transform: scale(0.72);
         }
+        70%,
         100% {
-          transform: translateX(360%);
+          opacity: 0;
+          transform: scale(1.28);
         }
       }
 
-      @keyframes md-loader-fade {
-        0%,
-        100% {
-          opacity: 0.55;
-        }
-        50% {
-          opacity: 1;
-        }
-      }
-
-      @keyframes md-loader-in {
+      @keyframes md-loader-rise {
         from {
-          transform: translateY(8px) scale(0.99);
+          opacity: 0;
+          transform: translateY(12px);
         }
         to {
-          transform: translateY(0) scale(1);
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes md-loader-sheen {
+        0%,
+        45%,
+        100% {
+          background-position: 100% 0;
+        }
+        70% {
+          background-position: 0 0;
+        }
+      }
+
+      @keyframes md-loader-rule {
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      @keyframes md-loader-appear {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes md-loader-dot {
+        0%,
+        100% {
+          opacity: 0.25;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+      }
+
+      @keyframes md-loader-drift-a {
+        from {
+          transform: translate3d(0, 0, 0) scale(1);
+        }
+        to {
+          transform: translate3d(6vmax, 4vmax, 0) scale(1.12);
+        }
+      }
+
+      @keyframes md-loader-drift-b {
+        from {
+          transform: translate3d(0, 0, 0) scale(1.08);
+        }
+        to {
+          transform: translate3d(-5vmax, -4vmax, 0) scale(1);
+        }
+      }
+
+      @media (max-width: 520px) {
+        .md-loader__sigil {
+          width: 190px;
+          height: 190px;
+        }
+
+        .md-loader__wordmark {
+          font-size: 27px;
+        }
+
+        .md-loader__meta {
+          right: 20px;
+          bottom: 18px;
+          left: 20px;
+          font-size: 8px;
+          letter-spacing: 0.2em;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .md-loader,
         .md-loader * {
           animation-duration: 0.01ms !important;
           animation-iteration-count: 1 !important;
           transition-duration: 0.01ms !important;
+        }
+
+        .md-loader {
+          animation-duration: 0.01ms !important;
+          animation-delay: 0.95s !important;
+        }
+
+        .md-loader.is-leaving {
+          animation-duration: 0.01ms !important;
+          animation-delay: 0s !important;
         }
       }
     </style>
@@ -302,37 +609,108 @@
       aria-live="polite"
       aria-label="Loading MetaDev"
     >
+      <div class="md-loader__backdrop" aria-hidden="true"></div>
+      <div class="md-loader__grid" aria-hidden="true"></div>
+      <span class="md-loader__glow md-loader__glow--a" aria-hidden="true"></span>
+      <span class="md-loader__glow md-loader__glow--b" aria-hidden="true"></span>
+
       <div class="md-loader__content">
-        <div class="md-loader__mark" aria-hidden="true">
+        <div class="md-loader__sigil" aria-hidden="true">
           <span class="md-loader__halo"></span>
-          <span class="md-loader__arc"></span>
-          <svg class="md-loader__glyph" viewBox="0 0 48 48" fill="none">
-            <path
-              d="M12 33V15l12 12 12-12v18"
-              stroke="url(#md-loader-gradient)"
-              stroke-width="4.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+          <span class="md-loader__pulse"></span>
+          <span class="md-loader__pulse md-loader__pulse--b"></span>
+          <svg class="md-loader__svg" viewBox="0 0 240 240" fill="none">
             <defs>
               <linearGradient
-                id="md-loader-gradient"
-                x1="10"
-                y1="12"
-                x2="38"
-                y2="35"
+                id="mdLoaderStroke"
+                x1="44"
+                y1="28"
+                x2="196"
+                y2="214"
                 gradientUnits="userSpaceOnUse"
               >
                 <stop style="stop-color: var(--md-loader-mark-a)" />
-                <stop offset="1" style="stop-color: var(--md-loader-mark-b)" />
+                <stop offset="0.55" style="stop-color: var(--md-loader-mark-b)" />
+                <stop offset="1" style="stop-color: var(--md-loader-mark-c)" />
+              </linearGradient>
+              <linearGradient
+                id="mdLoaderComet"
+                x1="44"
+                y1="28"
+                x2="196"
+                y2="214"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#fff" stop-opacity="0" />
+                <stop offset="0.5" style="stop-color: var(--md-loader-mark-b)" />
+                <stop offset="1" stop-color="#fff" />
               </linearGradient>
             </defs>
+
+            <g class="md-loader__ring">
+              <circle cx="120" cy="120" r="114" stroke="var(--md-loader-line)" stroke-width="1" opacity="0.16" />
+              <circle
+                cx="120"
+                cy="120"
+                r="108"
+                stroke="var(--md-loader-line)"
+                stroke-width="1"
+                opacity="0.3"
+                pathLength="100"
+                stroke-dasharray="0.35 2.15"
+              />
+              <circle class="md-loader__ring-dot" cx="120" cy="12" r="2.4" />
+              <g class="md-loader__sat-b-wrap">
+                <circle class="md-loader__sat-b" cx="220" cy="120" r="1.6" />
+              </g>
+            </g>
+
+            <g class="md-loader__cross" stroke-linecap="round">
+              <path d="M120 2v7" />
+              <path d="M120 231v7" />
+              <path d="M2 120h7" />
+              <path d="M231 120h7" />
+            </g>
+
+            <path
+              class="md-loader__track"
+              d="M154 34 C126 21 91 23 70 43 C56 57 54 78 43 99 L31 120 L43 141 C54 162 56 183 70 197 C91 217 126 219 154 206"
+            />
+            <path
+              class="md-loader__stroke"
+              pathLength="1"
+              d="M154 34 C126 21 91 23 70 43 C56 57 54 78 43 99 L31 120 L43 141 C54 162 56 183 70 197 C91 217 126 219 154 206"
+            />
+            <path
+              class="md-loader__comet"
+              pathLength="100"
+              d="M154 34 C126 21 91 23 70 43 C56 57 54 78 43 99 L31 120 L43 141 C54 162 56 183 70 197 C91 217 126 219 154 206"
+            />
+
+            <g class="md-loader__monogram">
+              <path class="md-loader__m" pathLength="1" d="M88 142 V99 L111 123 L134 99 V142" />
+              <path
+                class="md-loader__d"
+                pathLength="1"
+                d="M144 142 V99 H157 C177 99 177 142 157 142 H144"
+              />
+            </g>
           </svg>
         </div>
+
         <div class="md-loader__wordmark" aria-hidden="true"><span>Meta</span>Dev</div>
-        <div class="md-loader__track" aria-hidden="true"><span></span></div>
-        <p class="md-loader__caption" aria-hidden="true">Engineering what's next</p>
+        <span class="md-loader__rule" aria-hidden="true"></span>
+        <p class="md-loader__tagline" aria-hidden="true">Engineering what's next</p>
       </div>
+
+      <div class="md-loader__meta" aria-hidden="true">
+        <span>Digital engineering</span>
+        <span class="md-loader__status">
+          Loading
+          <span class="md-loader__dots"><i></i><i></i><i></i></span>
+        </span>
+      </div>
+      <span class="md-loader__edge" aria-hidden="true"></span>
     </div>
     <script>
       (function () {
@@ -340,30 +718,87 @@
         if (!loader) return;
 
         var startedAt = performance.now();
-        var hidden = false;
-        var MIN_VISIBLE = 350;
-        var FADE_MS = 300;
+        var done = false;
+        var removalScheduled = false;
+        var MIN_VISIBLE = 900;
+        var EXIT_MS = 500;
+        var TIMEOUT_START_MS = 950;
+
+        function removeLoader() {
+          if (removalScheduled) return;
+          removalScheduled = true;
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }
+
+        function scheduleRemoval(delay) {
+          window.setTimeout(removeLoader, delay);
+        }
+
+        // The CSS timeout and the JS-driven leave both end with `animationend`.
+        // Removing there keeps the overlay from flashing back or lingering in
+        // the DOM after it has already faded out.
+        loader.addEventListener('animationend', function (event) {
+          if (event.target !== loader) return;
+          if (event.animationName === 'md-loader-timeout' || event.animationName === 'md-loader-leave') {
+            scheduleRemoval(60);
+          }
+        });
+
+        // Find the CSS-owned timeout animation so we can tell whether its fade
+        // has already begun.
+        function getCssTimeout() {
+          if (typeof loader.getAnimations !== 'function') return null;
+          var animations = loader.getAnimations();
+          for (var i = 0; i < animations.length; i += 1) {
+            if (animations[i].animationName === 'md-loader-timeout') return animations[i];
+          }
+          return null;
+        }
+
+        // Adding `.is-leaving` after the CSS timeout has started would restart
+        // the fade from opacity 1, so once it is running we let it finish.
+        function cssTimeoutHasStarted(animation) {
+          if (!animation) {
+            return performance.now() - startedAt >= TIMEOUT_START_MS;
+          }
+
+          if (animation.playState === 'finished') return true;
+          if (typeof animation.currentTime !== 'number') return false;
+
+          var timing = animation.effect && animation.effect.getTiming ? animation.effect.getTiming() : null;
+          return animation.currentTime >= (timing ? timing.delay : TIMEOUT_START_MS);
+        }
 
         function finish() {
-          if (hidden) return;
-          hidden = true;
+          if (done || !loader.parentNode) return;
+          done = true;
+          loader.setAttribute('aria-hidden', 'true');
 
-          var elapsed = performance.now() - startedAt;
-          var wait = Math.max(0, MIN_VISIBLE - elapsed);
+          var wait = Math.max(0, MIN_VISIBLE - (performance.now() - startedAt));
 
           window.setTimeout(function () {
-            loader.classList.add('is-hidden');
-            loader.setAttribute('aria-hidden', 'true');
-            window.setTimeout(function () {
-              if (loader.parentNode) loader.parentNode.removeChild(loader);
-            }, FADE_MS);
+            var timeout = getCssTimeout();
+
+            if (cssTimeoutHasStarted(timeout)) {
+              if (timeout && timeout.playState === 'finished') {
+                removeLoader();
+              } else {
+                // Safety net in case animationend is missed (e.g. tab hidden).
+                scheduleRemoval(EXIT_MS + 100);
+              }
+              return;
+            }
+
+            loader.classList.add('is-leaving');
+            scheduleRemoval(EXIT_MS + 100);
           }, wait);
         }
 
         window.__hideMetaDevLoader = finish;
-        // Backstop for DOM cleanup; the CSS animation guarantees the visual
-        // timeout even when this callback is delayed by a busy main thread.
-        window.setTimeout(finish, 1450);
+
+        // Hard cap: the CSS timeout hides the overlay on its own, and this
+        // guarantees the node is removed even if the app never calls finish().
+        window.setTimeout(finish, 1300);
       })();
     </script>
     <div id="root"></div>
