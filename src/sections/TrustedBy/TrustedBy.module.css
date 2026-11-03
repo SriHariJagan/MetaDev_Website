@@ -161,9 +161,8 @@
   height: 100%;
 }
 
-/* Each logo sits in its own glass tile so every mark gets
-   consistent, generous breathing room regardless of its native
-   aspect ratio. */
+/* Each logo gets consistent, generous breathing room regardless of
+   its native aspect ratio. */
 
 .logoBannerItem {
   flex-shrink: 0;
@@ -175,9 +174,8 @@
   background: transparent;
 }
 
-/* Logo image — monochrome at rest (white on dark theme, black on
-   light theme), real brand colors revealed on hover. No other
-   hover effect (no lift, no background, no box-shadow). */
+/* Logo image — full brand colour in both themes, using a dedicated
+   dark-background variant where the artwork needs it. */
 
 .logoImage,
 .logoImageDark {
@@ -191,17 +189,11 @@
   max-width: 190px;
   max-height: 110px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  transition: filter 0.35s ease;
+  transition: transform 0.35s ease;
 }
 
-:global([data-theme="light"]) .logoImage {
-  filter: brightness(0);
-}
-
-.logoBannerItem:hover .logoImage,
-.marqueeSection:hover .logoImage {
-  filter: none;
+.logoBannerItem:hover .logoImage {
+  transform: scale(1.04);
 }
 
 /* Dark-mode variants — shown as-is (already designed for dark bg) */

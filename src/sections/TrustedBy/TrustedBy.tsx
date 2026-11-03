@@ -23,10 +23,14 @@ import theClearHireLogo from "@/assets/images/trustedBy/theclearhire.png";
 import gameatLogo from "@/assets/images/trustedBy/gameat.png";
 import metaPeLogo from "@/assets/images/trustedBy/metape.png";
 import metaHireLogoDark from "@/assets/images/trustedBy/metahire-dark.png";
+import metaFlowLogoDark from "@/assets/images/trustedBy/metaflow-dark.png";
 import metaCheckLogoDark from "@/assets/images/trustedBy/metacheck-dark.png";
 import metaAdsLogoDark from "@/assets/images/trustedBy/metaAds-dark.png";
 import metaGreenLogoDark from "@/assets/images/trustedBy/metagreen-dark.png";
 import metaEduLogoDark from "@/assets/images/trustedBy/metaedu-dark.png";
+import worktaxLogoDark from "@/assets/images/trustedBy/worktax-dark.png";
+import theClearHireLogoDark from "@/assets/images/trustedBy/theclearhire-dark.png";
+import metaPeLogoDark from "@/assets/images/trustedBy/metape-dark.png";
 
 /* ------------------------------------------------------------------ */
 /* Real partner logos                                                  */
@@ -41,16 +45,21 @@ interface PartnerLogo {
 
 const PARTNER_LOGOS: PartnerLogo[] = [
   { id: "metahire", name: "MetaHire", src: metaHireLogo, darkSrc: metaHireLogoDark },
-  { id: "metaflow", name: "MetaFlow", src: metaFlowLogo },
+  { id: "metaflow", name: "MetaFlow", src: metaFlowLogo, darkSrc: metaFlowLogoDark },
   { id: "metacheck", name: "MetaCheck", src: metaCheckLogo, darkSrc: metaCheckLogoDark },
   { id: "metaads", name: "MetaAds", src: metaAdsLogo, darkSrc: metaAdsLogoDark },
   { id: "metagreen", name: "MetaGreen", src: metaGreenLogo, darkSrc: metaGreenLogoDark },
   { id: "metaedu", name: "MetaEdu", src: metaEduLogo, darkSrc: metaEduLogoDark },
-  { id: "worktax", name: "WorkTax", src: worktaxLogo },
+  { id: "worktax", name: "WorkTax", src: worktaxLogo, darkSrc: worktaxLogoDark },
   { id: "solarhut", name: "SolarHut", src: solarHutLogo },
-  { id: "theclearhire", name: "The Clear Hire", src: theClearHireLogo },
+  {
+    id: "theclearhire",
+    name: "The Clear Hire",
+    src: theClearHireLogo,
+    darkSrc: theClearHireLogoDark,
+  },
   { id: "gameat", name: "Gameat", src: gameatLogo },
-  { id: "metape", name: "MetaPe", src: metaPeLogo },
+  { id: "metape", name: "MetaPe", src: metaPeLogo, darkSrc: metaPeLogoDark },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -73,8 +82,8 @@ const CARD_WIDTH = 201; // logo width + gap, keep in sync with CSS
 const SPEED = 40; // px per second
 
 /* ------------------------------------------------------------------ */
-/* Logo card — white monochrome mark on the unique banner, so every   */
-/* logo reads perfectly in both dark and light themes.                */
+/* Logo card — full brand artwork, with a dedicated dark-theme          */
+/* variant so every mark stays readable in both themes.                 */
 /* ------------------------------------------------------------------ */
 
 function LogoCard({ logo }: { logo: PartnerLogo }) {
