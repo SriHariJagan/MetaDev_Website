@@ -24,7 +24,7 @@ import metaGreenLogo from "@/assets/images/trustedBy/metaGreen.png";
 import metaEduLogo from "@/assets/images/trustedBy/metaEdu.png";
 import worktaxLogo from "@/assets/images/trustedBy/worktax.png";
 import solarHutLogo from "@/assets/images/trustedBy/solarHut.png";
-import theClearHireLogo from "@/assets/images/trustedBy/theclearhire.png";
+// import theClearHireLogo from "@/assets/images/trustedBy/theclearhire.png";
 import gameatLogo from "@/assets/images/trustedBy/gameat.png";
 import metaPeLogo from "@/assets/images/trustedBy/metape.png";
 import metaHireLogoDark from "@/assets/images/trustedBy/metahire-dark.png";
@@ -34,7 +34,7 @@ import metaAdsLogoDark from "@/assets/images/trustedBy/metaAds-dark.png";
 import metaGreenLogoDark from "@/assets/images/trustedBy/metagreen-dark.png";
 import metaEduLogoDark from "@/assets/images/trustedBy/metaedu-dark.png";
 import worktaxLogoDark from "@/assets/images/trustedBy/worktax-dark.png";
-import theClearHireLogoDark from "@/assets/images/trustedBy/theclearhire-dark.png";
+// import theClearHireLogoDark from "@/assets/images/trustedBy/theclearhire-dark.png";
 import metaPeLogoDark from "@/assets/images/trustedBy/metape-dark.png";
 
 /* ------------------------------------------------------------------ */
