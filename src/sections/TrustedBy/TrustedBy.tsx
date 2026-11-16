@@ -1,6 +1,11 @@
 // TrustedBy.tsx
 import { useEffect, useMemo, useRef } from "react";
-import { motion, useAnimationFrame, useInView, useMotionValue } from "framer-motion";
+import {
+  motion,
+  useAnimationFrame,
+  useInView,
+  useMotionValue,
+} from "framer-motion";
 import { Users2 } from "lucide-react";
 import { Section } from "@/components/common/Section";
 import { Container } from "@/components/common/Container";
@@ -44,20 +49,55 @@ interface PartnerLogo {
 }
 
 const PARTNER_LOGOS: PartnerLogo[] = [
-  { id: "metahire", name: "MetaHire", src: metaHireLogo, darkSrc: metaHireLogoDark },
-  { id: "metaflow", name: "MetaFlow", src: metaFlowLogo, darkSrc: metaFlowLogoDark },
-  { id: "metacheck", name: "MetaCheck", src: metaCheckLogo, darkSrc: metaCheckLogoDark },
-  { id: "metaads", name: "MetaAds", src: metaAdsLogo, darkSrc: metaAdsLogoDark },
-  { id: "metagreen", name: "MetaGreen", src: metaGreenLogo, darkSrc: metaGreenLogoDark },
-  { id: "metaedu", name: "MetaEdu", src: metaEduLogo, darkSrc: metaEduLogoDark },
-  { id: "worktax", name: "WorkTax", src: worktaxLogo, darkSrc: worktaxLogoDark },
-  { id: "solarhut", name: "SolarHut", src: solarHutLogo },
   {
-    id: "theclearhire",
-    name: "The Clear Hire",
-    src: theClearHireLogo,
-    darkSrc: theClearHireLogoDark,
+    id: "metahire",
+    name: "MetaHire",
+    src: metaHireLogo,
+    darkSrc: metaHireLogoDark,
   },
+  {
+    id: "metaflow",
+    name: "MetaFlow",
+    src: metaFlowLogo,
+    darkSrc: metaFlowLogoDark,
+  },
+  {
+    id: "metacheck",
+    name: "MetaCheck",
+    src: metaCheckLogo,
+    darkSrc: metaCheckLogoDark,
+  },
+  {
+    id: "metaads",
+    name: "MetaAds",
+    src: metaAdsLogo,
+    darkSrc: metaAdsLogoDark,
+  },
+  {
+    id: "metagreen",
+    name: "MetaGreen",
+    src: metaGreenLogo,
+    darkSrc: metaGreenLogoDark,
+  },
+  {
+    id: "metaedu",
+    name: "MetaEdu",
+    src: metaEduLogo,
+    darkSrc: metaEduLogoDark,
+  },
+  {
+    id: "worktax",
+    name: "WorkTax",
+    src: worktaxLogo,
+    darkSrc: worktaxLogoDark,
+  },
+  { id: "solarhut", name: "SolarHut", src: solarHutLogo },
+  // {
+  //   id: "theclearhire",
+  //   name: "The Clear Hire",
+  //   src: theClearHireLogo,
+  //   darkSrc: theClearHireLogoDark,
+  // },
   { id: "gameat", name: "Gameat", src: gameatLogo },
   { id: "metape", name: "MetaPe", src: metaPeLogo, darkSrc: metaPeLogoDark },
 ];
@@ -161,10 +201,7 @@ function LogoMarquee() {
     x.set(next);
   });
 
-  const doubled = useMemo(
-    () => [...PARTNER_LOGOS, ...PARTNER_LOGOS],
-    [],
-  );
+  const doubled = useMemo(() => [...PARTNER_LOGOS, ...PARTNER_LOGOS], []);
 
   return (
     <div className={styles.marqueeWrapper}>
